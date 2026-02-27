@@ -1,57 +1,154 @@
 # Hierarchical Routing for the Resource Distribution System
-One very evident constrain of the baseline RDS routing architecture (described in readme.md), is that, for large networks with a lot of routers, adding or removing a terminal requires updating the routing tables of ALL routers in the network. This can be feasible for small/medium networks, where there are only a few routers; However, this solution has two clear drawbacks:
-- **Scalability**: having to update each routing table of each router on empire-sized networks with possibly 50+ routers is just not doable (considering also that, if you have a network that big, you are probably adding new terminals very often).
-- **Network administration**: if multiple players joint the picture, the situation gets even messier: each player might own its own routers and terminal addresses, effectively creating his own "local" network domain. To allow resource transfer across such local network domains, each connected router in the global network has to know the location of every terminal, belonging to every single local domain. This means that if player makes a change in his own network, in order to reflect that change, ALL routers in the global network need to be updated.  
-There is also a naming conflict problem: if all terminals are connected to the same network, there cannot be duplicate addresses; this means that if a player wants to add or modify a terminal in his local network, it first has to consult EVERY OTHER player in the world to check if the choosen address is globally available. This is tedious and extremely prone to errors and conflicts.
 
-## Quick fixes  
-There are some ways we can fix some of these problems, without inventing new technology.
-### - Include network onwnership prefix in the address
-If we agree on prefixing each address with, for example, the name of the player owning that network domain (ex. *MyPlayerName:smelter*), we solve the naming conflict problem. As long as this convention is respected, each player can safely modify its own network without asking for a global "name availability" permission. However, this still requires EACH router in the network to be updated, so it's only a half fix. We adress this problem next.
-### - Using default routes to handle unkwown destinations
-In the *readme.md* it has been specified that whenever a router does not find a match between its routing table and the destination address of an incoming package, it can choose between a set of actions, such as: drop the packet / store it / send it to a default port. In this situation, we can leverage the "default port" idea to let a router handle packets with unknown destinations. Such routers would route packages with known destinations perfectly fine within the local network, while allowing packages destined to terminals outside of the local network to leave, effectively acting like a "gateway" to the whole, unknown, globally available network (we will come back to this concept later). These routers will be reffered to as "Border Routers", indicating that they act like the *border* or *frontier* towards / awayfrom a local network domain. Some concrete examples follow. 
+One very evident constraint of the baseline RDS routing architecture (described in readme.md) is that, in large networks with many Routers, adding or removing a Terminal requires updating the routing tables of **all** Routers in the network. This is manageable for small or medium-sized networks, where only a handful of Routers exist. However, the approach quickly reveals two major drawbacks:
+
+- **Scalability**: Updating the routing table of every Router in empire-sized networks — potentially with 50+ Routers — is simply not realistic. In networks of that scale, new Terminals are likely being added or modified frequently, making constant global updates impractical.
+- **Network administration**: When multiple players are involved, the situation becomes even more complex. Each player may own their own Routers and Terminal addresses, effectively forming independent “local” network domains. In order to allow resource transfers across these domains, every Router in the global network must know the location of every Terminal in every local domain. This means that if a single player makes a small change within their own network, all Routers in the global infrastructure must be updated to reflect it.
+There is also a naming conflict issue. If all Terminals share the same global network, duplicate addresses are not allowed. This implies that whenever a player wants to create or rename a Terminal, they must first verify with every other player that the chosen address is globally available. This process is tedious, inefficient, and highly prone to mistakes or conflicts.
+
+
+## Quick fixes
+
+There are ways to mitigate some of these issues without introducing entirely new systems.
+
+### - Include network ownership prefix in the address
+
+If we agree on prefixing each address with a network ownership identifier — for example, the name of the player who owns that domain (e.g., *MyPlayerName:smelter*) — the naming conflict problem is effectively solved. As long as this convention is respected, each player can freely manage their own local network without requiring global "name availability" checks.
+
+However, this solution does not solve the scalability issue: every Router in the global network still needs to be updated whenever a new Terminal is added. It is therefore only a partial fix. The next idea addresses this limitation.
+
+### - Using default routes to handle unknown destinations  
+
+In *readme.md*, it is specified that whenever a router does not find a match between its routing table and the destination address of an incoming package, it can choose between a set of actions, such as: drop the packet / store it / send it to a default port.  
+
+The key idea here is to formalize this “default port” behavior into what we can call a **default route**. Instead of treating the default port as a simple fallback output, we intentionally configure it to forward all packets with unknown destinations toward a specific router that acts as an exit point from the local network. In other words, the default port becomes a deterministic path that handles every non-local address.
+
+By configuring routers in this way, packets with known destinations continue to be routed normally inside the local network, while packets whose destinations are not found in the local routing tables are automatically forwarded along the default route. This effectively allows them to leave the local domain and reach an external router that can handle them.
+
+Routers configured to serve this purpose will be referred to as **Border Routers**, since they act as the *border* or *frontier* between a local network domain and the rest of the global network.
+
+Some examples clarify how this works.
+
 #### 1) Two-sided network
-Consider a scenario where there are only two network domains, A and B, each of them made up of some terminals and a master Border Router (NOTE that there could also be more routers in each network domain, as long as the configured default route allows packets with unknown destination to leave the local network and reach an external Border Router). Inside each of these networks, local packages transit just fine, and if a package wants to be sent to another domain, we can configure the default routes in such a way that unknown packages originating from a terminal inside A are redirected to the Border Router of B, and vice versa. This is a simple yet effective solution for connecting 2 distinct network domains, but What about interconnecting more than 2?
-#### 2) Circular networks
-For interconnecting any number of local network domains together, again, we can use the idea of default routes. The Border Routers of each domain can be configured to make the default route form a close chained loop, meaning that any circling package will eventually reach each Border Router in the global network. Given network domains A, B, C, D, E, we would have a structure like this: 
-A -> B -> C -> D -> E -> A -> ... . This means that, again, local traffic within each network works as expected, and packages directed to foreign network are assured to eventually reach the destined network domain. This is the ideal solution for simple global networks of 3-4 local domains. For larger networks however, some limitations emerge:
-- Fixed direction of travel: While a package originating from A directed to B immediately reaches the destination, a package originating from B directed to A has to go through the entire loop before reaching A. This is clearly not optimal, since we know that A and B are close together, and for longer chains this can lead to unnecessary traffic and delays.
-- Trapped Packages: If a package with a globally unknown destination address is injected into the loop, it will continue to circle in the router chain forever, effectively getting "trapped". Depending on the loop length, it could be quite difficult to track it down and put it out of circulation. Trapped packages can cause loss of player's resources, as well as unwanted traffic and server strain.
 
-Realistically, for a medium/large network (4-5 local network domains), these simple solutions are probably enough to cover most scenarios and are worth implementing. However, for real worldwide-scaled architectures, it's clear that a more scalable, robust and efficient solution is needed. 
+Consider a scenario with two network domains, A and B. Each domain consists of multiple Terminals and at least one Border Router. (Note that additional Routers may exist internally, as long as their default routes allow unknown Packages to exit toward the Border Router.)
+
+Within each domain, local traffic behaves normally. When a Package is destined for a Terminal in the other domain, the default route inside domain A can be configured to forward packages with unknown destinations to its Border Router, which in turns sends them to domain B's Border Router, and vice versa.
+
+This solution is simple and effective for connecting exactly two domains. But what happens when more than two domains must be interconnected?
+
+#### 2) Circular networks
+
+To interconnect multiple local domains, we can extend the default route concept by forming a closed loop between Border Routers. In such a configuration, unknown Packages are forwarded in a circular chain that eventually passes through every Border Router in the global network.
+
+For example, with domains A, B, C, D, and E, the loop would look like:
+
+A → B → C → D → E → A → ...
+
+Local traffic within each domain still functions normally, and any Package destined for a foreign domain is guaranteed to eventually reach the correct one.
+
+For small global networks of three or four domains, this solution works well. However, as the number of domains increases, several limitations become apparent:
+
+- **Fixed direction of travel**: If a Package originates in A and is destined for B, it may reach B immediately. However, if a Package originates in B and is destined for A, it may need to traverse the entire loop before returning to A. This is inefficient, especially when domains are physically close but logically distant in the loop.
+- **Trapped Packages**: If a Package with a globally unknown destination is injected into the loop, it will circulate indefinitely. Such a Package becomes effectively “trapped.” Depending on the loop size, locating and removing it may be difficult. Trapped Packages can result in resource loss, unnecessary traffic, and increased server load.
+
+For medium-sized networks (four to five domains), these solutions may be sufficient and are often worth implementing. For truly large-scale, world-spanning architectures, however, a more scalable and robust approach is required.
+
 
 ## The ideal solution: Hierarchical Routing
+
 #### How does the Internet do it?
-The internet is not a single giant interconnected web, otherwise it would face the same scalability problems we are facing right now; instead, the internet is a network divided in multiple hierarchical "layers", each layer routing packets NOT between end-devices, but between whole sub-networks, belonging to an inferior layer. This way, routes are naturally grouped together, greatly reducing the maintainment cost of individual routers and their routing tables.   
+
+The Internet is not a single flat network where every router knows every endpoint. If it were, it would face the same scalability issues described above. Instead, it is organized into multiple hierarchical layers. Each layer routes traffic not between individual end devices, but between entire sub-networks belonging to a lower layer.  
+
+By grouping routes together in this way, the size and maintenance cost of routing tables are drastically reduced.
+
 
 ### General Idea
 
-We can embrace the same concept in the RDS. The default RDS Routers, that route packets between terminals, belong to the bottom-most layer (layer-0); for convenience, we will be also calling a layer-0 network a "district". Each district is therefore a collection of Routers and Terminals, that form a local small/medium sized network. To allow traffic to and from the outside of the district, each district must also have one Border Router, which is the only Router in the local district's network responsible for interfacing with a higher layer network (layer 1 in this case).
-> *Insight*: from a layer 2 point of view, a district's **Border Router** is analog to what a **Terminal** is from a layer 0 viewpoint; in other words, the terminal nodes of a layer-1 network are exactly the district's Border Routers.
+We can adopt the same principle within the RDS.
 
-Whenever a package destined to an external network is injected in a layer 0 network, it gets routed to the network's Border Router, which in turn sends it to a layer-1 Router. From that point on, the package is in a layer-1 network, and gets routed as usual by layer-1 Routers, towards the destination district. The package succesfully reaches the destination district once the last layer-1 Routers sends it to the district's Border Router (layer-0); from there, internal routing within the district allows the package to finally reach its target Terminal as usual.  
-The idea can be extended to any amount of layers; although, for the purposes of the RDS, focusing on just the first two layers is probably more than enough.
+The standard RDS Routers, which route Packages between Terminals, belong to the lowest layer — **layer 0**. For convenience, we will refer to a layer-0 network as a **district**. A district is therefore a collection of Routers and Terminals forming a small or medium-sized local network.
 
-### Handling multi layered Addressing
-In the baseline RPC architecture it has been discussed how each package must also carry a *destination address*, in orders for routers to make routing decisions. However, in the context of multi layer routing, one address in no longer enough; it's clear that, in order to be properly routed, a package must not only carry the layer-0 address of the destination Terminal, but also carry a layer-1 address of the destination district in which that Terminal is found. We also need a way to make the package's origin district ignore the layer-0 Terminal address; in turn, we also need to make sure the layer-0 network *does* "activate" when the package has reached is target district.
+To allow communication with external districts, each district must include one **Border Router**, which is the only Router in the district responsible for interfacing with the higher-layer network (layer 1).
 
-### Pratical Implementation
-Although the concept of multiple layers of addressing can seem difficult to physically implement in minecraft, it's actually surprisingly easy given the architecture of the current version of the RDS; we just need to make some slight modifications to Routers to enable operation in layer-1+ and a some modifications in the protocol.  
-Right now, the *destination address* is encoded in the name of an item, which is placed in the first top-left slot of the shulker box / package, while the empty space is used for actual payload. Moreover, we have already discussed the idea of "default routes" in previous sections, which we can use in this case to allow packages with an unknown destinations to reach a higher level router. By configuring each district's default route to point towards the closest layer-1 Router, we in fact solve the problem of getting the packages out of our local network and into the layer-1 one. Therefore, the *destination address* item placed in the first slot of the shulker box can just be the layer-2 address, or the destination's *district address*; assuming the layer-2 address is not known within the origin layer-0 district (there are no Terminals with the same name), the configured default route will automatically route the package to the district's Border Router, which sends it to a layer-1 router. Once the package reaches the layer-1 router, it can be succesfully routed throughout the layer-1 network towards the target district, until it is handed to the destination district Border Router.  
-So far we already have found a way to get packages outside the origin district, across a higher layer network, and inside the destination district, without making any modifications.
+> *Insight*: From a layer-1 perspective, a district’s Border Router plays a role analogous to a Terminal in a layer-0 network. In other words, the “endpoints” of a layer-1 network are precisely the Border Routers of layer-0 districts.
 
-We know need to solve the problem of letting the destination district route the package to the correct terminal. First of all, we for sure need to bring the layer-0 destination Terminal address in the destination district network, so it can be used there. To do this, we can safely put in the second slot of the shulker-box; this does not interfere with anything, since effectively the second slot is considered generic "payload" and can be anything. However, when entering the destination district, the layer-0 address is still behind the layer-1 district address, and therefore cannot be used for routing by the district's routers. To make sure the district routers route against the layer-0 address and NOT the layer-1 address (which is currently the first item in the shulker box), we just need to remove the first item of the shulker box upon entering the district's network; this can be done by the last layer-1 router, which conditionally DOES NOT reinsert the address in the shulker box if the package is headed to a district network (or in general, to a lower layer network). Since the first slot of the shulker box is now empty, this naturally means that the routing once the package has reached the destination district will be done against the second item in the shulker-box, that is the layer-0 destination Terminal address.
+When a Package destined for an external district is sent from a Terminal into a layer-0 network, it is routed internally to the district’s Border Router. The Border Router forwards it to a layer-1 Router. From that point onward, the Package travels within the layer-1 network, where it is routed toward the destination district.
 
-> NOTE: RDS Routers always extract the item in the first non-empty slot of the shulker box, and interpret is as the destination address; therefore, if the first slot is empty and the second isn't, the extracted item is the one in the SECOND slot.
+Once it reaches the Border Router of the target district, the Package re-enters layer 0. Internal routing within that district then delivers it to the final destination Terminal.
 
-The described system can also be extended to any numbers of layers, by storing each layer's destination address in order inside the shulker box, starting from slot 0 containing the dest. address of the higher layer. For example, for a 5 layer network, a typical package shulker box would look like this:
-| addr-4 | addr-3 | addr-2 | addr-1 (district) | addr-0 (terminal) | ... payload ... 
+This concept can, in principle, be extended to any additional layers. For practical RDS implementations, however, two layers should be sufficient.
 
-Also note that this system is non destructive towards the baseline, simpler, single layer architecture, meaning that local traffic within the local network still works as usual and only require one destination address. 
 
-#### Recap: package journey through a 2-layer RDS network
-Let's say we need to transfer stacks of iron to a remote construction site of an emerging minecraft city, which we produce in our local iron farm. We now that the destination district address is "district:oasis-city" and the destination terminal is "construction-site-1". We rename the items and place them in the first and second slots of the package shulker box, respectively. After that, we fill the package with the requested resources, and send it through a terminal in our local network. Since the "district:oasis-city" does not mach any known layer-0 destination in our district, the package follows the configured default route inside our local network, eventually reaching the Border Router, which sends it to the first layer-1 router. From now on, the layer-1 address found in the first slot of the package is succesfully reconized by the layer-1 routers, and allows the package to be routed through the layer-1 network, until it reaches the layer-1 router directly connected to the Border Router of Oasis City. In this last hop, the layer-1 router DOES NOT reinsert the layer-1 destination item insider the package, meaning that the package is now travelling with the first slot empty, and with a layer-0 address in the second slot. Once it enters the Oasis City Border Router, the Router can succesfully route it inside the district's network towards the destination terminal, succesfully getting the package at "construction-side-1", where its payload can be used by machine or players.
+### Handling multi-layered Addressing
+
+In the baseline RDS architecture, each Package carries a single destination address used by Routers for routing decisions. In a hierarchical system, a single address is no longer sufficient.
+
+A Package must now carry:
+
+- The layer-1 address (the destination district).
+- The layer-0 address (the destination Terminal within that district).
+
+Additionally, we must ensure that the origin district ignores the layer-0 Terminal address while the Package is being routed externally, and that the layer-0 Terminal address becomes the effective destination only after the Package has reached the correct district.
+
+### Practical Implementation
+
+Although multi-layer addressing may seem complex to implement in Minecraft, it integrates naturally with the existing RDS design, requiring only minor adjustments to Router behavior and protocol conventions.
+
+Currently, the destination address is encoded as a renamed item placed in the first (top-left) slot of the Shulker Box Package. The remaining slots are used for payload. We have also already introduced the concept of default routes, which forward unknown destinations outward.
+
+To enable hierarchical routing, we configure each district’s default route to point toward its Border Router and from there to the nearest layer-1 Router, similarly to what has been done in the previous fixes. 
+
+The first slot of the Shulker Box can now safely contain the **layer-1 district address**. Since this address does not match any layer-0 Terminal inside the origin district, the default route automatically forwards the Package to the Border Router, which passes it to layer 1. Within layer 1, Routers recognize the district address and correctly route the Package toward the destination district.
+
+So far, no structural modification has been required.
+
+The remaining challenge is enabling correct routing within the destination district. For this, the layer-0 Terminal address must also be carried inside the Package. This can be stored safely in the second slot of the Shulker Box, as it is treated as generic payload by higher layers.
+
+Upon entering the destination district, the layer-1 address must no longer be used for routing. This is achieved by having the final layer-1 Router **not reinsert** the layer-1 address into the Shulker Box when forwarding the Package to the destination Border Router. As a result, the first slot becomes empty, and the layer-0 Terminal address in the second slot becomes the first non-empty slot.
+
+> NOTE: RDS Routers always extract the item in the first non-empty slot of the Shulker Box and interpret it as the destination address. Therefore, if the first slot is empty and the second slot contains an item, the second slot item will be used for routing.
+
+From this point onward, the district’s internal Routers naturally route the Package to the correct Terminal.
+
+This mechanism generalizes to any number of layers by storing addresses in order, starting from the highest layer in slot 0 and descending layer by layer. For example, in a five-layer network, a Package would look like:
+
+| addr-4 | addr-3 | addr-2 | addr-1 (district) | addr-0 (terminal) | ... payload ... |
+
+Importantly, this system remains fully compatible with the simpler single-layer architecture. Local traffic within a district still requires only a single destination address.
+
+
+#### Recap: Package journey through a 2-layer RDS network
+
+Suppose we want to transfer stacks of iron from a local Iron Farm to a remote construction site in a developing Minecraft city. The destination district address is `"district:oasis-city"` and the destination Terminal is `"construction-site-1"`.
+
+We rename two items accordingly and place them respectively in the first and second slots of the Shulker Box. The remaining slots are filled with iron.
+
+After sending the Package through a local Terminal, the origin district does not recognize `"district:oasis-city"` as a local layer-0 address. The Package therefore follows the default route toward the Border Router and enters the layer-1 network.
+
+Layer-1 Routers recognize the district address in the first slot and route the Package through the layer-1 network until it reaches the Router connected to Oasis City’s Border Router.
+
+On the final layer-1 hop, the Router does **not** reinsert the district address into the Shulker Box. The first slot is now empty, and the second slot contains the layer-0 Terminal address.
+
+Once the Package enters the Oasis City Border Router, internal routing within the district delivers it to `"construction-site-1"`, where its payload becomes available to machines or players.
+
 
 #### Some caveats
-- **Diminished Payload**: the more addresses you need to store in your package, the less slots are available for payload. For just 2-layer systems, this should not matter much, but keep it in mind. 
-- **Naming conflicts across different layer's addresses**: As we have already said, in order for a higher layer route to be correctly routed, no address with a matching name must be present in any of the above layers; in our simple case, this means that we cannot name ANY of our terminals using a layer-1 (district) address. This is easily solved by just prefixing the layer-1 (or possible above) addresses with a known sequence, such as "district:<... actual name ...>", leaving (almost) complete freedom in the naming of the Terminals.
+
+- **Diminished Payload**: The more addressing layers are stored in the Shulker Box, the fewer slots remain available for payload. For two-layer networks, this is usually negligible, but it should be considered for deeper hierarchies.
+- **Naming conflicts across layers**: For hierarchical routing to function correctly, higher-layer addresses must not collide with lower-layer addresses. In practice, this means no Terminal should use a name that matches a district-level address. This is easily avoided by prefixing higher-layer addresses with a reserved sequence such as `"district:<name>"`, leaving full flexibility for Terminal naming.
+
+
+### District "Firewall"
+
+In a layered system, all inbound and outbound traffic between a district (layer 0) and the higher-layer network (layer 1) passes through a pair of elements: the Border Router (layer 0) and a connected layer-1 Router.
+
+If a Package reacheing a layer-0 Border Router has an unknown local destination address, the Border Router bounces it right back to the connected layer-1 Router via its default route. At this stage, the layer-1 district address has already been removed (as described earlier), so the layer-1 Router no longer finds a matching route. The Package is therefore dropped, stored, or forwarded elsewhere according to layer-1 default behavior.
+
+This naturally creates a form of “firewall”: invalid or erroneous traffic does not propagate into the internal district network.
+
+However, there may be cases where we still want to capture such Packages — for inspection, debugging, or specific design requirements. There is a clean solution for this. 
+Instead of using a single Border Router for both directions, we can split the concept into two half-duplex routing links. One router is exposed to layer-1 and acts as the district’s visible entry point — this is where layer-1 sends Packages destined for the district. The second router is invisible to layer-1 and is used only for outbound traffic from the district toward layer-1. We then configure the district’s default route to forward external traffic through the invisible outbound router, while incoming traffic from layer-1 arrives through the visible inbound router. This separation allows us to filter and inspect incoming Packages before they reach the internal district, while still maintaining a clear path for outbound traffic.
+
+For example, a Package leaving the district follows: Terminal → internal routers → invisible outbound router → layer-1 network. Conversely, a Package arriving from layer-1 enters through the visible inbound router and is then passed to the district’s internal network for delivery to its target Terminal. Because the two links are distinct, unknown or suspicious Packages can be captured and inspected on the inbound side without immediately bouncing them back to layer-1.

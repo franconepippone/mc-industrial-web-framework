@@ -1,63 +1,156 @@
-# The Minecraft Industrial Web Framework
-### Overview
-The MC industrial web framework is a set of architectural principles, protocols and ideas aimed at providing a structured and organized way
-for creating an efficient and fully automated network of factories in vanilla minecraft. It defines ways on how factories 
-located all across the map can share resources on demand fully automatically, implementing common architectural patters like service-client or
-point-to-point resource transfer.   
-The framework's backbone is the **Resource Distribution System (RDS)**, which is a layered system designed for automated 
-and efficient point to point resource sharing, inspired by the workings of real Internet networks. The goal of the Resource Distribution System is to automate the delivery of a payload from a generic point A to point B of the world, based on a destination tag attached to the payload iteself.
+# The Minecraft Industrial Web Framework  
 
-## Core entities of the Resource Distribution System (RDS)
-### Terminal
-A terminal is an endpoint for the Resource Distribution system (RDS); it's a point where resources can be sent or recevied from the network. A resource is any quantity of items that we are interesetd in transferring from one terminal to another. Resources are boundled into "packages", which are the actual resource containers that physically travel across the network.   
-As it's probably easy to guess, the best MC item that suites this purpose is the Shulker Box; therefore, in the RDS, the ONLY things that actually travel are shulker boxes containing the desired items as payload. The first slot of the shulker box is reserved for the *destination tag*, which is as an item renamed with the package's destination's unique identifier (address); this item will be used by the routers to properly forward the package to its intended destination.
+## Overview  
 
-### Router
-A router is the second core element of the RDS. It's inspired directly by Internet routers, and follows the same working principles. It's a node in the web, were multiple edges meet and where travelling packages can be rerouted to the appropriate direction based on their attached destination tag. A RDS Router generally has only ONE input port where all inbound packages enter, making no intrinsic dinstinction from the incoming package origin. A router can have any amount of edges connected to it, and to each edge correspond a "port", which is just an ending container where outbound packages are termporarily placed once the appropriate routing decision has been made. Each outbound direction/edge maps to a specific port in a router, and a port can simply be any container that can termporarily hold packages.  
-To make routing decisions, a router stores a routing table, which maps each possible destination to the respective port on which to forward the package. When a package arrives at the router, the routing table is checked to see if there are any ports mapped to the package's requested destination; if there are, the package is forwarded to that port. After a package has been succesfully transfered to the appropriate outbound port, the router's job is over; it's now the underlying transport's job to physically move the package (NB.: Routers *DO NOT* move packages, they only make routing decisions; they move packages from the *inbound* port to one of their *outbond* ports).
-> Note that, although a Router and a Terminal are conceptually different entities, they can physically coexist in the same place, meaning that nothing stops you from building a router that also acts like a terminal and vice versa.
+The MC Industrial Web Framework is a set of architectural principles, protocols, and ideas aimed at providing a structured and organized way to create an efficient and fully automated network of factories in vanilla Minecraft. It defines standardized methods for how factories located across the world can share resources on demand, fully automatically, by implementing common architectural patterns such as service–client and point-to-point resource transfer.  
 
-### Transport 
-A transport is any minecraft technlogy capable of moving items from point A to point B. In the context of the RDS, a transport system has the rensponsability of "hopping" the package across the network: it needs to be capable of moving a package (shulker box) from Terminal to Router, from Router to Router or from Router to Terminal. A route consists of multiple hops, the ones needed to succesfully reach a destination terminal from a origin terminal.     
-There are a lot of tecnhologies available in minecraft that fulfill this role, and each of them comes with its stregths and weaknesses. It's up to the designer to choose which technology best suites the scenario. Also note that, since routers and terminals are transport-agnostic, a mix of techonologies can be used depending on which one is more convenient for a given hop across the network. Some examples of techonologies are flowing water "conveyor belts", or minecart with chest and rails.
+The backbone of the framework is the **Resource Distribution System (RDS)**, a layered system designed for automated and efficient point-to-point resource sharing, inspired by the structure and behavior of real-world Internet networks. The goal of the RDS is to automate the delivery of a payload from a generic point A to point B in the world, based on a destination tag attached directly to the payload itself.  
 
 
-#### Recapping: a package journey through the RDS
-Say that we want to transfer a large quantity of oak logs from the oak farm (Terminal1) to the industrial smelter (Terminal2). First of all, a destination tag needs to be created; an item is renamed with the unique destination identifier of the industrial smelter terminal (for example "smlter-2"), and it is placed in the first slot (upper-left) of the shulker box. All the other slots of the shulker box are available payload slots, and are filled with oak logs. After the package is ready, it's passed to the terminal, which immediately handles it to the underlying transport system responsible for moving the shulker box from this terminal to the nearest router.
-> Note that in this phase, the shulker box preparation can either be manual or automated, as we will see later on. 
+---
 
-The transport layer physically moves the shulker box around the world, until it reaches the first Router. The package enters the router from the inboud port, and is processed (depending on traffic requriements, an inbound package queue could be needed inside the router, meaning that the package might not be processed immediately). The destination tag is extracted from the shulker box and matched against the routing table, then it's re-inserted inside the shulker box in the same slot. If a port mapped to that destination was found, the shulker box is placed it the respective outbound buffer (if no port was found, it's up to the designer to decide what to do: fallback port? store for later?). Once the package has reached the outbound buffer, it's the transport's job to hop the package from the current location to the next one. Depending on the complexity of the network, the next hop location could either be another router, where exactly the same process happens, or simply be the destination terminal. In this case, we assume it's the destination terminal "smlter-2".
+## Core Entities of the Resource Distribution System (RDS)  
 
-The package has therefore been succesfully moved around the world, and is handed to the destination terminal by the transport which places it in a final container, where it can be later be gathered by players or machines.
+### Terminal  
 
+A **Terminal** is an endpoint of the Resource Distribution System (RDS). It is a location where resources can either enter or exit the network. A *resource* is any quantity of items that we want to transfer from one Terminal to another.  
+
+Resources are bundled into **Packages**, which are the physical units that travel across the network. In the current vision of the RDS, Packages are always Shulker Boxes. Therefore, the only objects that physically move through the network are Shulker Boxes containing the desired items as payload.  
+
+The first slot (upper-left slot) of the Shulker Box is reserved for the **Destination Tag**. The Destination Tag is a (generally renamed) item encoding the unique identifier (address) of the destination Terminal. Routers use this tag to correctly forward the Package to its intended destination. All remaining slots are available for the payload, and are used for the actual resources transportation.  
+
+
+---
+
+### Router  
+
+A **Router** is the second core element of the RDS. It is directly inspired by Internet routers and follows the same operational principles.  
+
+A Router is a node in the network where multiple edges meet and where traveling Packages are redirected based on their attached Destination Tag. A Router has exactly **one inbound port**, where all incoming Packages arrive (a router does not make distinctions regarding the Package's origin).  
+
+A Router can have any number of outbound edges. Each outbound edge corresponds to an **Outbound Port**, which is simply a container used as a temporary buffer for Packages after a routing decision has been made.  
+
+To perform routing decisions, a Router stores a **Routing Table** that maps each known destination address to a specific Outbound Port. When a Package arrives:  
+
+1. The Router extracts the Destination Tag from the first slot of the Shulker Box.  
+2. The Routing Table is checked for a matching destination address.  
+3. The Destination Tag is reinserted into the same slot.  
+4. If a matching Outbound Port exists, the Package is moved to that port.  
+
+If no mapping is found, the behavior is implementation-defined (for example: forwarding to a fallback port or storing the Package for manual inspection).  
+
+It is important to clarify that **Routers do not perform physical transportation**. They only move Packages from the Inbound Port to one of the Outbound Ports. The physical movement between nodes is handled entirely by the Transport Layer.  
+
+Although conceptually different, a Router and a Terminal can physically coexist in the same structure. A single build may act as both a Router and a Terminal simultaneously.  
+
+> Most of what has been said about routers so far can also be found, in more detail, in the *router_specs.md* file.
+---
+
+### Transport Layer  
+
+The **Transport Layer** consists of any Minecraft technology capable of moving items from one point to another.  
+
+Within the RDS, the Transport Layer is responsible for physically moving Packages between:  
+
+- Terminal → Router  
+- Router → Router  
+- Router → Terminal  
+
+A complete route from source Terminal to destination Terminal consists of multiple **Hops**, each performed by the Transport Layer.  
+
+Several Minecraft technologies can fulfill this role, each with advantages and disadvantages. The choice depends on the specific design requirements. Examples include:  
+
+- Flowing water conveyor systems  
+- Minecart with Chest on rails  
+
+Since Routers and Terminals are transport-agnostic, different technologies can be combined across different Hops of the same route, depending on constrains or conveniences dictated by enviromental or external factors. 
+
+
+---
+
+## Example: A Package Journey Through the RDS  
+
+Suppose we want to transfer a large quantity of oak logs from the Oak Farm (Terminal1) to the Industrial Smelter (Terminal2).  
+
+1. A Destination Tag is created by renaming an item with the unique identifier of the Industrial Smelter (for example: `"smelter-2"`).  
+2. The Destination Tag is placed in the first slot of a Shulker Box.  
+3. The remaining slots are filled with oak logs.  
+
+Once prepared, the Package is handed to the origin Terminal. The Terminal passes it to the Transport Layer, which moves it to the nearest Router.  
+
+At the Router:  
+
+- The Package enters the Inbound Port.  
+- It may wait be queued in a buffer if other Packages are already being processed. 
+- The Router processes the Destination Tag and forwards the Package to the correct Outbound Port.  
+
+Once in the Outbound Port, it's now the job of the Transport Layer to perform the next Hop. Depending on the network structure, the Package may reach another Router (where the same process repeats) or directly reach the destination Terminal.  
+
+Finally, when the Package arrives at `"smelter-2"`, the Transport Layer deposits it into the Terminal’s receiving container, where the contents can be accessed by players or machines.  
+
+The resource transfer is therefore completed automatically.  
+
+
+---
 
 ## Implementing full industrial automation using the RDS
 
-We have seen how the RDS is capable of dinamically moving a package full of resources from a point A to a point B of a minecraft world. Although this could theoretically be used as-is by players to help out in resource transfer, realistically, there are more practical way to move large quantities of items around, such as using elytras and rockets. However, since the RDS is fully automatic, we can use it to connect any amount of factories togheter in a fully automatic way. Factories can dinamically share resources between each other even across potentially large distances in the world; not only that, but the RDS already provides a standardized interconnected web-like transportation infranstructure that is able to fullfill all possible dependencies needs the factories might require.
-For example, if factory A and B are both dependent of outputs of factory C, the RDS already achieves the goal of allowing items to move both from C to A and from C to B, without having to build a specialized point-to-point transportation system for each pair of interested endpoints. As another example, say factory C also depends on the products of factory E and F; again, the RDS naturally allows for item transportation from E and F to C with ease. It's now clear how this can be used for large scale industrial automation projects.
+We have seen how the RDS can dynamically move a Package full of resources from a generic point A to a point B in a Minecraft world. In theory, this system could already be used directly by players to assist with resource transportation. In practice, however, there are faster manual methods for moving large quantities of items, such as Elytra flight with rockets.  
 
-### Service-Client pattern
-This architectural pattern is used whenever there is an entity providing some kind of service, which multiple clients can ask for. In general, if a client wants to use that service, it makes a request to the service host, and the host answers back with the requested material from the client.  
-In our context, this could be useful in creating factories that require periodic resource refills. For example there could be a cake factory that produces cakes. To do so, it needs to have a storage of all the needed resources (eggs, wheat, sugar, milk). In an automation context, we can image that, whenever those resources run low, the cake factory can automatically make a request to the factories it depends on (eggs farm, wheat farm etc..) to obtain a resource refill. How can we implement this using the RDS?  
+However, since the RDS is fully automatic, it can be used to interconnect any number of factories into a unified, fully automatic industrial network. Factories can exchange resources dynamically, even across very large distances. More importantly, the RDS provides a standardized, interconnected, web-like transportation infrastructure capable of satisfying all dependency relationships between factories.
 
-A way to approach this would be to send two packages: one for the request, only containing information, and one for the response, containing the actual asked resource.  
-For basic material requests, a request package needs to carry two crucial informations:
-- Source address: The address from which the request is originating from; or, in other words, where to send the response back (tipically the sender's address)
-- Request type: what kind of action is requested.
+For example, if Factory A and Factory B both depend on the output of Factory C, the RDS already enables items to flow from C to A and from C to B without requiring two separate, specialized transport lines. Similarly, if Factory C depends on the products of Factory E and Factory F, the same infrastructure naturally supports resource delivery from E and F back to C.  
 
-These two informations can easily be shared using two renamed items carried in the package payload (in the 2nd and 3rd slots of the shulker box, leaving the rest empty). Of course, the service host requires some additional redstone mechanism to parse the request automatically, execute the requested action, and then construct a response package and send it to the specified client address by the client. The details and technology of this process could be standardized, but it's not a strict requirements as long as the service host follows the described protocol.  
-In the previous example of the cake factory, the origin information can be stored in a ready-to-use RDS destination tag named for example "cake-fact" and the request type could be encoded in another renamed item, for example "EGG-REFILL-qt10" (somehow indicating that we want to refill 10 stacks of eggs). On the egg farm side, the response package is constructed using the provided "cake-fact" destination tag as a destination, to send the resources back to the client (the cake farm).
+It becomes clear how such an approach can support large-scale industrial automation projects.
+
+
+### Service–Client Pattern
+
+The Service–Client pattern applies whenever one entity provides a service and multiple clients may request it. In general terms, a client sends a request to a service provider, and the provider responds with the requested material or action.
+
+Within the RDS context, for example, this pattern can be especially useful for factories that require periodic resource refills. Consider a Cake Factory. To continuously produce cakes, it must maintain internal storage for eggs, wheat, sugar, and milk. In an automated setup, whenever one of these resources drops below a certain threshold, the Cake Factory should be able to request a refill from the corresponding production farms (Egg Farm, Wheat Farm, and so on).
+
+Using the RDS, this interaction can be implemented by exchanging two Packages:
+
+- A **Request Package**, containing only information.
+- A **Response Package**, containing the requested resources.
+
+For a basic material request, the Request Package must include two essential pieces of information:
+
+- **Source Address** – the address from which the request originates; in other words, where the response must be sent (typically the client’s own address).
+- **Request Type** – the kind of action being requested.
+
+These can be encoded as renamed items placed in the second and third slots of the Shulker Box (with the first slot reserved for the Destination Tag). The remaining slots are typically left empty for a Request Package.
+
+On the service provider’s side, additional redstone logic is required to automatically parse the request, execute the appropriate action, construct a Response Package, and send it back to the specified Source Address. The exact technical implementation may vary, and could eventually be standardized, but strict standardization is not required as long as the provider respects the described protocol above.
+
+Returning to the Cake Factory example:  
+The Source Address could be stored as a ready-to-use Destination Tag named `"cake-fact"`, while the Request Type might be encoded as `"EGG-REFILL-qt10"` somehow indicating a refill request of 10 stacks of eggs. The Egg Farm, upon receiving this Request Package, prepares a Response Package containing the requested eggs and uses the provided `"cake-fact"` Destination Tag as the address used for the Response Package.
+
 
 ### ...Some more ideas:
-#### Centralized Storage
-Instead of having resources move from one factory to another, a large central item-sorter and storage building could be created, where all resources are automatically moved to. This way, instead of contacting directly the required factory for a refill, factories could just ask the the storage for material. 
 
-#### Usage of nether
-All the infranstructure of the RDS could easily be constructed on the nether roof, allowing generally faster transportation times due to the nether to overworld distances ratio of 1:8, although it has to be noted that some transport tecnhologies might be unvaiablable in the nether, such as water conveyor belts.
+#### Centralized Storage
+
+Instead of having resources move directly between factories, a large centralized storage facility could be built — essentially a massive item sorter and warehouse. All produced resources would automatically be sent there through the RDS.  
+
+In this model, factories would not contact individual production sites for refills. Instead, they would simply send requests to the central storage system, which would act as a universal provider. This approach could simplify dependency and centralizes inventory management.
+
+#### Usage of the Nether
+
+The entire RDS infrastructure could be constructed on the Nether roof. Because the Nether-to-Overworld distance ratio is 1:8, long-distance transportation becomes significantly faster in effective Overworld terms.  
+
+However, it has to be noted that some transport tecnhologies might be unvaiablable in the nether, such as water conveyor systems.
 
 
 ## State of Tech
-As of now, the RDS *Router* and *Terminal* entities do have viable redstone implementations, although they might not be optimal in terms of speed and volume. It the current state, each Router can differentiate up to 54 different destinations PER port. If more are needed, two ports can just be wired together to the same underlying transport. Each added port adds 2 blocks to the lenght of the building, making it 2blocks tilable. Routers have a process time (time for each package) of a 5+ seconds, that linearly increases by about 0.5s with each added port.  
-Terminals as of now offer no abstraction over the underlying transport layer, since they just expose places to put/pick up packages to and from the network (in the tests only the water "conveyor belt" transport has been used, so the terminals are literally just holes where shulker boxes can be dropped into the network / received from the network).
 
-As of now there is no redstone implementation for the service-client pattern.
+At the current stage, both the RDS *Router* and *Terminal* have functional redstone implementations, although it might not be an absolutely optimal design in terms of speed or throughput.
+
+In its current form, each Router can differentiate up to **54 distinct destinations per Outbound Port**. If more destinations are required, multiple Ports can be wired to the same underlying Transport connection. Each additional Port increases the Router’s length by 2 blocks, making the design 2-block tileable.  
+
+The base processing time per Package is slightly above 5 seconds, and it increases linearly by approximately 0.5 seconds for each added Outbound Port.
+
+Terminals currently provide no real abstraction over the underlying Transport Layer. They simply expose input and output points where Packages can be inserted into or extracted from the network. In testing, only water conveyor systems have been used, meaning that Terminals effectively function just as controlled drop-off and pickup points for Shulker Boxes.
+
+At the moment, there is no complete redstone implementation of the Service–Client pattern.
