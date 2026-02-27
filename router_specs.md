@@ -56,8 +56,6 @@ The general flow of Router operation is:
 > NOTE: the algorithm above implies that packages are processed sequentially. However, packages might also be processed in parallel.
 
 
----
-
 ## Variations
 
 Routers may implement variations of the baseline architecture to satisfy specific requirements.
