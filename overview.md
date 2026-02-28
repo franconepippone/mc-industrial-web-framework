@@ -88,9 +88,10 @@ Once in the Outbound Port, it's now the job of the Transport Layer to perform th
 
 Finally, when the Package arrives at `"smelter-2"`, the Transport Layer deposits it into the Terminal’s receiving container, where the contents can be accessed by players or machines.  
 
-The resource transfer is therefore completed automatically.  
-
-
+<div align="center">
+  <img src="images/network_example1.gif" width="600" alt="Directory tree">
+  <p><em>Visual representation of Packages traveling through a RDS network</em></p>
+</div>
 
 
 ## Implementing full industrial automation using the RDS
