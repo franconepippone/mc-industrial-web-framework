@@ -11,7 +11,7 @@ The backbone of the framework is the **Resource Distribution System (RDS)**, a l
 
 ## Core Entities of the Resource Distribution System (RDS)  
 
-### Terminal  
+### 📬 Terminal  
 
 A **Terminal** is an endpoint of the Resource Distribution System (RDS). It is a location where resources can either enter or exit the network. A *resource* is any quantity of items that we want to transfer from one Terminal to another.  
 
@@ -22,7 +22,7 @@ The first slot (upper-left slot) of the Shulker Box is reserved for the **Destin
 
 
 
-### Router  
+### 🔀 Router  
 
 A **Router** is the second core element of the RDS. It is directly inspired by Internet routers and follows the same operational principles.  
 
@@ -46,7 +46,7 @@ Although conceptually different, a Router and a Terminal can physically coexist 
 > Most of what has been said about routers so far can also be found, in more detail, in the *router_specs.md* file.
 
 
-### Transport Layer  
+### 🚚 Transport Layer  
 
 The **Transport Layer** consists of any Minecraft technology capable of moving items from one point to another.  
 
@@ -70,7 +70,7 @@ Since Routers and Terminals are transport-agnostic, different technologies can b
 
 ## Example: A Package Journey Through the RDS  
 
-Suppose we want to transfer a large quantity of oak logs from the Oak Farm (Terminal1) to the Industrial Smelter (Terminal2).  
+Suppose we want to transfer a large quantity of oak logs from the Oak Farm to the Industrial Smelter.  
 
 1. A Destination Tag is created by renaming an item with the unique identifier of the Industrial Smelter (for example: `"smelter-2"`).  
 2. The Destination Tag is placed in the first slot of a Shulker Box.  
@@ -89,7 +89,7 @@ Once in the Outbound Port, it's now the job of the Transport Layer to perform th
 Finally, when the Package arrives at `"smelter-2"`, the Transport Layer deposits it into the Terminal’s receiving container, where the contents can be accessed by players or machines.  
 
 <div align="center">
-  <img src="images/network_example1.gif" width="600" alt="Directory tree">
+  <img src="images/network_example1.gif" width="500" alt="Directory tree">
   <p><em>Visual representation of Packages traveling through a RDS network</em></p>
 </div>
 
