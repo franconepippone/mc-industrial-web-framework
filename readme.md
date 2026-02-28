@@ -22,4 +22,4 @@ This repository is a specification and design reference for building systems usi
 
 If you are new to the project, start with **overview.md**. For deeper technical details, consult the router and transport specifications.
 
-Contributions are very welcome — whether they focus on theoretical ideas, redstone implementations, or documentation improvements. Pull requests and suggestions help refine the framework and make it more useful for everyone.
+Contributions and pull requests are very welcome — whether they focus on theoretical ideas, redstone implementations, or documentation improvements!
