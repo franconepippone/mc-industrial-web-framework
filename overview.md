@@ -144,7 +144,7 @@ The entire RDS infrastructure could be constructed on the Nether roof. Because t
 However, it has to be noted that some transport tecnhologies might be unvaiablable in the nether, such as water conveyor systems.
 
 
-## State of Tech
+## State of Tech (looking for redstoners!)
 
 At the current stage, both the RDS *Router* and *Terminal* have functional redstone implementations, although it might not be an absolutely optimal design in terms of speed or throughput.
 
@@ -154,4 +154,5 @@ The base processing time per Package is slightly above 5 seconds, and it increas
 
 Terminals currently provide no real abstraction over the underlying Transport Layer. They simply expose input and output points where Packages can be inserted into or extracted from the network. In testing, only water conveyor systems have been used, meaning that Terminals effectively function just as controlled drop-off and pickup points for Shulker Boxes.
 
-At the moment, there is no complete redstone implementation of the Service–Client pattern.
+At the moment, there is no complete redstone implementation of the Service–Client pattern. If you would like to give your own shot at this, contact me or make a pull request!
+
