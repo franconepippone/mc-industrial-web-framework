@@ -26,9 +26,9 @@ The first slot (upper-left slot) of the Shulker Box is reserved for the **Destin
 
 A **Router** is the second core element of the RDS. It is directly inspired by Internet routers and follows the same operational principles.  
 
-A Router is a node in the network where multiple edges meet and where traveling Packages are redirected based on their attached Destination Tag. A Router has exactly **one inbound port**, where all incoming Packages arrive (a router does not make distinctions regarding the Package's origin).  
+A Router is a node in the network where multiple edges meet and where traveling Packages are redirected based on their attached Destination Tag. A Router has exactly **one inbound port**, where all incoming Packages arrive (a default router does not make distinctions about the Package's origin).  
 
-A Router can have any number of outbound edges. Each outbound edge corresponds to an **Outbound Port**, which is simply a container used as a temporary buffer for Packages after a routing decision has been made.  
+A Router can have any number of outbound edges. Each outbound edge corresponds to an **Outbound Port**, which is simply a container used as a buffer where Packages temporarily sit after a routing decision has been made, before they get taken out and delivered by the transport system.  
 
 To perform routing decisions, a Router stores a **Routing Table** that maps each known destination address to a specific Outbound Port. When a Package arrives:  
 
