@@ -28,7 +28,7 @@ A **Router** is the second core element of the RDS. It is directly inspired by I
 
 A Router is a node in the network where multiple edges meet and where traveling Packages are redirected based on their attached Destination Tag. A Router has exactly **one inbound port**, where all incoming Packages arrive (a default router does not make distinctions about the Package's origin).  
 
-A Router can have any number of outbound edges. Each outbound edge corresponds to an **Outbound Port**, which is simply a container used as a buffer where Packages temporarily sit after a routing decision has been made, before they get taken out and delivered by the transport system.  
+A Router can have any number of outbound edges. Each outbound edge corresponds to an **Outbound Port**, which is simply a container used as a buffer where Packages temporarily sit after a routing decision has been made, before they get taken out and delivered by the transport layer.  
 
 To perform routing decisions, a Router stores a **Routing Table** that maps each known destination address to a specific Outbound Port. When a Package arrives:  
 
@@ -37,9 +37,9 @@ To perform routing decisions, a Router stores a **Routing Table** that maps each
 3. The Destination Tag is reinserted into the same slot.  
 4. If a matching Outbound Port exists, the Package is moved to that port.  
 
-If no mapping is found, the behavior is implementation-defined (for example: forwarding to a fallback port or storing the Package for manual inspection).  
+If no mapping is found, the behavior may vary (for example: forwarding to a fallback port or storing the Package for manual inspection).  
 
-It is important to clarify that **Routers do not perform physical transportation**. They only move Packages from the Inbound Port to one of the Outbound Ports. The physical movement between nodes is handled entirely by the Transport Layer.  
+It is important to clarify that **Routers do not perform physical transportation**. They only move Packages from the Inbound Port to one of the Outbound Ports, based on their attached destination tag. The physical movement of packages is handled entirely by the Transport Layer.  
 
 Although conceptually different, a Router and a Terminal can physically coexist in the same structure. A single build may act as both a Router and a Terminal simultaneously.  
 
@@ -58,12 +58,12 @@ Within the RDS, the Transport Layer is responsible for physically moving Package
 
 A complete route from source Terminal to destination Terminal consists of multiple **Hops**, each performed by the Transport Layer.  
 
-Several Minecraft technologies can fulfill this role, each with advantages and disadvantages. The choice depends on the specific design requirements. Examples include:  
+Several Minecraft technologies can fulfill this role, each with advantages and disadvantages. The choice depends on the specific design requirements. Some basic examples include:  
 
 - Flowing water conveyor systems  
 - Minecart with Chest on rails  
 
-Since Routers and Terminals are transport-agnostic, different technologies can be combined across different Hops of the same route, depending on constrains or conveniences dictated by enviromental or external factors. 
+Since Routers and Terminals are transport-agnostic, different transport technologies can be combined across different Hops of the same route, depending on constrains or conveniences dictated by enviromental or external factors. 
 
 
 
