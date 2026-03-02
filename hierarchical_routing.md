@@ -37,13 +37,12 @@ Consider a scenario with two network domains, A and B. Each domain consists of m
 
 Within each domain, local traffic behaves normally. When a Package is destined for a Terminal in the other domain, the default route inside domain A can be configured to forward packages with unknown destinations to its Border Router, which in turns sends them to domain B's Border Router, and vice versa.
 
-
 <div align="center">
   <img src="images/two-nets.gif" width="600" alt="Directory tree">
-  <p><em>Using default routes to connect two network domains</em></p>
+  <p><em>Fig.1 - Using default routes to connect two network domains</em></p>
 </div>
 
-
+Notice that if Fig.1 the Border Router of A has no knowledge of the existance of B, and vice versa; however, thanks to the default route we have setup, the two domains can communicate.
 
 This solution is simple and effective for connecting exactly two domains. But what happens when more than two domains must be interconnected?
 
