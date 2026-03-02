@@ -1,5 +1,7 @@
 # Hierarchical Routing for the Resource Distribution System
 
+## Motivations
+
 One very evident constraint of the baseline RDS routing architecture (described in *overview.md*) is that, in large networks with many Routers, adding or removing a Terminal requires updating the routing tables of **all** Routers in the network. This is manageable for small or medium-sized networks, where only a handful of Routers exist. However, the approach quickly reveals two major drawbacks:
 
 - **Maintenance cost**: Updating the routing table of every Router in empire-sized networks — potentially with 50+ Routers — is simply not realistic. In networks of that scale, new Terminals are likely being added or modified frequently, making constant global updates impractical.
@@ -35,6 +37,14 @@ Consider a scenario with two network domains, A and B. Each domain consists of m
 
 Within each domain, local traffic behaves normally. When a Package is destined for a Terminal in the other domain, the default route inside domain A can be configured to forward packages with unknown destinations to its Border Router, which in turns sends them to domain B's Border Router, and vice versa.
 
+
+<div align="center">
+  <img src="images/two-nets.gif" width="600" alt="Directory tree">
+  <p><em>Using default routes to connect two network domains</em></p>
+</div>
+
+
+
 This solution is simple and effective for connecting exactly two domains. But what happens when more than two domains must be interconnected?
 
 #### 2) Circular networks
@@ -51,6 +61,15 @@ For small global networks of three or four domains, this solution works well. Ho
 
 - **Fixed direction of travel**: If a Package originates in A and is destined for B, it may reach B immediately. However, if a Package originates in B and is destined for A, it may need to traverse the entire loop before returning to A. This is inefficient, especially when domains are physically close but logically distant in the loop.
 - **Trapped Packages**: If a Package with a globally unknown destination is injected into the loop, it will circulate indefinitely. Such a Package becomes effectively “trapped.” Depending on the loop size, locating and removing it may be difficult. Trapped Packages can result in resource loss, unnecessary traffic, and increased server load.
+
+<br>
+
+<div align="center">
+  <img src="images/cyclic-net.gif" width="600" alt="Directory tree">
+  <p><em>Circular "default route" topology to interconnect 4 network domains</em></p>
+</div>
+
+---
 
 For medium-sized networks (four to five domains), these solutions may be sufficient and are often worth implementing. For truly large-scale, world-spanning architectures, however, a more scalable and robust approach is required.
 
@@ -104,7 +123,7 @@ The first slot of the Shulker Box can now safely contain the **layer-1 district 
 
 So far, no structural modification has been required.
 
-The remaining challenge is enabling correct routing within the destination district. For this, the layer-0 Terminal address must also be carried inside the Package. This can be stored safely in the second slot of the Shulker Box, as it is treated as generic payload by higher layers.
+The remaining challenge is enabling correct routing within the destination district. For this, the layer-0 Terminal address must also be carried inside the Package. This can be stored safely in the second slot of the Shulker Box, as it is treated as generic payload as long as it remains behind the layer-1 address item.
 
 Upon entering the destination district, the layer-1 address must no longer be used for routing. This is achieved by having the final layer-1 Router **not reinsert** the layer-1 address into the Shulker Box when forwarding the Package to the destination Border Router. As a result, the first slot becomes empty, and the layer-0 Terminal address in the second slot becomes the first non-empty slot.
 
@@ -129,7 +148,7 @@ After sending the Package through a local Terminal, the origin district does not
 
 Layer-1 Routers recognize the district address in the first slot and route the Package through the layer-1 network until it reaches the Router connected to Oasis City’s Border Router.
 
-On the final layer-1 hop, the Router does **not** reinsert the district address into the Shulker Box. The first slot is now empty, and the second slot contains the layer-0 Terminal address.
+On the final layer-1 to layer-0 hop, during which the package enters the Oasis City District, the layer-1 Router does **not** reinsert the district address into the Shulker Box. The first slot is now empty, and the second slot contains the layer-0 Terminal address.
 
 Once the Package enters the Oasis City Border Router, internal routing within the district delivers it to `"construction-site-1"`, where its payload becomes available to machines or players.
 

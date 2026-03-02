@@ -43,7 +43,7 @@ It is important to clarify that **Routers do not perform physical transportation
 
 Although conceptually different, a Router and a Terminal can physically coexist in the same structure. A single build may act as both a Router and a Terminal simultaneously.  
 
-> Most of what has been said about routers so far can also be found, in more detail, in the *router_specs.md* file.
+> All of what has been said about routers so far can also be found, in more detail, in the *router_specs.md* file.
 
 
 ### 🚚 Transport Layer  
@@ -89,7 +89,7 @@ Once in the Outbound Port, it's now the job of the Transport Layer to perform th
 Finally, when the Package arrives at `"smelter-2"`, the Transport Layer deposits it into the Terminal’s receiving container, where the contents can be accessed by players or machines.  
 
 <div align="center">
-  <img src="images/network_example1.gif" width="500" alt="Directory tree">
+  <img src="images/network_example1.gif" width="600" alt="Directory tree">
   <p><em>Visual representation of Packages traveling through a RDS network</em></p>
 </div>
 
