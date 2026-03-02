@@ -4,7 +4,7 @@
 
 One very evident constraint of the baseline RDS routing architecture (described in *overview.md*) is that, in large networks with many Routers, adding or removing a Terminal requires updating the routing tables of **all** Routers in the network. This is manageable for small or medium-sized networks, where only a handful of Routers exist. However, the approach quickly reveals two major drawbacks:
 
-- **Maintenance cost**: Updating the routing table of every Router in empire-sized networks — potentially with 50+ Routers — is simply not realistic. In networks of that scale, new Terminals are likely being added or modified frequently, making constant global updates impractical.
+- **Maintenance cost**: Updating the routing table of every Router in empire-sized networks — potentially with 15+ Routers — is simply not realistic. In networks of that scale, new Terminals are likely being added or modified frequently, making constant global updates impractical.
 - **Network administration**: When multiple players are involved, the situation becomes even more complex. Each player may own their own Routers and Terminal addresses, effectively forming independent “local” network domains. In order to allow resource transfers across these domains, every Router in the global network must know the location of every Terminal in every local domain. This means that if a single player makes a small change within their own network, all Routers in the global infrastructure must be updated to reflect it.
 There is also a naming conflict issue. If all Terminals share the same global network, duplicate addresses are not allowed. This implies that whenever a player wants to create or rename a Terminal, they must first verify with every other player that the chosen address is globally available. This process is tedious, inefficient, and highly prone to mistakes or conflicts.
 
@@ -148,7 +148,7 @@ After sending the Package through a local Terminal, the origin district does not
 
 Layer-1 Routers recognize the district address in the first slot and route the Package through the layer-1 network until it reaches the Router connected to Oasis City’s Border Router.
 
-On the final layer-1 to layer-0 hop, during which the package enters the Oasis City District, the layer-1 Router does **not** reinsert the district address into the Shulker Box. The first slot is now empty, and the second slot contains the layer-0 Terminal address.
+On the final layer-1 to layer-0 hop, during which the package enters the Oasis City District, the layer-1 Router does **not** reinsert the district address into the Shulker Box. The first slot is now empty, and the second slot contains the layer-0 Terminal address, meaning that any other router that will process the Package will now use the item in the second slot for routing (which, in this case, is the `"construction-site-1"` address).
 
 Once the Package enters the Oasis City Border Router, internal routing within the district delivers it to `"construction-site-1"`, where its payload becomes available to machines or players.
 
