@@ -26,7 +26,7 @@ Packages follow this structure:
 
 When a Router receives a Package, it must extract the first available item (the first non-empty slot) and use it as the destination address.
 
-> NOTE: The first available item is the one found by scanning slots from left to right and top to bottom of the container (Shulker Box).
+> NOTE: The first available item is the one found by scanning slots from left to right and top to bottom of the container.
 
 
 ### Routing Table

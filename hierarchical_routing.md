@@ -126,7 +126,7 @@ The remaining challenge is enabling correct routing within the destination distr
 
 Upon entering the destination district, the layer-1 address must no longer be used for routing. This is achieved by having the final layer-1 Router **not reinsert** the layer-1 address into the Shulker Box when forwarding the Package to the destination Border Router. As a result, the first slot becomes empty, and the layer-0 Terminal address in the second slot becomes the first non-empty slot.
 
-> NOTE: RDS Routers always extract the item in the first non-empty slot of the Shulker Box and interpret it as the destination address. Therefore, if the first slot is empty and the second slot contains an item, the second slot item will be used for routing.
+> NOTE: RDS Routers always extract the item in the first non-empty slot of the Shulker Box and interpret it as the destination address. Therefore, if the first slot is empty and the second slot contains an item, the second slot item will be used for routing. More in *[RDS Protocols](/rds_protocols.md)*.
 
 From this point onward, the district’s internal Routers naturally route the Package to the correct Terminal.
 

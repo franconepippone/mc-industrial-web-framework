@@ -4,22 +4,38 @@
 
 The MC Industrial Web Framework is a set of architectural principles, protocols, and ideas aimed at providing a structured and organized way to create an efficient and fully automated network of factories in vanilla Minecraft. It defines standardized methods for how factories located across the world can share resources on demand, fully automatically, by implementing common architectural patterns such as service–client and point-to-point resource transfer.  
 
-The backbone of the framework is the **Resource Distribution System (RDS)**, a layered system designed for automated and efficient point-to-point resource sharing, inspired by the structure and behavior of real-world Internet networks. The goal of the RDS is to automate the delivery of a payload from a generic point A to point B in the world, based on a destination tag attached directly to the payload itself.  
+The backbone of the framework is the **Resource Distribution System (RDS)**, a layered system designed for automated and efficient point-to-point resource sharing, inspired by the structure and behavior of real-world Internet networks. The goal of the RDS is to automate the delivery of a payload from a generic point A to point B in the world, based on a destination tag attached directly to the payload itself. The RDS protocol
 
 
 
 
 ## Core Entities of the Resource Distribution System (RDS)  
 
+### Package
+
+A **Package** is the foundamental entity of a RDS network. It consists of a resources (items) container which can be moved around the world while preserving it's contents. In a RDS network, packages are the only things that is actually moved around the world. Any minecraft container matching the above definition can be used as a Package technology; however, the package technology choice usually dictates and often restricts what other technologies can be used to implement the other RDS entities. In other words, implementations of Routers, Terminals and Links must be compatible with the underlying choosen Package technology.
+
+Multiple Package technologies *can* be used within the same network, but this requires the construction of **Adapters**, that are specialized machines whose goal is to translate Packages between different tecnhologies, effectively "bridging" networks that operate on different Packages. Adapters are generally found at the **Link** level (*more about this later*).
+
+In the [Standard RDS Protocol](std_rds_proto.md), the first slot non-empty slot of the Package is reserved for the **Address Stamp**. The Address Stamp is a (*usually* renamed) item encoding a unique identifier of a Terminal. Routers use the Address Stamp to correctly forward the Package to its intended destination Terminal. All remaining slots after the Address Stamp of the Package are used for payload, and can be filled with anything.  
+
+> NOTE: In circumstances where there is request-response pattern at play, it makes sense to talk about a **Destination Address Stamp** (**DAS**) and a **Return Address Stamp** (**RAS**); respectively, the Address Stamp of the *Responder* and that of the *Requester*.
+
+Here are some examples of possible Package technology:
+- **Shulker-Box** : highly versatile, as it can be stored and moved around like any other item.
+- **Minecart with Chest** : Not as versatile as the above, but very cheap and simple to get working when Shulker-Boxes are not an option.
+
+>Everything said here and more can be found in greater details in the [Package Specifications](package_specs.md) file.
+
 ### 📬 Terminal  
 
-A **Terminal** is an endpoint of the Resource Distribution System (RDS). It is a location where resources can either enter or exit the network. A *resource* is any quantity of items that we want to transfer from one Terminal to another.  
+A **Terminal** is an endpoint of the Resource Distribution System (RDS). It is a location where Packages can either enter or exit the network. A *resource* is any quantity of items that we want to transfer from one Terminal to another.  
 
 Resources are bundled into **Packages**, which are the physical units that travel across the network. In the current vision of the RDS, Packages are always Shulker Boxes. Therefore, the only objects that physically move through the network are Shulker Boxes containing the desired items as payload.  
 
 The first slot (upper-left slot) of the Shulker Box is reserved for the **Destination Tag**. The Destination Tag is a (generally renamed) item encoding the unique identifier (address) of the destination Terminal. Routers use this tag to correctly forward the Package to its intended destination. All remaining slots are available for the payload, and are used for the actual resources transportation.  
 
-
+>Everything said here and more can be found in greater details in the [Terminal Specifications](router_specs.md) file.
 
 
 ### 🔀 Router  
@@ -43,29 +59,29 @@ It is important to clarify that **Routers do not perform physical transportation
 
 Although conceptually different, a Router and a Terminal can physically coexist in the same structure. A single build may act as both a Router and a Terminal simultaneously.  
 
-> All of what has been said about routers so far can also be found, in more detail, in the *router_specs.md* file.
+>Everything said here and more can be found in greater details in the [Router Specifications](router_specs.md) file.
 
 
-### 🚚 Transport Layer  
+### 🚚 Link
 
-The **Transport Layer** consists of any Minecraft technology capable of moving items from one point to another.  
+A **Link** is the entity that "links" Routers and Terminals between each other. It consists of any Minecraft technology capable of moving Packages from one point to another, and is therefore Package-implementation dependant.  
 
-Within the RDS, the Transport Layer is responsible for physically moving Packages between:  
+Within the RDS, a Link is responsible for physically moving Packages between:  
 
 - Terminal → Router  
 - Router → Router  
 - Router → Terminal  
 
-A complete route from source Terminal to destination Terminal consists of multiple **Hops**, each performed by the Transport Layer.  
+A complete route from source Terminal to destination Terminal consists of multiple **Hops**, each performed by different Links.
 
 Several Minecraft technologies can fulfill this role, each with advantages and disadvantages. The choice depends on the specific design requirements. Some basic examples include:  
 
 - Flowing water conveyor systems  
 - Minecart with Chest on rails  
 
-Since Routers and Terminals are transport-agnostic, different transport technologies can be combined across different Hops of the same route, depending on constrains or conveniences dictated by enviromental or external factors. 
+Since Routers and Terminals are link-agnostic, different link technologies can be combined across different Hops of the same route, depending on constrains or conveniences dictated by enviromental or external factors. 
 
-
+>Everything said here and more can be found in greater details in the [Link Specifications](link_specs.md) file.
 
 
 ## Example: A Package Journey Through the RDS  
