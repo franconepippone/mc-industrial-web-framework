@@ -11,13 +11,13 @@ The backbone of the framework is the **Resource Distribution System (RDS)**, a l
 
 ## Core Entities of the Resource Distribution System (RDS)  
 
-### Package
+### 📦 Package
 
-A **Package** is the foundamental entity of a RDS network. It consists of a resources (items) container which can be moved around the world while preserving it's contents. In a RDS network, packages are the only things that is actually moved around the world. Any minecraft container matching the above definition can be used as a Package technology; however, the package technology choice usually dictates and often restricts what other technologies can be used to implement the other RDS entities. In other words, implementations of Routers, Terminals and Links must be compatible with the underlying choosen Package technology.
+A **Package** is the fundamental unit of transport within an RDS network. It is a movable container that preserves its internal inventory while being transported through the world. In the RDS, Packages are the only entities that physically travel across the network. Any Minecraft container that satisfies this behavior can serve as a valid Package technology, but the chosen technology directly influences, and often constrains, the possible implementations of the other RDS entities (Routers, Terminals, and Links). All devices in a RDS network must therefore be compatible with the selected Package technology.
 
-Multiple Package technologies *can* be used within the same network, but this requires the construction of **Adapters**, that are specialized machines whose goal is to translate Packages between different tecnhologies, effectively "bridging" networks that operate on different Packages. Adapters are generally found at the **Link** level (*more about this later*).
+Multiple Package technologies can coexist within the same network, but doing so requires dedicated **Adapters**. The goal of an Adapter is to convert Packages from one technology to another, effectively bridging betweem segments of the network that use different Package Implementations. Adapters are typically placed at the **Link** level, and are invisible to Routers and Terminals.
 
-In the [Standard RDS Protocol](std_rds_proto.md), the first slot non-empty slot of the Package is reserved for the **Address Stamp**. The Address Stamp is a (*usually* renamed) item encoding a unique identifier of a Terminal. Routers use the Address Stamp to correctly forward the Package to its intended destination Terminal. All remaining slots after the Address Stamp of the Package are used for payload, and can be filled with anything.  
+In the [Standard RDS Protocol](rds_protocols.md), the first slot non-empty slot of the Package inventory is reserved for the **Address Stamp**. The Address Stamp is *usually* a renamed item encoding a unique identifier of a Terminal. Routers use the Address Stamp to correctly forward the Package to its intended destination Terminal. All remaining slots after the Address Stamp of the Package are used for payload, and can be filled with anything.  
 
 > NOTE: In circumstances where there is request-response pattern at play, it makes sense to talk about a **Destination Address Stamp** (**DAS**) and a **Return Address Stamp** (**RAS**); respectively, the Address Stamp of the *Responder* and that of the *Requester*.
 
