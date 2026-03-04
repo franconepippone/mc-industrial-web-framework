@@ -15,7 +15,7 @@ The backbone of the framework is the **Resource Distribution System (RDS)**, a l
 
 A **Package** is the fundamental unit of transport within an RDS network. It is a movable container that preserves its internal inventory while being transported through the world. In the RDS, Packages are the only entities that physically travel across the network. Any Minecraft container that satisfies this behavior can serve as a valid Package technology, but the chosen technology directly influences, and often constrains, the possible implementations of the other RDS entities (Routers, Terminals, and Links). All devices in a RDS network must therefore be compatible with the selected Package technology.
 
-Multiple Package technologies can coexist within the same network, but doing so requires dedicated **Adapters**. The goal of an Adapter is to convert Packages from one technology to another, effectively bridging betweem segments of the network that use different Package Implementations. Adapters are typically placed at the **Link** level, and are invisible to Routers and Terminals.
+Multiple Package technologies can coexist within the same network, but doing so requires dedicated **Adapters**. The goal of an Adapter is to convert Packages from one technology to another, effectively bridging betweem segments of the network that use different Package Implementations. Adapters are typically placed at the **Link** level, and should be invisible to Routers and Terminals.
 
 In the [Standard RDS Protocol](rds_protocols.md), the first slot non-empty slot of the Package inventory is reserved for the **Address Stamp**. The Address Stamp is *usually* a renamed item encoding a unique identifier of a Terminal. Routers use the Address Stamp to correctly forward the Package to its intended destination Terminal. All remaining slots after the Address Stamp of the Package are used for payload, and can be filled with anything.  
 
@@ -25,46 +25,42 @@ Here are some examples of possible Package technology:
 - **Shulker-Box** : highly versatile, as it can be stored and moved around like any other item.
 - **Minecart with Chest** : Not as versatile as the above, but very cheap and simple to get working when Shulker-Boxes are not an option.
 
->Everything said here and more can be found in greater details in the [Package Specifications](package_specs.md) file.
+>Everything said here and more can be found in greater details in the *[Package Specifications](package_specs.md)* file.
 
 ### 📬 Terminal  
 
-A **Terminal** is an endpoint of the Resource Distribution System (RDS). It is a location where Packages can either enter or exit the network. A *resource* is any quantity of items that we want to transfer from one Terminal to another.  
+A **Terminal** is an endpoint of the Resource Distribution System (RDS). It is a location where Packages can either enter or exit the network. Packages must be constructed based on the technology and protocol adopted by the network.
 
-Resources are bundled into **Packages**, which are the physical units that travel across the network. In the current vision of the RDS, Packages are always Shulker Boxes. Therefore, the only objects that physically move through the network are Shulker Boxes containing the desired items as payload.  
-
-The first slot (upper-left slot) of the Shulker Box is reserved for the **Destination Tag**. The Destination Tag is a (generally renamed) item encoding the unique identifier (address) of the destination Terminal. Routers use this tag to correctly forward the Package to its intended destination. All remaining slots are available for the payload, and are used for the actual resources transportation.  
-
->Everything said here and more can be found in greater details in the [Terminal Specifications](router_specs.md) file.
+>Everything said here and more can be found in greater details in the *[Terminal Specifications](router_specs.md)* file.
 
 
 ### 🔀 Router  
 
-A **Router** is the second core element of the RDS. It is directly inspired by Internet routers and follows the same operational principles.  
+A **Router** is a core element of the RDS. It is directly inspired by Internet routers and follows the same operational principles.  
 
-A Router is a node in the network where multiple edges meet and where traveling Packages are redirected based on their attached Destination Tag. A Router has exactly **one inbound port**, where all incoming Packages arrive (a default router does not make distinctions about the Package's origin).  
+A Router is a node in the network where multiple edges meet and where traveling Packages are redirected based on their attached Address Stamp. By default, a RDS Router has exactly **one Input Port**, where all inbound Packages arrive. This means that a Router makes no distiction between the "source port" of the Package; all entering Packages are processed in the same way.
 
-A Router can have any number of outbound edges. Each outbound edge corresponds to an **Outbound Port**, which is simply a container used as a buffer where Packages temporarily sit after a routing decision has been made, before they get taken out and delivered by the transport layer.  
+A Router can have any number of **Output Ports**. Each Output Port is simply an "exit gate", where Packages can leave the router in a specific direction. Every Output Port is bound to exactly one outgoing direction, and the Router's routing logic selects which port to use based on the destination encoded in the Package's Address Stamp. Depending on the chosen Package technology, Output Ports may also function as temporary buffers where Packages wait before being collected and carried forward by the respective **Link**.
 
-To perform routing decisions, a Router stores a **Routing Table** that maps each known destination address to a specific Outbound Port. When a Package arrives:  
+To perform routing decisions, a Router stores a **Routing Table** that maps each known destination address to a specific Output Port. When a Package arrives:  
 
-1. The Router extracts the Destination Tag from the first slot of the Shulker Box.  
+1. The Router extracts the Address Stamp from the first slot of the Shulker Box.  
 2. The Routing Table is checked for a matching destination address.  
-3. The Destination Tag is reinserted into the same slot.  
-4. If a matching Outbound Port exists, the Package is moved to that port.  
+3. The Address Stamp is reinserted into the same slot.  
+4. If a matching Output Port exists, the Package is moved to that port.  
 
 If no mapping is found, the behavior may vary (for example: forwarding to a fallback port or storing the Package for manual inspection).  
 
-It is important to clarify that **Routers do not perform physical transportation**. They only move Packages from the Inbound Port to one of the Outbound Ports, based on their attached destination tag. The physical movement of packages is handled entirely by the Transport Layer.  
+It is important to clarify that **Routers do not perform physical transportation**. They only move Packages from the Inbound Port to one of the Output Ports, based on their attached Address Stamp. The physical movement of packages is handled entirely by **Links**.  
 
 Although conceptually different, a Router and a Terminal can physically coexist in the same structure. A single build may act as both a Router and a Terminal simultaneously.  
 
->Everything said here and more can be found in greater details in the [Router Specifications](router_specs.md) file.
+>Everything said here and more can be found in greater details in the *[Router Specifications](router_specs.md)* file.
 
 
 ### 🚚 Link
 
-A **Link** is the entity that "links" Routers and Terminals between each other. It consists of any Minecraft technology capable of moving Packages from one point to another, and is therefore Package-implementation dependant.  
+A **Link** is the entity that "links" Routers and Terminals between each other. It consists of any Minecraft technology capable of moving Packages from one point to another, and is therefore highly coupled to the adopted Package implementation.
 
 Within the RDS, a Link is responsible for physically moving Packages between:  
 
@@ -81,28 +77,28 @@ Several Minecraft technologies can fulfill this role, each with advantages and d
 
 Since Routers and Terminals are link-agnostic, different link technologies can be combined across different Hops of the same route, depending on constrains or conveniences dictated by enviromental or external factors. 
 
->Everything said here and more can be found in greater details in the [Link Specifications](link_specs.md) file.
+>Everything said here and more can be found in greater details in the *[Link Specifications](link_specs.md)* file.
 
 
 ## Example: A Package Journey Through the RDS  
 
 Suppose we want to transfer a large quantity of oak logs from the Oak Farm to the Industrial Smelter.  
 
-1. A Destination Tag is created by renaming an item with the unique identifier of the Industrial Smelter (for example: `"smelter-2"`).  
-2. The Destination Tag is placed in the first slot of a Shulker Box.  
+1. A Destination Address Stamp (DAS) is created by renaming an item with the unique identifier of the Industrial Smelter (for example: `"smelter-2"`).  
+2. The DAS is placed in the first slot of a Shulker Box.  
 3. The remaining slots are filled with oak logs.  
 
-Once prepared, the Package is handed to the origin Terminal. The Terminal passes it to the Transport Layer, which moves it to the nearest Router.  
+Once prepared, the Package is handed to the origin Terminal. The Terminal passes it to the Link, which moves it to the nearest Router.  
 
 At the Router:  
 
 - The Package enters the Inbound Port.  
 - It may wait be queued in a buffer if other Packages are already being processed. 
-- The Router processes the Destination Tag and forwards the Package to the correct Outbound Port.  
+- The Router processes the DAS and forwards the Package to the correct Output Port.  
 
-Once in the Outbound Port, it's now the job of the Transport Layer to perform the next Hop. Depending on the network structure, the Package may reach another Router (where the same process repeats) or directly reach the destination Terminal.  
+Once in the Output Port, it's now the job of the Link to perform the next Hop. Depending on the network structure, the Package may reach another Router (where the same process repeats) or directly reach the destination Terminal.  
 
-Finally, when the Package arrives at `"smelter-2"`, the Transport Layer deposits it into the Terminal’s receiving container, where the contents can be accessed by players or machines.  
+Finally, when the Package arrives at `"smelter-2"`, the Link deposits it into the Terminal's receiving container, where the contents can be accessed by players or machines.  
 
 <div align="center">
   <img src="images/network_example1.gif" width="600" alt="Directory tree">
