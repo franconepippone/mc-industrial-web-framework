@@ -15,4 +15,4 @@ The Shulker‑Box Package technology fully supports the [**Standard RDS Protocol
 ## Notes
 Due to the Shulker-Box capability to be transported as any other item, this techology is probably the most versatile in the whole Game. This means that it can work well with a very wide range of RDS Entities implementations (mainly Routers, Terminals, Links), and easily allows mixed implementations to coexist in the same network.
 
-Shulker-Boxes are probably the best choice for more serious high-performant network, although they inevitably bring more cost and complexity compared to other techologies such as [Chest-Minecarts](/implementations/Packages/ChestMinecart/specs.md).
+Shulker-Boxes are probably the best choice for more serious high-performant networks, although they inevitably bring more cost and complexity compared to other techologies such as [Chest-Minecarts](/implementations/Packages/ChestMinecart/specs.md).

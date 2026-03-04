@@ -7,7 +7,7 @@
 
 ## Description
 
-Usage of a chest minecart as a Package is pretty straightforward. The Package is the cart itself, this means that the cart is created in a Terminal, is moved and routed around by Links and Routers (moving mainly on rails, but not necessarily), and eventually stops at a destination Terminal. Ideally, the cart is never destroyed during its journey as a Packet. 
+Usage of a chest minecart as a Package is pretty straightforward. The Package is the cart itself, this means that the cart is created in a Terminal, is moved and routed around by Links and Routers (moving mainly on rails, but not necessarily), and eventually stops at a destination Terminal. Ideally, the cart is never destroyed during its journey as a Package. 
 
 The chest minecart Package technology fully support the [**Standard RDS Protocol**](/rds_protocols.md#the-standard-rds-protocol), and can therefore be used in RDS-compliant networks.
 

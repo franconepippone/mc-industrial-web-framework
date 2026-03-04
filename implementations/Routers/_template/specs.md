@@ -37,7 +37,7 @@ Technology there first (including its specs), then reference it here.
 
 -->
 
-|     |  |
+|  Specification   | Value |
 |----------------------|-------|
 | Minecraft Version     | <Java / Bedrock / Both> 
 | Component Version    | 1.0
