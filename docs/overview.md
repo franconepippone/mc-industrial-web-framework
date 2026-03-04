@@ -22,16 +22,16 @@ In the [Standard RDS Protocol](rds_protocols.md), the first slot non-empty slot 
 > NOTE: In circumstances where there is request-response pattern at play, it makes sense to talk about a **Destination Address Stamp** (**DAS**) and a **Return Address Stamp** (**RAS**); respectively, the Address Stamp of the *Responder* and that of the *Requester*.
 
 Here are some examples of possible Package technology:
-- **Shulker-Box** : highly versatile, as it can be stored and moved around like any other item.
-- **Minecart with Chest** : Not as versatile as the above, but very cheap and simple to get working when Shulker-Boxes are not an option.
+- [Shulker-Box](/implementations/Packages/ShulkerBox/specs.md) : highly versatile, as it can be stored and moved around like any other item.
+- [Minecart with Chest](/implementations/Packages/ChestMinecart/specs.md) : Not as versatile as the above, but very cheap and simple to get working when Shulker-Boxes are not an option.
 
->Everything said here and more can be found in greater details in the *[Package Specifications](package_specs.md)* file.
+>More details can be found in the *[Package Specifications](package_specs.md)* file.
 
 ### 📬 Terminal  
 
 A **Terminal** is an endpoint of the Resource Distribution System (RDS). It is a location where Packages can either enter or exit the network. Packages must be constructed based on the technology and protocol adopted by the network.
 
->Everything said here and more can be found in greater details in the *[Terminal Specifications](router_specs.md)* file.
+>More details can be found in the *[Terminal Specifications](terminal_specs.md)* file.
 
 
 ### 🔀 Router  
@@ -55,7 +55,7 @@ It is important to clarify that **Routers do not perform physical transportation
 
 Although conceptually different, a Router and a Terminal can physically coexist in the same structure. A single build may act as both a Router and a Terminal simultaneously.  
 
->Everything said here and more can be found in greater details in the *[Router Specifications](router_specs.md)* file.
+>More details can be found in the *[Router Specifications](router_specs.md)* file.
 
 
 ### 🚚 Link
@@ -77,7 +77,7 @@ Several Minecraft technologies can fulfill this role, each with advantages and d
 
 Since Routers and Terminals are link-agnostic, different link technologies can be combined across different Hops of the same route, depending on constrains or conveniences dictated by enviromental or external factors. 
 
->Everything said here and more can be found in greater details in the *[Link Specifications](link_specs.md)* file.
+>More details can be found in the *[Link Specifications](link_specs.md)* file.
 
 
 ## Example: A Package Journey Through the RDS  

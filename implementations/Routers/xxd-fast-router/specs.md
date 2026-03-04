@@ -8,7 +8,7 @@
   </a>
 </div>
 
-Just an example video
+Just an example video, this should probably go in [here](/docs/user-contributed/xxd_network_suite/documentation.md)
 
 ## Description
 
@@ -46,7 +46,7 @@ Technology there first (including its specs), then reference it here.
 |----------------------|-------|
 | Minecraft Version     | Java 
 | Component Version    | 1.0
-| Component Class       | [RDS Router](/router_specs.md) 
+| Component Class       | [RDS Router](/docs/router_specs.md) 
 | Package Technology    | [Shulker-Box](/implementations/Packages/ShulkerBox/specs.md) |  
 | Ports (N)             | 4
 | Footprint (Area)      | 16x16

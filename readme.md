@@ -6,15 +6,15 @@ The backbone of the framework is the **Resource Distribution System (RDS)**, a l
 
 ## Documentation
 
-- [Repo structure](repo_structure.md)  
-- [Overview](overview.md)  
-- [Router specification](router_specs.md)  
-- [Link specification](link_specs.md)
+- [Repo structure](docs/repo_structure.md)  
+- [Overview](docs/overview.md)  
+- [Router specification](docs/router_specs.md)  
+- [Link specification](docs/link_specs.md)
 
 Advanced:
 
-- [Hierarchical routing](hierarchical_routing.md)  
-- [Custom protocols](rds_protocols.md#support-for-custom-protocols)  
+- [Hierarchical routing](docs/hierarchical_routing.md)  
+- [Custom protocols](docs/rds_protocols.md#support-for-custom-protocols)  
 
 ---
 

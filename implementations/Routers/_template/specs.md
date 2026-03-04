@@ -41,7 +41,7 @@ Technology there first (including its specs), then reference it here.
 |----------------------|-------|
 | Minecraft Version     | <Java / Bedrock / Both> 
 | Component Version    | 1.0
-| Component Class       | [RDS Router](/router_specs.md) 
+| Component Class       | [RDS Router](/docs/router_specs.md) 
 | Package Technology    | <e.g. [Chest-Minecart](/implementations/Packages/ChestMinecart/specs.md) / Other>  
 | Ports (N)             | <N. of output ports> 
 | Footprint (Area)      | <e.g. 20×(20 + 2N)> 
