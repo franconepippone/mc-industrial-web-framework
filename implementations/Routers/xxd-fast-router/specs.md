@@ -44,13 +44,14 @@ Technology there first (including its specs), then reference it here.
 
 |  Specification   | Value |
 |----------------------|-------|
-| Minecraft Version     | Java 
-| Component Version    | 1.0
+| Version    | 1.0
+| Minecraft Edition     | Java 
 | Component Class       | [RDS Router](/docs/router_specs.md) 
 | Package Technology    | [Shulker-Box](/implementations/Packages/ShulkerBox/specs.md) |  
 | Ports (N)             | 4
 | Footprint (Area)      | 16x16
 | Height                | 32?
+| Works in Nether       | Yes
 | Chunkloading Included | Yes 
 | Throughput            | 15 Pkg/min 
 | Survival-friendliness  | Low 

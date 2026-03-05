@@ -2,7 +2,7 @@
 
 In order for Packages to succesfully traverse a RDS network, all the devices involved in the routing of the Package (Routers, Links, Terminals) must agree on the rules on *how* the Address Stamp and resources are carried. For a quick reminder, in order to be correctly routed, a Package needs to be marked with a Address Stamp, that encodes a unique identifier for its destination.
 
-In general, there are many valid ways of achieving this. The RDS supports only on one implementation, called the **Standard RDS Protocol**. Throughout this documentation, this protocol is assumed by default unless explicitly stated otherwise. Any network or device that follows it is considered **RDS‑compliant**.
+In general, there are many valid ways of achieving this. The RDS is officially based on one implementation, called the **Standard RDS Protocol**. Throughout this documentation, the adoption of this protocol is assumed by default unless explicitly stated otherwise. Any network or device that supports the Standard RDS Protocol it is considered **RDS‑compliant**.
 
 Devices operating under different protocols are considered **non‑RDS‑compliant**, and while they can coexist within an RDS‑compliant environment, their integration requires the considerations described in the [dedicated section](#support-for-custom-protocols).
 

@@ -153,18 +153,4 @@ In this model, factories would not contact individual production sites for refil
 
 The entire RDS infrastructure could be constructed on the Nether roof. Because the Nether-to-Overworld distance ratio is 1:8, long-distance transportation becomes significantly faster in effective Overworld terms.  
 
-However, it has to be noted that some transport tecnhologies might be unvaiablable in the nether, such as water conveyor systems.
-
-
-## State of Tech (looking for redstoners!)
-
-At the current stage, both the RDS *Router* and *Terminal* have functional redstone implementations, although it might not be an absolutely optimal design in terms of speed or throughput.
-
-In its current form, each Router can differentiate up to **54 distinct destinations per Outbound Port**. If more destinations are required, multiple Ports can be wired to the same underlying Transport connection. Each additional Port increases the Router’s length by 2 blocks, making the design 2-block tileable.  
-
-The base processing time per Package is slightly above 5 seconds, and it increases linearly by approximately 0.5 seconds for each added Outbound Port.
-
-Terminals currently provide no real abstraction over the underlying Transport Layer. They simply expose input and output points where Packages can be inserted into or extracted from the network. In testing, only water conveyor systems have been used, meaning that Terminals effectively function just as controlled drop-off and pickup points for Shulker Boxes.
-
-At the moment, there is no complete redstone implementation of the Service–Client pattern. If you would like to give your own shot at this, contact me or make a pull request!
-
+However, it has to be noted that some Link tecnhologies might be unvaiablable in the nether, such as water conveyor systems.

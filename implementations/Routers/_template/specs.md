@@ -39,13 +39,14 @@ Technology there first (including its specs), then reference it here.
 
 |  Specification   | Value |
 |----------------------|-------|
-| Minecraft Version     | <Java / Bedrock / Both> 
-| Component Version    | 1.0
+| Version    | 1.0
+| Minecraft Edition     | <Java / Bedrock / Both> 
 | Component Class       | [RDS Router](/docs/router_specs.md) 
 | Package Technology    | <e.g. [Chest-Minecart](/implementations/Packages/ChestMinecart/specs.md) / Other>  
 | Ports (N)             | <N. of output ports> 
 | Footprint (Area)      | <e.g. 20×(20 + 2N)> 
 | Height                | <e.g. 32>
+| Works in Nether       | <Yes / No>
 | Chunkloading Included | <Yes / No> 
 | Throughput            | <e.g. 15 Pkg/min> 
 | Survival-friendliness  | <High / Moderate / Low> 
