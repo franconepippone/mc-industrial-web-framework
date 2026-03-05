@@ -15,8 +15,6 @@ The backbone of the framework is the **Resource Distribution System (RDS)**, a l
 
 A **Package** is the fundamental unit of transport within an RDS network. It is a movable container that preserves its internal inventory while being transported through the world. In the RDS, Packages are the only entities that physically travel across the network. Any Minecraft container that satisfies this behavior can serve as a valid Package technology, but the chosen technology directly influences, and often constrains, the possible implementations of the other RDS entities (Routers, Terminals, and Links). All devices in a RDS network must therefore be compatible with the selected Package technology.
 
-Multiple Package technologies can coexist within the same network, but doing so requires dedicated **Adapters**. The goal of an Adapter is to convert Packages from one technology to another, effectively bridging betweem segments of the network that use different Package Implementations. Adapters are typically placed at the **Link** level, and should be invisible to Routers and Terminals.
-
 In the [Standard RDS Protocol](rds_protocols.md), the first slot non-empty slot of the Package inventory is reserved for the **Address Stamp**. The Address Stamp is *usually* a renamed item encoding a unique identifier of a Terminal. Routers use the Address Stamp to correctly forward the Package to its intended destination Terminal. All remaining slots after the Address Stamp of the Package are used for payload, and can be filled with anything.  
 
 > NOTE: In circumstances where there is request-response pattern at play, it makes sense to talk about a **Destination Address Stamp** (**DAS**) and a **Return Address Stamp** (**RAS**); respectively, the Address Stamp of the *Responder* and that of the *Requester*.
@@ -38,7 +36,7 @@ A **Terminal** is an endpoint of the Resource Distribution System (RDS). It is a
 
 A **Router** is a core element of the RDS. It is directly inspired by Internet routers and follows the same operational principles.  
 
-A Router is a node in the network where multiple edges meet and where traveling Packages are redirected based on their attached Address Stamp. By default, a RDS Router has exactly **one Input Port**, where all inbound Packages arrive. This means that a Router makes no distiction between the "source port" of the Package; all entering Packages are processed in the same way.
+A Router is a node in the network where multiple edges meet and where traveling Packages are redirected based on their attached Address Stamp. By default, a RDS Router has exactly **one Input Port**, where all incoming Packages arrive.
 
 A Router can have any number of **Output Ports**. Each Output Port is simply an "exit gate", where Packages can leave the router in a specific direction. Every Output Port is bound to exactly one outgoing direction, and the Router's routing logic selects which port to use based on the destination encoded in the Package's Address Stamp. Depending on the chosen Package technology, Output Ports may also function as temporary buffers where Packages wait before being collected and carried forward by the respective **Link**.
 
