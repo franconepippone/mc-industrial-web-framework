@@ -36,6 +36,13 @@ The Routing Table is the decision mechanism used by the Router to determine wher
 
 > If you don't know what an Address Stamp is, the defintion can be found [*here*](/docs/rds_protocols.md#address-stamp).
 
+If the Address Stamp of a Package does not find a match in the Routing Table, then the Router can perform any of the following fallback actions:
+- Forwarding to a fallback Output Port
+- Storing the Package for manual inspection
+- Bounce the Package back (only supported by [multiple Inputs Routers](#multiple-inputs))
+- ... Potentially more
+
+
 ### Working Principle
 
 The goal of the RDS Router is to move Packages from the Input Port to an appropriate Output Port based on the destination address.
