@@ -56,20 +56,18 @@ A → B → C → D → E → A → ...
 
 Local traffic within each domain still functions normally, and any Package destined for a foreign domain is guaranteed to eventually reach the correct one.
 
-For small global networks of three or four domains, this solution works well. However, as the number of domains increases, several limitations become apparent:
-
-- **Fixed direction of travel**: If a Package originates in A and is destined for B, it may reach B immediately. However, if a Package originates in B and is destined for A, it may need to traverse the entire loop before returning to A. This is inefficient, especially when domains are physically close but logically distant in the loop.
-- **Trapped Packages**: If a Package with a globally unknown destination is injected into the loop, it will circulate indefinitely. Such a Package becomes effectively “trapped.” Depending on the loop size, locating and removing it may be difficult. Trapped Packages can result in resource loss, unnecessary traffic, and increased server load.
-
-<br>
-
 <div align="center">
   <img src="../media/cyclic-net.gif" width="600" alt="Directory tree">
   <p><em>Circular "default route" topology to interconnect 4 network domains</em></p>
 </div>
 
----
 
+For small global networks of three or four domains, this solution works well. However, as the number of domains increases, several limitations become apparent:
+
+- **Fixed direction of travel**: If a Package originates in A and is destined for B, it may reach B immediately. However, if a Package originates in B and is destined for A, it may need to traverse the entire loop before returning to A. This is inefficient, especially when domains are physically close but logically distant in the loop.
+- **Trapped Packages**: If a Package with a globally unknown destination is injected into the loop, it will circulate indefinitely. Such a Package becomes effectively “trapped.” Depending on the loop size, locating and removing it may be difficult. Trapped Packages can result in resource loss, unnecessary traffic, and increased server load.
+
+---
 For medium-sized networks (four to five domains), these solutions may be sufficient and are often worth implementing. For truly large-scale, world-spanning architectures, however, a more scalable and robust approach is required.
 
 
