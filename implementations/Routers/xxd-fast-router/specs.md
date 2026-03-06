@@ -45,10 +45,10 @@ Technology there first (including its specs), then reference it here.
 |  Specification   | Value |
 |----------------------|-------|
 | Version    | 1.0
-| Minecraft Edition     | Java 
+| Minecraft Edition     | Java 1.21.1
 | Component Class       | [RDS Router](/docs/router_specs.md) 
 | Package Technology    | [Shulker-Box](/implementations/Packages/ShulkerBox/specs.md) |  
-| Ports (N)             | 4
+| Ports (N)             | 5
 | Footprint (Area)      | 16x16
 | Height                | 32?
 | Works in Nether       | Yes

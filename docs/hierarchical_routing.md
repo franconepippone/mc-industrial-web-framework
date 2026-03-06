@@ -128,6 +128,7 @@ The remaining challenge is enabling correct routing within the destination distr
 
 Upon entering the destination district, the Tier-1 address must no longer be used for routing. This is achieved by having the final Tier-1 Router **not reinsert** the Tier-1 address into the Package when forwarding the Package to the destination Border Router. As a result, the first slot becomes empty, and the Tier-0 Terminal address in the second slot becomes the first non-empty slot.
 
+<a id="address-removal-at-link-level"></a>
 > NOTE: The Tier-1 address removal / invalidation logic could also be implemented at the *Link* level, since there is a unique link for every Higher-to-Lower-Tier hop. 
 
 > NOTE: RDS Routers always extract the item in the first non-empty slot of the Package and interpret it as the Address Stamp. Therefore, if the first slot is empty and the second slot contains an item, the second slot item will be used for routing. More in *[RDS Protocols](/rds_protocols.md)*.

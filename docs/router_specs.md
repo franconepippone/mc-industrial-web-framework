@@ -25,6 +25,7 @@ Notice that, in practice, a Router *can* have and often has more that one physic
 
 ❗The Router itself does not transport Packages. Its only goal is to **make routing decisions**, redirecting Packages from the Input Port to the correct Output Port. The physical transportation is a responsability of the [Link](/docs/overview.md#-link) entity.
 
+---
 
 ### Routing Table
 
@@ -42,6 +43,7 @@ If the Address Stamp of a Package does not find a match in the Routing Table, th
 - Bounce the Package back (only supported by [multiple Inputs Routers](#multiple-inputs))
 - ... Potentially more
 
+---
 
 ### Working Principle
 
@@ -58,17 +60,18 @@ The general flow of a Router operation is:
 
 > NOTE: the algorithm above implies that packages are processed sequentially. However, nothing stops implementations from processing Packages in parallel.
 
+<br>
 
 ## Variations
 
-Routers may implement variations of the baseline architecture to satisfy specific requirements.
+Routers may implement variations of the standard architecture to satisfy specific requirements.
 
 
 ### Hierarchical Routing Support
 
 As described in [*hierarchical_routing.md*](/docs/hierarchical_routing.md), routers operating in Tier-1 or above networks should *generally** implement a small modification.
 
-> \**generally* : this operation could also be implemented at the **Link** level, as described [here]()
+> \**generally* : this operation could also be implemented at the **Link** level, as described [here](/docs/hierarchical_routing.md#practical-solution).
 
 When forwarding a Package to a network of an inferior Tier, the Router **must not** reinsert the Address Stamp into the Package. For example, when a Tier-1 Router forwards a Package to a Tier-0 Router (and this rule applies to any Tier transition), the address is omitted so that the lower-Tier Router can use the next available address for routing (often stored in the second slot).
 
@@ -81,6 +84,6 @@ This slight modification can be made by optionally ignoring step 4 of the genera
 
 In some designs, it can be useful to allow the source of a Package (at the port level, not address level) influence routing decisions — for example, to choose different default routes when the destination address is unknown.
 
-In this case, a concrete distinction about Input Ports must be made, since the source direction of a Package is no longer invisible to the Routing logic, and can be taken into account. 
+In this case, a concrete distinction about Input Ports must be made, since the source direction of a Package is no longer invisible to the Routing logic, and can be taken into account. This means that a Router can potentially have **multiple Input Ports**.
 
-For example, the Router could select different default routes based on the input port. This would be particularly useful in networks built as long backbone chains, leveraging the *default route* mechanism, where Packages with unknown destinations must be forwarded according to the direction they arrived from. For example, in a chain running north–south, a Package with no matching address arriving from the north should be forwarded south, and one arriving from the south should be forwarded north. This is simply not possible in standard RDS Routers.
+For example, the Router could select different default routes based on the input port. This would be particularly useful in networks built as long backbone chains, leveraging the *default route* mechanism, where Packages with unknown destinations must be forwarded according to the direction they arrived from. For example, in a chain running north–south, a Package with no matching address arriving from the north should be forwarded south, and one arriving from the south should be forwarded north. This is simply not possible in standard **single-Input** RDS Routers.
