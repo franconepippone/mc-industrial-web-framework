@@ -64,7 +64,7 @@ Local traffic within each domain still functions normally, and any Package desti
 
 For small global networks of three or four domains, this solution works well. However, as the number of domains increases, several limitations become apparent:
 
-- **Fixed direction of travel**: If a Package originates in A and is destined for B, it may reach B immediately. However, if a Package originates in B and is destined for A, it may need to traverse the entire loop before returning to A. This is inefficient, especially when domains are physically close but logically distant in the loop.
+- **Fixed direction of travel**: If a Package originates in A and is destined for B, it may reach B immediately. However, if a Package originates in B and is destined for A, it may need to traverse the entire loop before returning to A. This is inefficient, because domains that are physically close can be logically distant in the loop.
 - **Trapped Packages**: If a Package with a globally unknown destination is injected into the loop, it will circulate indefinitely. Such a Package becomes effectively “trapped.” Depending on the loop size, locating and removing it may be difficult. Trapped Packages can result in resource loss, unnecessary traffic, and increased server load.
 
 ---
