@@ -17,9 +17,20 @@ If more detailed technical explanations are required, create separate documentat
 
 ## Specifications
 
-> **Note:**  
-> `N` represents the number of ports.  
-> It can be used in formulas below (for example in footprint expression).
+> **Note**: *Physical* Input Ports refer to the amount of physical input Link connections the router has. The number of *Logical* ports for a Router is **1**, unless specified.
+
+<!--
+If the Router has more that one logical input port, for example, if it's capable of source-port-based routing (discussed in router_specs.md), add the following entry below the "Physical Ports (I/O)":
+| Logical Ports (I/O)   | #in_p
+>
+
+
+<!-- 
+Conventionally, N represents the number of ports for scalable designs that can be expanded to any number of ports.  
+It can be used in formulas below (for example in footprint expression).
+Uncomment the line below if your are using N.  
+> `N` represents the number of Output Ports. 
+-->
 
 <!--
 Package Technology must reference an existing specification file
@@ -30,27 +41,26 @@ Always link to the corresponding spec file of the implementation.
 
 If the technology you are using does not yet exist in
 implementations/Packages, create and document the new Package
-Technology there first (including its specs), then reference it here.
+Technology there first, then reference it here.
 -->
 
-<!--
-
--->
 
 |  Specification   | Value |
 |----------------------|-------|
-| Version    | 1.0
-| Minecraft Edition     | <Java / Bedrock / Both> 
+| Design Version    | 1.0
+| Minecraft Version     | <Java / Bedrock / Both> and version id (e.g. 1.21.2) 
 | Component Class       | [RDS Router](/docs/router_specs.md) 
-| Package Technology    | <e.g. [Chest-Minecart](/implementations/Packages/ChestMinecart/specs.md) / Other>  
-| Ports (N)             | <N. of output ports> 
+| Package Technology    | <e.g. [ChestMinecart](/implementations/Packages/ChestMinecart/specs.md) / Other>
+| Protocol              | <e.g [Standard RDS Protocol](/docs/rds_protocols.md#the-standard-rds-protocol) / Other>  
+| Physical Ports (I/O)             | #in_p -> N (#in_p is the number of input ports, e.g. 1 -> 4) 
 | Footprint (Area)      | <e.g. 20×(20 + 2N)> 
 | Height                | <e.g. 32>
 | Works in Nether       | <Yes / No>
 | Chunkloading Included | <Yes / No> 
+| Package Queue Included        | <Yes / No>
+| Empty Package Safe    | <Yes / No>  If it can handle empty packages without breaking, which can happen by error 
 | Throughput            | <e.g. 15 Pkg/min> 
-| Survival-friendliness  | <High / Moderate / Low> 
-
+| Survival-friendliness  | <High / Moderate / Low>
 
 ---
 

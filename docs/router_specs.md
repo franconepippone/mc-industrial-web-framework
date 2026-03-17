@@ -11,8 +11,8 @@ If you don't know what a Router is, you can find a introductory explanation [*he
 ### High-Level Diagram
 
 <div align="center">
-  <img src="../media/router-diagram.png" width="500" alt="Directory tree">
-  <p><em>Simple Block Diagram of a Router</em></p>
+  <img src="../media/router-diagramv2.png" width="600" alt="Directory tree">
+  <p><em>Simple Block Diagram of a Router with 3 Output Ports</em></p>
 </div>
 
 At a high level, a standard RDS Router is a system with **one input** and **multiple outputs**. Inputs receive incoming Packages, while outputs emit outgoing Packages.
