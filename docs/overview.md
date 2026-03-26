@@ -4,7 +4,7 @@
 
 The MC Industrial Web Framework is a set of architectural principles, protocols, and ideas aimed at providing a structured and organized way to create an efficient and fully automated network of factories in vanilla Minecraft. It defines standardized methods for how factories located across the world can share resources on demand, fully automatically, by implementing common architectural patterns such as service–client and point-to-point resource transfer.  
 
-The backbone of the framework is the **Resource Distribution System (RDS)**, a layered system designed for automated and efficient point-to-point resource sharing, inspired by the structure and behavior of real-world Internet networks. The goal of the RDS is to automate the delivery of a payload from a generic point A to point B in the world, based on a destination tag attached directly to the payload itself. The RDS protocol
+The backbone of the framework is the **Resource Distribution System (RDS)**, a layered system designed for automated and efficient point-to-point resource sharing, inspired by the structure and behavior of real-world Internet networks. The goal of the RDS is to automate the delivery of a payload from a generic point A to point B in the world, based on an **Address Stamp** attached directly to the payload itself.
 
 
 
@@ -15,7 +15,7 @@ The backbone of the framework is the **Resource Distribution System (RDS)**, a l
 
 A **Package** is the fundamental unit of transport within an RDS network. It is a movable container that preserves its internal inventory while being transported through the world. In the RDS, Packages are the only entities that physically travel across the network. Any Minecraft container that satisfies this behavior can serve as a valid Package technology, but the chosen technology directly influences, and often constrains, the possible implementations of the other RDS entities (Routers, Terminals, and Links). All devices in a RDS network must therefore be compatible with the selected Package technology.
 
-In the [Standard RDS Protocol](rds_protocols.md), the first slot non-empty slot of the Package inventory is reserved for the **Address Stamp**. The Address Stamp is *usually* a renamed item encoding a unique identifier of a Terminal. Routers use the Address Stamp to correctly forward the Package to its intended destination Terminal. All remaining slots after the Address Stamp of the Package are used for payload, and can be filled with anything.  
+In the [Standard RDS Protocol](rds_protocols.md), the first slot non-empty slot of the Package inventory is reserved for the **Address Stamp**. The Address Stamp is *usually* a renamed item encoding the unique identifier of a Terminal. Routers use the Address Stamp to correctly forward the Package to its intended destination Terminal. All remaining slots after the Address Stamp of the Package are used for payload, and can be filled with anything.  
 
 > NOTE: In circumstances where there is request-response pattern at play, it makes sense to talk about a **Destination Address Stamp** (**DAS**) and a **Return Address Stamp** (**RAS**); respectively, the Address Stamp of the *Responder* and that of the *Requester*.
 
@@ -36,22 +36,22 @@ A **Terminal** is an endpoint of the Resource Distribution System (RDS). It is a
 
 A **Router** is a core element of the RDS. It is directly inspired by Internet routers and follows the same operational principles.  
 
-A Router is a node in the network where multiple edges meet and where traveling Packages are redirected based on their attached Address Stamp. By default, a RDS Router has exactly **one Input Port**, where all incoming Packages arrive.
+A Router is a node in the network where multiple edges meet and where traveling Packages are redirected based on their attached Address Stamp. By default, a RDS Router has exactly **one Input Port**, where all incoming Packages enter.
 
-A Router can have any number of **Output Ports**. Each Output Port is simply an "exit gate", where Packages can leave the router in a specific direction. Every Output Port is bound to exactly one outgoing direction, and the Router's routing logic selects which port to use based on the destination encoded in the Package's Address Stamp. Depending on the chosen Package technology, Output Ports may also function as temporary buffers where Packages wait before being collected and carried forward by the respective **Link**.
+A Router can have any number of **Output Ports**. Each output port is simply an "exit gate", where Packages can leave the router in a specific direction. Every Output Port is bound to exactly one outgoing direction, and the Router's routing logic selects which port to use based on the Package's attached Address Stamp. Depending on the chosen Package technology, Output Ports may also function as temporary buffers where Packages wait before being collected and forwarded by the respective **Link**.
 
 To perform routing decisions, a Router stores a **Routing Table** that maps each known destination address to a specific Output Port. When a Package arrives:  
 
-1. The Router extracts the Address Stamp from the first slot of the Shulker Box.  
+1. The Router extracts the Address Stamp from the first slot of the Package.  
 2. The Routing Table is checked for a matching destination address.  
 3. The Address Stamp is reinserted into the same slot.  
-4. If a matching Output Port exists, the Package is moved to that port.  
+4. If a matching output port exists, the Package is moved to that port.  
 
 If no mapping is found, the behavior may vary (for example: forwarding to a fallback port or storing the Package for manual inspection).  
 
-It is important to clarify that **Routers do not perform physical transportation**. They only move Packages from the Inbound Port to one of the Output Ports, based on their attached Address Stamp. The physical movement of packages is handled entirely by **Links**.  
+It is important to clarify that **Routers do not perform physical transportation**. They only move Packages from the Input Port to one of the Output Ports, based on their attached Address Stamp. The physical movement of packages is handled entirely by **Links**.  
 
-Although conceptually different, a Router and a Terminal can physically coexist in the same structure. A single build may act as both a Router and a Terminal simultaneously.  
+Although conceptually different, a Router and a Terminal might physically coexist in the same structure. A single build may act as both a Router and a Terminal simultaneously.  
 
 >More details can be found in the *[Router Specifications](router_specs.md)* file.
 
@@ -66,7 +66,7 @@ Within the RDS, a Link is responsible for physically moving Packages between:
 - Router → Router  
 - Router → Terminal  
 
-A complete route from source Terminal to destination Terminal consists of multiple **Hops**, each performed by different Links.
+Each of these movements is called a **Hop**. A complete route from source Terminal to destination Terminal consists of multiple Hops, each performed by different Links.
 
 Several Minecraft technologies can fulfill this role, each with advantages and disadvantages. The choice depends on the specific design requirements. Some basic examples include:  
 
@@ -83,20 +83,20 @@ Since Routers and Terminals are link-agnostic, different link technologies can b
 Suppose we want to transfer a large quantity of oak logs from the Oak Farm to the Industrial Smelter.  
 
 1. A Destination Address Stamp (DAS) is created by renaming an item with the unique identifier of the Industrial Smelter (for example: `"smelter-2"`).  
-2. The DAS is placed in the first slot of a Shulker Box.  
+2. The DAS is placed in the first slot of a Package (e.g. ShulkerBox)
 3. The remaining slots are filled with oak logs.  
 
 Once prepared, the Package is handed to the origin Terminal. The Terminal passes it to the Link, which moves it to the nearest Router.  
 
 At the Router:  
 
-- The Package enters the Inbound Port.  
-- It may wait be queued in a buffer if other Packages are already being processed. 
+- The Package enters from the Input Port.  
+- It may be queued in a buffer if other Packages are already being processed. 
 - The Router processes the DAS and forwards the Package to the correct Output Port.  
 
 Once in the Output Port, it's now the job of the Link to perform the next Hop. Depending on the network structure, the Package may reach another Router (where the same process repeats) or directly reach the destination Terminal.  
 
-Finally, when the Package arrives at `"smelter-2"`, the Link deposits it into the Terminal's receiving container, where the contents can be accessed by players or machines.  
+Finally, when the Package arrives at `"smelter-2"`, the Link hands it to the destination Terminal, where the contents can be accessed by players or machines.  
 
 <div align="center">
   <img src="images/network_example1.gif" width="600" alt="Directory tree">
@@ -106,7 +106,7 @@ Finally, when the Package arrives at `"smelter-2"`, the Link deposits it into th
 
 ## Implementing full industrial automation using the RDS
 
-We have seen how the RDS can dynamically move a Package full of resources from a generic point A to a point B in a Minecraft world. In theory, this system could already be used directly by players to assist with resource transportation. In practice, however, there are faster manual methods for moving large quantities of items, such as Elytra flight with rockets.  
+We have seen how the RDS can dynamically move a Package full of resources from a generic point A to a point B in a Minecraft world. In theory, this system could already be used directly by players to assist with resource transportation. In practice, however, often there are faster manual methods for moving large quantities of items, such as Elytra flight with rockets.  
 
 However, since the RDS is fully automatic, it can be used to interconnect any number of factories into a unified, fully automatic industrial network. Factories can exchange resources dynamically, even across very large distances. More importantly, the RDS provides a standardized, interconnected, web-like transportation infrastructure capable of satisfying all dependency relationships between factories.
 
@@ -149,6 +149,6 @@ In this model, factories would not contact individual production sites for refil
 
 #### Usage of the Nether
 
-The entire RDS infrastructure could be constructed on the Nether roof. Because the Nether-to-Overworld distance ratio is 1:8, long-distance transportation becomes significantly faster in effective Overworld terms.  
+The entire RDS infrastructure could be constructed in the Nether. Because the Nether-to-Overworld distance ratio is 1:8, long-distance transportation becomes significantly faster in Overworld terms.  
 
-However, it has to be noted that some Link tecnhologies might be unvaiablable in the nether, such as water conveyor systems.
+However, it has to be noted that some Link tecnhologies might be unvaiablable in the nether, such as water conveyor systems. This also holds true for Routers that use flowing water or any other nether-incompatible technology.
