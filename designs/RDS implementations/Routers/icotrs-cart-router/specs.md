@@ -24,8 +24,8 @@ If the Router has more that one logical input port, for example, if it's capable
 Conventionally, N represents the number of ports for scalable designs that can be expanded to any number of ports.  
 It can be used in formulas below (for example in footprint expression).
 Uncomment the line below if your are using N.  
-> `N` represents the number of Output Ports. 
 -->
+> `N` represents the number of Output Ports. 
 
 <!--
 Package Technology must reference an existing specification file
@@ -54,7 +54,7 @@ Technology there first, then reference it here.
 | Chunkloading Included | No 
 | Package Queue Included        | Yes
 | Empty Package Safe    | No 
-| Throughput            | ~9 Pkg/min (~6.6s/Pkg) *
+| Throughput            | ~9 Pkg/min (~6.6s/Pkg) **just an estimate*
 | Survival-friendliness  | High
 
 ---
@@ -63,7 +63,7 @@ Technology there first, then reference it here.
 
 #### Timing Circuit configuration
 
-This design relies on precise preconfigured timing to work properly, provided by pulse extender circuit on the top-right. Its job is to provide a signal from the moment it gets triggered until the Package/chest-minecart has left the router. The next minecart is let in from the queue only when the circuit fully discharges, meaning that the throughput of the Router is uniquely dependant on this parameter (\*).   
+This design relies on precise preconfigured timing to work properly, which is provided by pulse extender circuit on the top-right. Its job is to provide a signal from the moment it gets triggered until the Package/chest-minecart has left the router. The next minecart is let in from the queue only when the circuit fully discharges, meaning that the throughput of the Router is uniquely dependant on this parameter (\*).   
 Depeding on the number of output ports, a different discharge time of the pulse extender is required for optimal operation. The rule is to add/remove 4 ticks (0.2s) of discharge time for each added/removed port from the standard 5 ports design. This can be achieved in various ways, by slightly modifying the pulse extender circuit.
 
 ...more...
@@ -76,7 +76,7 @@ Although the design can support up to N ports, the Router must have a bare minim
 - One default port (the direction minecarts are forwarded if no match is found in the routing table)
 - One routable port (has a routing map associated)
 
-This means that this Router will always occupy at least a 9x10 area if used in its minimal 2-ports form. Having less than these ports makes it effectively no longer a Router.
+This means that this Router will always occupy at least a 9x10 area if used in its minimal 2-ports form. Having less than these ports makes it effectively no longer a useful Router.
 
 ---
 

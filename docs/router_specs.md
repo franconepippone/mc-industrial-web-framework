@@ -8,20 +8,21 @@ If you don't know what a Router is, you can find a introductory explanation [*he
 
 ## Abstract Definition
 
-### High-Level Diagram
 
 <div align="center">
   <img src="../media/router-diagramv2.png" width="600" alt="Directory tree">
   <p><em>Simple Block Diagram of a Router with 3 Output Ports</em></p>
 </div>
 
+### High-Level Description
+
 At a high level, a standard RDS Router is a system with **one input** and **multiple outputs**. Inputs receive incoming Packages, while outputs emit outgoing Packages.
 
 Inputs and Outputs are also reffered to as *Input Ports* and *Output Ports*. In practice, a port is just a "gate" from which a Package can either or exit the Router, and its implementation is tightly coupled to the Package Technology.
 
-> Example: for Shulker-Box based Packages, ports can be though as containers, that act as input / output buffers for the Router.
+> Example: for Shulker-Box based Packages, ports can be containers like chests or barrels, that act as input / output buffers.
 
-Notice that, in practice, a Router *can* have and often has more that one physical "Input Port", if by "Input Port" we mean an "entry channel" to the Router. However, since by default a Router does care about the source direction of the Package, it is often the case that all the physical Input Ports gets funneled into the same *entrypoint* into the router. Therefore, the collection of all the physical Input Ports can be formally thought of as single, virtual, Input Port.  
+Notice that, in practice, a Router *can* have and often has more that one physical "Input Port", if by "Input Port" we mean a physical "entry channel" to the Router. However, since by default a Router does care about the source direction of the Package, it is often the case that all the physical Input Ports gets funneled into the same *entrypoint* into the router. Therefore, the collection of all the physical Input Ports can be formally thought of as single, virtual, Input Port.  
 
 ❗The Router itself does not transport Packages. Its only goal is to **make routing decisions**, redirecting Packages from the Input Port to the correct Output Port. The physical transportation is a responsability of the [Link](/docs/overview.md#-link) entity.
 
@@ -59,8 +60,6 @@ The general flow of a Router operation is:
 6. If there are more incoming Packages, return to step 1.
 
 > NOTE: the algorithm above implies that packages are processed sequentially. However, nothing stops implementations from processing Packages in parallel.
-
-<br>
 
 ## Variations
 

@@ -12,7 +12,7 @@ Devices operating under different protocols are considered **non‑RDS‑complia
 This protocol is the official protocol adopted by the Resource Distribution System, meaning that every device that operates in a RDS-compliant network *must* be compatible with it.
 
 #### Address Stamp
-In the **Standard RDS Protocol**, the Address Stamp is an **Item**, potentially renamed, that acts as a unique identifier for a Destination. Any 64-stackable item can be a valid Address Stamp; however, conventionally, a single item type is choosen (e.g. Paper) and renamed according to the destination it uniquely identifies.
+In the **Standard RDS Protocol**, the Address Stamp is a single **Item**, potentially renamed, that acts as a unique identifier for a Destination. Any 64-stackable item can be a valid Address Stamp; however, conventionally, a single item type is choosen (e.g. Paper) and renamed according to the destination it uniquely identifies.
 
 The Address Stamp Item is stored in the **first non-empty slot** of the Package inventory. This means that when the Package is handed to an item extractor (mainly, a hopper) the Address Stamp must be the first item that comes out. On the other side, when the Address Stamp item is automatically inserted inside the Package inventory (with droppers, hoppers), it must, again, still occupy the first non-empty slot of the container. 
 
