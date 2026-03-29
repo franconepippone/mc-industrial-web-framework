@@ -11,6 +11,7 @@ versions:
   "0.9": dfedfe634bbcc33ed259eda4cd69d9c170477775
 
 minecraft:
+  # TODO bedrock versioning is different
   edition: "Java" # or "Bedrock" or "Any" (for both editions)
   lower: "1.21.0" # works from this version ...
   upper: "1.21.2" # ... to this version (inclusive)

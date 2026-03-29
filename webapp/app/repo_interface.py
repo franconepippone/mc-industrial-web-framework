@@ -59,7 +59,7 @@ class RepoInterface:
         for spec in self.design_specs:
             print(spec.repopath)
 
-    def get_filtered(self, filter0: SpecFilter) -> List[BaseDeviceSpec]:
+    def get_filtered(self, filter: SpecFilter) -> List[BaseDeviceSpec]:
         pass
 
 

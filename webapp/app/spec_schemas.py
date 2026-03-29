@@ -1,5 +1,16 @@
 from pydantic import BaseModel, Field, field_validator
 from typing import Literal, Dict, Union
+from enum import Enum
+
+# all possible entities that can have the yaml specsheet
+class SPEC_CLASSES(str, Enum):
+    RDS_ROUTER = "rds-router"
+    RDS_LINK = "rds-link"
+    RDS_TERMINAL = "rds-terminal"
+    RDS_ADAPTER = "rds-adapter"
+    RDS_PACKAGE = "rds-package"
+
+
 
 # Minecraft version spec
 class MinecraftSpec(BaseModel):
@@ -40,7 +51,7 @@ class FootprintSpec(BaseModel):
 class BaseDeviceSpec(BaseModel):
     textspecs: str
     repopath: str = "not-set"
-    device_class: Literal["rds-router"]
+    device_class: SPEC_CLASSES
     name: str = "unnamed device"
     versions: Dict[str, str]
     minecraft: MinecraftSpec
@@ -48,8 +59,15 @@ class BaseDeviceSpec(BaseModel):
     works_in_nether: bool = False
     locational: bool
     directional: bool
-    footprint: FootprintSpec
     
+
+# ------------------------
+# RDS Router spec
+# ------------------------
+class RDSPackageSpec(BaseDeviceSpec):
+    protocols: list[str]
+    payload_capacity: int = Field(..., ge=1)
+
 
 # ------------------------
 # RDS Router spec
@@ -63,7 +81,7 @@ class RDSRouterSpec(BaseDeviceSpec):
     package_queue_included: bool
     package_queue_size: int = Field(..., ge=0)
     throughput: int = Field(..., ge=1)
-    
+    footprint: FootprintSpec
 
     # Validator for YAML typos
     @field_validator("survival_friendliness")
@@ -77,8 +95,10 @@ def build_device_spec_object(data: dict) -> BaseDeviceSpec:
     device_class = data.get("device_class")
     
     match device_class:
-        case "rds-router":
+        case SPEC_CLASSES.RDS_ROUTER.value:
             return RDSRouterSpec(**data)
+        case SPEC_CLASSES.RDS_PACKAGE.value:
+            return RDSPackageSpec(**data)
         case _:
             raise ValueError(f"Unsupported device_class: {device_class}")
 
