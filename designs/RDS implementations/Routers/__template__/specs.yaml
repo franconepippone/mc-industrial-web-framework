@@ -18,7 +18,7 @@ minecraft:
 directional: false
 locational: false
 works_in_nether: true
-survival_fiendliness: high # or "moderate" or "low"
+survival_friendliness: high # or "moderate" or "low"
 
 package_tech: ChestMinecart 
 protocol: standard-rds
@@ -37,7 +37,7 @@ logical_ports:
   output: N
 
 footprint:
-  lenght: 16
+  length: 16
   width: 16
   height: 2*N+3
 
