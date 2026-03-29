@@ -58,7 +58,8 @@ Technology there first, then reference it here.
 | Works in Nether       | <Yes / No>
 | Chunkloading Included | <Yes / No> 
 | Package Queue Included        | <Yes / No>
-| Empty Package Safe    | <Yes / No>  If it can handle empty packages without breaking, which can happen by error 
+| Directional           | <Yes / No>
+| Locational            | <Yes/ No>
 | Throughput            | <e.g. 15 Pkg/min> 
 | Survival-friendliness  | <High / Moderate / Low>
 
