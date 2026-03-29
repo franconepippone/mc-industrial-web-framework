@@ -1,6 +1,7 @@
 ---
 textspecs: "specs.md"
 device_class: rds-router
+name: "custom-router-name"
 
 # map multiple versions of this design to branches or commits of the repo. You usually want to have the latest version
 # pointing to the master branch, and fix older versions to specific commits.
@@ -14,13 +15,18 @@ minecraft:
   lower: "1.21.0" # works from this version ...
   upper: "1.21.2" # ... to this version (inclusive)
 
+directional: false
+locational: false
+works_in_nether: true
+survival_fiendliness: high # or "moderate" or "low"
+
 package_tech: ChestMinecart 
 protocol: standard-rds
 
 # ---- In the fields below, letters such as N, M can be defined in the physical/logical
 # ports sections, and used in the expressions below. This allows support for infinitely tilable designs.
 
-# From how many physical "connections" the router receive/send packages
+# From how many physical "connections" the router can receive/send packages
 physical_ports:
   input: 1
   output: N
@@ -35,12 +41,9 @@ footprint:
   width: 16
   height: 2*N+3
 
-directional: false
-locational: false
-works_in_nether: true
 chunkloading_included: false
 package_queue_included: true
 package_queue_size: 10
 throughput: 20 # packages per minute
-survival_fiendliness: high
+
 
