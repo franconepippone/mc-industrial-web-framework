@@ -1,0 +1,150 @@
+<!-- Router filter panel -->
+<div class="device-filter-panel" data-device-class="rds-router">
+    <div class="row g-3">
+        <div class="col-lg-5">
+            <div class="mb-3">
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Protocol & Technology <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Choose the routing protocol and the package carrier technology used by the router."></i></h6>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Protocol</label>
+                        <select id="router-protocol" class="form-select form-select-sm">
+                            <option value="">Any</option>
+                            <option value="standard-rds">Standard RDS</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Package Tech</label>
+                        <select id="router-package-tech" class="form-select form-select-sm">
+                            <option value="">Any</option>
+                            <option value="ChestMinecart">ChestMinecart</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Minecraft Compatibility <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter by edition and supported version range for the selected design."></i></h6>
+                <div class="row g-2">
+                    <div class="col-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Edition</label>
+                        <select id="edition-select" class="form-select form-select-sm">
+                            <option value="">Any</option>
+                            <option value="Java">Java</option>
+                            <option value="Bedrock">Bedrock</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Version From</label>
+                        <select id="version-from" class="form-select form-select-sm">
+                            <option value="">Any</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Version To</label>
+                        <select id="version-to" class="form-select form-select-sm">
+                            <option value="">Any</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Size Constraints <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Limit the maximum footprint of the design in blocks."></i></h6>
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Max Length</label>
+                        <input id="router-max-length" type="number" class="form-control form-control-sm" placeholder="blocks">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Max Width</label>
+                        <input id="router-max-width" type="number" class="form-control form-control-sm" placeholder="blocks">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Max Height</label>
+                        <input id="router-max-height" type="number" class="form-control form-control-sm" placeholder="blocks">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="mb-3">
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Performance & Ports <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Focuses on physical input/output capacity and throughput. Logical ports are intentionally omitted."></i></h6>
+                <small class="text-muted d-block mb-2">Physical ports are used here; logical ports are intentionally omitted to keep the filter practical.</small>
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Min Throughput</label>
+                        <input id="router-min-throughput" type="number" class="form-control form-control-sm" placeholder="pkg/min">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Min Physical Inputs</label>
+                        <input id="router-min-physical-input" type="number" min="0" class="form-control form-control-sm" placeholder="ports">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Min Physical Outputs</label>
+                        <input id="router-min-physical-output" type="number" min="0" class="form-control form-control-sm" placeholder="ports">
+                    </div>
+                    <div class="col-12">
+                        <div class="border rounded-3 bg-light p-2">
+                            <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Survival Friendliness <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="How practical the design is to build and use in survival mode."></i></label>
+                            <select id="router-survival" class="form-select form-select-sm">
+                                <option value="">Any</option>
+                                <option value="high">High</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Capabilities <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Optional built-in router features and behavior traits."></i></h6>
+                <div class="row g-2 align-items-end">
+                    <div class="col-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="nether">
+                            <label class="form-check-label" for="nether" style="font-size: 0.95rem;">
+                                Works in Nether <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Only show designs that can operate safely in the Nether."></i>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="queue">
+                            <label class="form-check-label" for="queue" style="font-size: 0.95rem;">
+                                Queue Included <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Shows only routers with a built-in package queue."></i>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="hierarchical-routing">
+                            <label class="form-check-label" for="hierarchical-routing" style="font-size: 0.95rem;">
+                                Supports Hierarchical Routing <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Supports grouped or tree-like routing structures for larger systems."></i>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="chunk">
+                            <label class="form-check-label" for="chunk" style="font-size: 0.95rem;">
+                                Chunkloader Included <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Shows only designs that already include chunkloading."></i>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="directional">
+                            <label class="form-check-label" for="directional" style="font-size: 0.95rem;">
+                                Non-Directional <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Shows routers that work the same regardless of orientation."></i>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="locational">
+                            <label class="form-check-label" for="locational" style="font-size: 0.95rem;">
+                                Non-Locational <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Shows designs that do not depend on exact world position."></i>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+<div class="card shadow-sm border border-light-subtle rounded-4">
+    <div class="card-body p-3">
+        <div class="row g-3 align-items-start">
+            <div class="col-auto">
+                <div class="rounded-4 d-flex align-items-center justify-content-center p-3 {% if spec.device_class == 'rds-router' %}bg-primary-subtle text-primary{% elif spec.device_class == 'rds-terminal' %}bg-success-subtle text-success{% elif spec.device_class == 'rds-link' %}bg-warning-subtle text-warning{% elif spec.device_class == 'rds-package' %}bg-info-subtle text-info-emphasis{% elif spec.device_class == 'rds-adapter' %}bg-secondary-subtle text-secondary{% else %}bg-secondary-subtle text-secondary{% endif %}">
+                    <i class="bi {% if spec.device_class == 'rds-router' %}bi-diagram-3-fill{% elif spec.device_class == 'rds-terminal' %}bi-terminal-fill{% elif spec.device_class == 'rds-link' %}bi-signpost-split-fill{% elif spec.device_class == 'rds-package' %}bi-box-seam-fill{% elif spec.device_class == 'rds-adapter' %}bi-plug-fill{% else %}bi-cpu-fill{% endif %} fs-2"></i>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="d-flex justify-content-between align-items-start gap-2 flex-wrap">
+                    <div>
+                        <a href="{{ github_repo_url }}/blob/master/{{ spec.repopath }}/{{ spec.specsheet_filename }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="link-primary fw-semibold fs-5 text-decoration-none">
+                            {{ spec.name or 'Unnamed device' }}
+                        </a>
+                        <div class="small text-muted mt-1">
+                            {{ spec.minecraft.edition if spec.minecraft else 'Any' }} edition · {{ spec.minecraft.lower if spec.minecraft else '?' }} to {{ spec.minecraft.upper if spec.minecraft else '?' }}
+                        </div>
+                    </div>
+                    <span class="badge rounded-pill text-bg-primary">{{ spec.device_class | replace('rds-', '') | replace('-', ' ') | title }}</span>
+                </div>
+
+                <p class="small text-body-secondary mb-3 mt-2">
+                    {{ spec.brief_doc or 'No brief description available yet.' }}
+                </p>
+
+                <div class="d-flex flex-wrap gap-2">
+                    {% if spec.protocol is defined and spec.protocol %}<span class="badge rounded-pill text-bg-light border"><i class="bi bi-diagram-3 me-1"></i>{{ spec.protocol }}</span>{% endif %}
+                    {% if spec.package_tech is defined and spec.package_tech %}<span class="badge rounded-pill text-bg-light border"><i class="bi bi-box-seam me-1"></i>{{ spec.package_tech }}</span>{% endif %}
+                    {% if spec.throughput is defined and spec.throughput is not none %}<span class="badge rounded-pill text-bg-light border"><i class="bi bi-speedometer2 me-1"></i>{{ spec.throughput }} pkg/min</span>{% endif %}
+                    {% if spec.physical_ports is defined and spec.physical_ports %}<span class="badge rounded-pill text-bg-light border"><i class="bi bi-box-arrow-in-right me-1"></i>{{ spec.physical_ports.input }} in / {{ spec.physical_ports.output }} out</span>{% endif %}
+                    {% if spec.footprint is defined and spec.footprint %}<span class="badge rounded-pill text-bg-light border"><i class="bi bi-bounding-box me-1"></i>{{ spec.footprint.length }}×{{ spec.footprint.width }}×{{ spec.footprint.height }}</span>{% endif %}
+                    {% if spec.package_queue_size is defined and spec.package_queue_size is not none %}<span class="badge rounded-pill text-bg-light border"><i class="bi bi-collection me-1"></i>Queue {{ spec.package_queue_size }}</span>{% endif %}
+                    {% if spec.supports_hierarchical_routing is defined and spec.supports_hierarchical_routing is not none %}<span class="badge rounded-pill {% if spec.supports_hierarchical_routing %}text-bg-info{% else %}text-bg-light border{% endif %}"><i class="bi bi-diagram-2 me-1"></i>{{ 'Hierarchical routing' if spec.supports_hierarchical_routing else 'No hierarchical routing' }}</span>{% endif %}
+                    {% if spec.protocols is defined and spec.protocols %}<span class="badge rounded-pill text-bg-light border"><i class="bi bi-bezier2 me-1"></i>{{ spec.protocols | join(', ') }}</span>{% endif %}
+                    {% if spec.payload_capacity is defined and spec.payload_capacity is not none %}<span class="badge rounded-pill text-bg-light border"><i class="bi bi-inbox me-1"></i>{{ spec.payload_capacity }} slots</span>{% endif %}
+                    <span class="badge rounded-pill text-bg-light border"><i class="bi bi-tree me-1"></i>{{ spec.survival_friendliness or 'unknown' }}</span>
+                    <span class="badge rounded-pill {% if spec.works_in_nether %}text-bg-success{% else %}text-bg-secondary{% endif %}"><i class="bi bi-fire me-1"></i>{{ 'Nether safe' if spec.works_in_nether else 'No nether' }}</span>
+                    <span class="badge rounded-pill text-bg-light border"><i class="bi bi-compass me-1"></i>{{ 'Directional' if spec.directional else 'Non-directional' }}</span>
+                    <span class="badge rounded-pill text-bg-light border"><i class="bi bi-geo-alt me-1"></i>{{ 'Locational' if spec.locational else 'Non-locational' }}</span>
+                </div>
+
+                {% if spec.versions %}
+                <details class="mt-3">
+                    <summary class="small text-muted" style="cursor: pointer;">
+                        <i class="bi bi-clock-history me-1"></i>Available versions ({{ spec.versions | length }})
+                    </summary>
+                    <div class="d-flex flex-wrap gap-2 mt-2">
+                        {% for version_name, version_ref in spec.versions.items() %}
+                        <a href="{{ github_repo_url }}/blob/{{ version_ref }}/{{ spec.repopath }}/{{ spec.specsheet_filename }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="badge rounded-pill text-bg-light border text-decoration-none link-primary">
+                            <i class="bi bi-git me-1"></i>{{ version_name }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </details>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

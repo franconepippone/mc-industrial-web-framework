@@ -1,0 +1,106 @@
+<!-- Terminal filter panel -->
+<div class="device-filter-panel d-none" data-device-class="rds-terminal">
+    <div class="row g-3">
+        <div class="col-lg-5">
+            <div class="mb-3">
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Terminal Role <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Choose the kind of terminal behavior and interaction style you want."></i></h6>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Terminal Type</label>
+                        <select class="form-select form-select-sm">
+                            <option value="">Any</option>
+                            <option value="input">Input</option>
+                            <option value="output">Output</option>
+                            <option value="bidirectional">Bidirectional</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Interaction</label>
+                        <select class="form-select form-select-sm">
+                            <option value="">Any</option>
+                            <option value="player">Player Use</option>
+                            <option value="redstone">Redstone Driven</option>
+                            <option value="automatic">Fully Automatic</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Build Constraints <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Restrict the maximum size of the terminal build."></i></h6>
+                <div class="row g-2">
+                    <div class="col-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Max Length</label>
+                        <input type="number" class="form-control form-control-sm" placeholder="blocks">
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Max Width</label>
+                        <input type="number" class="form-control form-control-sm" placeholder="blocks">
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Max Height</label>
+                        <input type="number" class="form-control form-control-sm" placeholder="blocks">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="mb-3">
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Behavior & Access <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Focus on how players or automation interact with the terminal."></i></h6>
+                <div class="row g-2 align-items-end">
+                    <div class="col-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="terminal-player">
+                            <label class="form-check-label" for="terminal-player" style="font-size: 0.95rem;">Player Accessible</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="terminal-buffer">
+                            <label class="form-check-label" for="terminal-buffer" style="font-size: 0.95rem;">Overflow Buffer</label>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="terminal-redstone">
+                            <label class="form-check-label" for="terminal-redstone" style="font-size: 0.95rem;">Redstone Status</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="terminal-return">
+                            <label class="form-check-label" for="terminal-return" style="font-size: 0.95rem;">Auto Return Line</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="border rounded-3 bg-light p-2">
+                            <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Survival Friendliness <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="How practical the terminal is to build and use in survival mode."></i></label>
+                            <select class="form-select form-select-sm">
+                                <option value="">Any</option>
+                                <option value="high">High</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Performance <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Set basic throughput and footprint preferences for terminals."></i></h6>
+                <div class="row g-2">
+                    <div class="col-5">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Min Transfers</label>
+                        <input type="number" class="form-control form-control-sm" placeholder="pkg/min">
+                    </div>
+                    <div class="col-7">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Preferred Footprint</label>
+                        <select class="form-select form-select-sm">
+                            <option value="">Any</option>
+                            <option value="compact">Compact</option>
+                            <option value="balanced">Balanced</option>
+                            <option value="high-capacity">High Capacity</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

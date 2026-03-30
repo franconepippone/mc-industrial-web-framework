@@ -1,0 +1,109 @@
+<!-- Link filter panel -->
+<div class="device-filter-panel d-none" data-device-class="rds-link">
+    <div class="row g-3">
+        <div class="col-lg-5">
+            <div class="mb-3">
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Link Medium <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Choose the transport medium and direction pattern for the link."></i></h6>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Transport Type</label>
+                        <select class="form-select form-select-sm">
+                            <option value="">Any</option>
+                            <option value="ice">Ice Path</option>
+                            <option value="rail">Rail</option>
+                            <option value="hybrid">Hybrid</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Direction</label>
+                        <select class="form-select form-select-sm">
+                            <option value="">Any</option>
+                            <option value="one-way">One-way</option>
+                            <option value="two-way">Two-way</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Distance & Size <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Restrict the minimum range and maximum dimensions of the link build."></i></h6>
+                <div class="row g-2">
+                    <div class="col-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Min Range</label>
+                        <input type="number" class="form-control form-control-sm" placeholder="blocks">
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Max Width</label>
+                        <input type="number" class="form-control form-control-sm" placeholder="blocks">
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Max Height</label>
+                        <input type="number" class="form-control form-control-sm" placeholder="blocks">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="mb-3">
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Capabilities <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Optional built-in features and operational traits for the selected design."></i></h6>
+                <div class="row g-2 align-items-end">
+                    <div class="col-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="link-nether">
+                            <label class="form-check-label" for="link-nether" style="font-size: 0.95rem;">Nether Safe</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="link-loader">
+                            <label class="form-check-label" for="link-loader" style="font-size: 0.95rem;">Chunkloading</label>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="link-return">
+                            <label class="form-check-label" for="link-return" style="font-size: 0.95rem;">Return Channel</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="link-low-maintenance">
+                            <label class="form-check-label" for="link-low-maintenance" style="font-size: 0.95rem;">Low Maintenance</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="border rounded-3 bg-light p-2">
+                            <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Survival Friendliness <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="How practical the link is to build and maintain in survival mode."></i></label>
+                            <select class="form-select form-select-sm">
+                                <option value="">Any</option>
+                                <option value="high">High</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Routing Profile <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Select overall preferences for the link’s routing behavior and performance tradeoffs."></i></h6>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Throughput Priority</label>
+                        <select class="form-select form-select-sm">
+                            <option value="">Any</option>
+                            <option value="compact">Compact</option>
+                            <option value="balanced">Balanced</option>
+                            <option value="fast">High Throughput</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Protocol</label>
+                        <select class="form-select form-select-sm">
+                            <option value="">Any</option>
+                            <option value="standard-rds">Standard RDS</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

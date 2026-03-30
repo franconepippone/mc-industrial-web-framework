@@ -50,7 +50,6 @@ class FootprintSpec(BaseModel):
 
 class BaseDeviceSpec(BaseModel):
     specsheet_filename: str = "specs.md"
-    specsheet_url: str = ""
     repopath: str = "not-set"
     device_class: SpecDeviceClass
     name: str = "unnamed device"
@@ -81,6 +80,7 @@ class RDSPackageSpec(BaseDeviceSpec):
 class RDSRouterSpec(BaseDeviceSpec):
     package_tech: str
     protocol: Literal["standard-rds", "other"]
+    supports_hierarchical_routing: bool = False
     physical_ports: Dict[str, Union[int, str]]  # 'N' allowed
     logical_ports: Dict[str, Union[int, str]]   # 'N' allowed
     chunkloading_included: bool
@@ -99,12 +99,18 @@ class RDSRouterSpec(BaseDeviceSpec):
 
 def build_device_spec_object(data: dict) -> BaseDeviceSpec:
     device_class = data.get("device_class")
-    
+
     match device_class:
         case SpecDeviceClass.RDS_ROUTER:
             return RDSRouterSpec(**data)
         case SpecDeviceClass.RDS_PACKAGE:
             return RDSPackageSpec(**data)
+        case SpecDeviceClass.RDS_LINK:
+            raise NotImplementedError
+        case SpecDeviceClass.RDS_TERMINAL: 
+            raise NotImplementedError
+        case SpecDeviceClass.RDS_ADAPTER:
+            raise NotImplementedError
         case _:
             raise ValueError(f"Unsupported device_class: {device_class}")
 

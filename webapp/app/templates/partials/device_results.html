@@ -1,0 +1,11 @@
+<p id="results-filter-summary" class="text-muted small mb-3">{{ results_summary }}</p>
+
+<div id="device-list" class="d-flex flex-column gap-3">
+    {% for spec in specs %}
+        {% include "partials/device_result_card.html" %}
+    {% endfor %}
+</div>
+
+<div id="no-results-message" class="alert alert-light border small {% if specs %}d-none {% endif %}mt-3 mb-0">
+    No devices match the current selection.
+</div>

@@ -1,0 +1,84 @@
+<!-- Adapter filter panel -->
+<div class="device-filter-panel d-none" data-device-class="rds-adapter">
+    <div class="row g-3">
+        <div class="col-lg-5">
+            <div class="mb-3">
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Interface Mapping <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Describe what kind of interfaces the adapter converts between."></i></h6>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Input Side</label>
+                        <select class="form-select form-select-sm">
+                            <option value="">Any</option>
+                            <option value="terminal">Terminal</option>
+                            <option value="router">Router</option>
+                            <option value="package">Package tech</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Output Side</label>
+                        <select class="form-select form-select-sm">
+                            <option value="">Any</option>
+                            <option value="terminal">Terminal</option>
+                            <option value="router">Router</option>
+                            <option value="package">Package tech</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Build Constraints <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Set basic size and build-style preferences for adapter designs."></i></h6>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Direction Handling</label>
+                        <select class="form-select form-select-sm">
+                            <option value="">Any</option>
+                            <option value="one-way">One-way</option>
+                            <option value="two-way">Two-way</option>
+                            <option value="agnostic">Orientation agnostic</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Max Footprint</label>
+                        <input type="number" class="form-control form-control-sm" placeholder="blocks">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="mb-3">
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Capabilities <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Optional adapter traits and integration features."></i></h6>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="adapter-redstone">
+                            <label class="form-check-label" for="adapter-redstone" style="font-size: 0.95rem;">Redstone Friendly</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="adapter-buffered">
+                            <label class="form-check-label" for="adapter-buffered" style="font-size: 0.95rem;">Buffered</label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="adapter-compact">
+                            <label class="form-check-label" for="adapter-compact" style="font-size: 0.95rem;">Compact Build</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="border rounded-3 bg-light p-2">
+                            <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Survival Friendliness <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="How practical the adapter is to build and use in survival mode."></i></label>
+                            <select class="form-select form-select-sm">
+                                <option value="">Any</option>
+                                <option value="high">High</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

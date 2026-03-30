@@ -23,9 +23,6 @@ class RepoInterface:
 
         self.repo = self.g.get_repo(self.REPO_NAME)
 
-    def get_url(self, repopath: str | Path = "") -> str:
-        return f"https://github.com/{self.REPO_NAME}/blob/{self.BRANCH}/{repopath}"
-
     def load_design_specs(self):
 
         spec_paths = []
@@ -55,8 +52,7 @@ class RepoInterface:
             
             # construct a valid spec object from the dict, if device class is valid
             obj = build_device_spec_object(yaml_data)
-            obj.repopath = path
-            obj.specsheet_url = self.get_url(Path(path).parent / obj.specsheet_filename)
+            obj.repopath = Path(path).parent.as_posix()
             self.design_specs.append(obj)
         
         print(f"Loaded {len(self.design_specs)} design specs")
@@ -65,7 +61,7 @@ class RepoInterface:
             print(spec.repopath)
 
     def get_filtered(self, filter: SpecFilter) -> List[BaseDeviceSpec]:
-        pass
+        return self.design_specs
 
 
 
