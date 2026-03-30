@@ -51,6 +51,7 @@ class FootprintSpec(BaseModel):
 class BaseDeviceSpec(BaseModel):
     specsheet_filename: str = "specs.md"
     repopath: str = "not-set"
+    icon_filename: str = "https://cdn-icons-png.flaticon.com/128/12262/12262365.png"
     device_class: SpecDeviceClass
     name: str = "unnamed device"
     brief_doc: str = "No brief description provided."

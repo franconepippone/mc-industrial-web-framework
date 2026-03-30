@@ -118,16 +118,6 @@ async function applyFilters() {
     }
 }
 
-function startAutoRefresh() {
-    if (autoRefreshHandle) {
-        window.clearInterval(autoRefreshHandle);
-    }
-
-    autoRefreshHandle = window.setInterval(() => {
-        applyFilters();
-    }, 1500);
-}
-
 filterForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     await applyFilters();
