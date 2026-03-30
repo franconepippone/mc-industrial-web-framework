@@ -30,6 +30,7 @@ versions_java, versions_bedrock = get_minecraft_versions()
 print("got java and bedrock versions")
 
 github_repo_url = f"https://github.com/{repo.REPO_NAME}"
+downgit_base_url = "https://downgit.github.io/#/home?url="
 
 class FilterRequest(BaseModel):
     device_class: str = "rds-router"
@@ -203,6 +204,7 @@ async def index(request: Request):
             "versions_java": versions_java,
             "versions_bedrock": versions_bedrock,
             "github_repo_url": github_repo_url,
+            "downgit_base_url": downgit_base_url,
             "specs": results,
             "results_summary": build_results_summary(default_filters, len(results)),
         },
@@ -217,6 +219,7 @@ async def filter_items(request: Request, filters: FilterRequest):
         "partials/device_results.html",
         context={
             "github_repo_url": github_repo_url,
+            "downgit_base_url": downgit_base_url,
             "specs": results,
             "results_summary": build_results_summary(filters, len(results)),
         },

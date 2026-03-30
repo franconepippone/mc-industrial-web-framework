@@ -1,7 +1,9 @@
 ---
 specsheet_filename: "specs.md"
-device_class: rds-package
 name: "ShulkerBox"
+brief_doc: "A package technology that uses shulker boxes to carry items. Extremely versatile as it can be carried around as any other item."
+icon_filename: "image.png"
+device_class: rds-package
 
 # map multiple versions of this design to branches or commits of the repo. You usually want to have the latest version
 # pointing to the master branch, and fix older versions to specific commits.

@@ -44,23 +44,40 @@
                 </div>
 
                 {% if spec.versions %}
-                <details class="mt-3">
-                    <summary class="small text-muted" style="cursor: pointer;">
-                        <i class="bi bi-clock-history me-1"></i>Available versions ({{ spec.versions | length }})
-                    </summary>
-                    <div class="d-flex flex-wrap gap-2 mt-2">
-                        {% for version_name, version_ref in spec.versions.items() %}
-                        <a href="{{ github_repo_url }}/blob/{{ version_ref }}/{{ spec.repopath }}/{{ spec.specsheet_filename }}"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="badge rounded-pill text-bg-light border text-decoration-none link-primary">
-                            <i class="bi bi-git me-1"></i>{{ version_name }}
-                        </a>
-                        {% endfor %}
+                <div class="mt-3">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="text-muted small" style="opacity: 0.7;">
+                            <i class="bi bi-git me-1"></i> versions
+                        </div>
+                        <div class="flex-grow-1 border-top opacity-25"></div>
                     </div>
-                </details>
+
+                    <ul class="list-unstyled mb-0">
+                        {% set sorted_versions = spec.versions | dictsort(reverse=True) %}
+                        {% for version_name, version_ref in sorted_versions %}
+                        <li class="mb-2 d-flex align-items-center gap-2 small">
+                            <a href="{{ github_repo_url }}/blob/{{ version_ref }}/{{ spec.repopath }}/{{ spec.specsheet_filename }}"
+                            target="_blank"
+                            class="link-primary fw-bold text-decoration-none">
+                                <i class="bi bi-file-earmark-text me-1"></i>{{ version_name }}
+                                {% if loop.first %}- latest{% endif %}
+                            </a>
+
+                            <span class="text-muted">|</span>
+
+                            <a href="https://downgit.github.io/#/home?url={{ github_repo_url }}/tree/{{ version_ref }}/{{ spec.repopath }}"
+                            target="_blank"
+                            class="text-primary text-decoration-underline">
+                                <i class="bi bi-download me-1"></i>Schematic
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
                 {% endif %}
             </div>
         </div>
     </div>
 </div>
+
+

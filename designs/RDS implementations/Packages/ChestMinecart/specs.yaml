@@ -1,7 +1,9 @@
 ---
 specsheet_filename: "specs.md"
-device_class: rds-package
 name: "ChestMinecart"
+brief_doc: "Package technology that uses chest minecarts to carry items. Very survival friendly and easy to use, as it can be moved around by rail networks."
+icon_filename: "image.png"
+device_class: rds-package
 
 # map multiple versions of this design to branches or commits of the repo. You usually want to have the latest version
 # pointing to the master branch, and fix older versions to specific commits.
