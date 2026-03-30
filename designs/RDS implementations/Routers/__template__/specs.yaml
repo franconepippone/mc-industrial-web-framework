@@ -9,7 +9,7 @@ brief_doc: "A one or two sentence brief description of this design. This will be
 # NOTE: This map must be updated manually when a new version is published.
 versions:
   "1.0": master
-  "0.9": dfedfe634bbcc33ed259eda4cd69d9c170477775
+  "0.9": 81132562b5f3a2726fd5c74b1a8d0661bd230454
 
 minecraft:
   # TODO bedrock versioning is different
