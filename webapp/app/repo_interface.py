@@ -1,10 +1,11 @@
 from typing import List
 import yaml
 import github
-from spec_schemas import BaseDeviceSpec, RDSRouterSpec, FootprintSpec, build_device_spec_object
+from spec_schemas import BaseDeviceSpec, build_device_spec_object, SpecDeviceClass
+from pathlib import Path
 
 class SpecFilter:
-    def __init__(self):
+    def __init__(self,):
         pass
 
 
@@ -21,6 +22,9 @@ class RepoInterface:
         self.g = github.Github(auth=auth)
 
         self.repo = self.g.get_repo(self.REPO_NAME)
+
+    def get_url(self, repopath: str | Path = "") -> str:
+        return f"https://github.com/{self.REPO_NAME}/blob/{self.BRANCH}/{repopath}"
 
     def load_design_specs(self):
 
@@ -51,7 +55,8 @@ class RepoInterface:
             
             # construct a valid spec object from the dict, if device class is valid
             obj = build_device_spec_object(yaml_data)
-            obj.repopath = path  # Set the repository path
+            obj.repopath = path
+            obj.specsheet_url = self.get_url(Path(path).parent / obj.specsheet_filename)
             self.design_specs.append(obj)
         
         print(f"Loaded {len(self.design_specs)} design specs")

@@ -3,7 +3,7 @@ from typing import Literal, Dict, Union
 from enum import Enum
 
 # all possible entities that can have the yaml specsheet
-class SPEC_CLASSES(str, Enum):
+class SpecDeviceClass(str, Enum):
     RDS_ROUTER = "rds-router"
     RDS_LINK = "rds-link"
     RDS_TERMINAL = "rds-terminal"
@@ -49,10 +49,12 @@ class FootprintSpec(BaseModel):
         return v
 
 class BaseDeviceSpec(BaseModel):
-    textspecs: str
+    specsheet_filename: str = "specs.md"
+    specsheet_url: str = ""
     repopath: str = "not-set"
-    device_class: SPEC_CLASSES
+    device_class: SpecDeviceClass
     name: str = "unnamed device"
+    brief_doc: str = "No brief description provided."
     versions: Dict[str, str]
     minecraft: MinecraftSpec
     survival_friendliness: Literal["high", "moderate", "low"]
@@ -60,6 +62,10 @@ class BaseDeviceSpec(BaseModel):
     locational: bool
     directional: bool
     
+
+
+# One class per MIWF device class, inheriting from BaseDeviceSpec 
+
 
 # ------------------------
 # RDS Router spec
@@ -85,7 +91,7 @@ class RDSRouterSpec(BaseDeviceSpec):
 
     # Validator for YAML typos
     @field_validator("survival_friendliness")
-    def fix_survival_typo(cls, v, values, **kwargs):
+    def validate_survival_friendliness(cls, v, values, **kwargs):
         if not v in ("high", "moderate", "low"):
             raise ValueError(f"survival_friendliness must be 'high', 'moderate', or 'low', not '{v}'")
 
@@ -95,9 +101,9 @@ def build_device_spec_object(data: dict) -> BaseDeviceSpec:
     device_class = data.get("device_class")
     
     match device_class:
-        case SPEC_CLASSES.RDS_ROUTER.value:
+        case SpecDeviceClass.RDS_ROUTER:
             return RDSRouterSpec(**data)
-        case SPEC_CLASSES.RDS_PACKAGE.value:
+        case SpecDeviceClass.RDS_PACKAGE:
             return RDSPackageSpec(**data)
         case _:
             raise ValueError(f"Unsupported device_class: {device_class}")

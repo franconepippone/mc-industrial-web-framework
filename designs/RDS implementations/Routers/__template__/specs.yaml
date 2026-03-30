@@ -1,7 +1,8 @@
 ---
-textspecs: "specs.md"
+specsheet_filename: "specs.md"
 device_class: rds-router
 name: "custom-router-name"
+brief_doc: "A one or two sentence brief description of this design. This will be shown in the list view of designs, so it should be concise and informative."
 
 # map multiple versions of this design to branches or commits of the repo. You usually want to have the latest version
 # pointing to the master branch, and fix older versions to specific commits.

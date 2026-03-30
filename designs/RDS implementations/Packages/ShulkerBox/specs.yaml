@@ -1,5 +1,5 @@
 ---
-textspecs: "specs.md"
+specsheet_filename: "specs.md"
 device_class: rds-package
 name: "ShulkerBox"
 
