@@ -13,8 +13,7 @@ versions:
 
 minecraft:
   edition: "Any" # or "Bedrock" or "Any" (for both editions)
-  lower: "1.17.0" # works from this version ...
-  upper: "2.0" # ... to this version (inclusive)
+  lower: "1.0" # works from this version onwards
 
 directional: false
 locational: false

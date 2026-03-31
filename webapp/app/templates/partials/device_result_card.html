@@ -156,13 +156,13 @@
                         
                         <span class="badge rounded-pill text-bg-light border"
                               data-bs-toggle="tooltip"
-                              title="This device can be built in any orientation.">
+                              title="This device works in any orientation.">
                             <i class="bi bi-compass me-1"></i>{{ 'Directional' if spec.directional else 'Non-directional' }}
                         </span>
                         
                         <span class="badge rounded-pill text-bg-light border"
                               data-bs-toggle="tooltip"
-                              title="This devicecan be built at any location.">
+                              title="This device works in any location of the world.">
                             <i class="bi bi-geo-alt me-1"></i>{{ 'Locational' if spec.locational else 'Non-locational' }}
                         </span>
                     </div>
@@ -192,12 +192,12 @@
                                 {% endif %}
                             </a>
 
-                            <span class="text-muted">-</span>
+                            <span class="text-muted">·</span>
 
                             <a href="https://downgit.github.io/#/home?url={{ github_repo_url }}/tree/{{ version_ref }}/{{ spec.repopath }}"
                             target="_blank"
                             class="text-primary text-decoration-underline">
-                                <i class="bi bi-download me-1"></i>Files
+                                <i class="bi bi-download me-1"></i>Download files
                             </a>
                         </li>
                         {% endfor %}
