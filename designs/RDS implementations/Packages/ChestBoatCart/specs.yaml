@@ -1,0 +1,25 @@
+---
+specsheet_filename: "specs.md"
+name: "ChestBoatCart"
+brief_doc: "Package technology that uses a chest-boat inside a minecart to carry both items and players. Has great potential in the construction of automatic RDS-based player transportation systems."
+icon_filename: "image.png"
+device_class: rds-package
+
+# map multiple versions of this design to branches or commits of the repo. You usually want to have the latest version
+# pointing to the master branch, and fix older versions to specific commits.
+# NOTE: This map must be updated manually when a new version is published.
+versions:
+  "1.0": master
+
+minecraft:
+  edition: "Any" # or "Bedrock" or "Any" (for both editions)
+  lower: "1.20" # works from this version ...
+  upper: "2.0" # ... to this version (inclusive)
+
+directional: false
+locational: false
+works_in_nether: true
+survival_friendliness: high # or "moderate" or "low"
+
+protocols: ["standard-rds"] # list of RDS protocols supported by this package technology
+payload_capacity: 27 # how many inventory slots of payload can this package technology carry

@@ -1,4 +1,4 @@
-# Shulker Box Package Implementation
+# Shulker Box Package
 
 <div align="center">
   <img src="image.png" width="400" alt="Directory tree">

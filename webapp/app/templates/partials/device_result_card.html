@@ -3,45 +3,45 @@
         <div class="row g-3 align-items-start">
             
             {# Device icon fallback setup #}
-{# Router icon uses network topology with offset boxes #}
-{% set fallback_icons = {
-    'rds-router': 'bi-diagram-3',
-    'rds-terminal': 'bi-terminal',
-    'rds-link': 'bi-share',
-    'rds-package': 'bi-box-seam',
-    'rds-adapter': 'bi-usb-plug'
-} %}
-
-{% set fallback_icon_class = fallback_icons.get(spec.device_class, 'bi-cpu') %}
-
-<div class="col-auto">
-    <!-- Rounded square container -->
-    <div class="d-flex align-items-center justify-content-center rounded-5 overflow-hidden p-2"
-         style="width:160px; height:160px;">
-
-        <img
-            src="https://raw.githubusercontent.com/franconepippone/mc-industrial-web-framework/master/{{ spec.repopath }}/{{ spec.icon_filename }}"
-            alt="{{ spec.device_class }}"
-            class="img-fluid"
-            style="width:90%; height:90%; object-fit:contain;"
-            data-fallback-icon="{{ fallback_icon_class }}"
-            onerror="(function(img){
-                img.onerror=null;
-                img.style.display='none';
-                const fallback=document.createElement('div');
-                fallback.className='w-100 h-100 d-flex align-items-center justify-content-center rounded-5';
-                fallback.style.background='#3399ff'; /* solid blue background */
-                const icon=document.createElement('i');
-                icon.className='bi '+img.dataset.fallbackIcon+' text-white';
-                icon.style.fontSize='3.5rem'; /* slightly smaller, prominent icon */
-                fallback.appendChild(icon);
-                img.parentNode.appendChild(fallback);
-            })(this);"
-        >
-
-    </div>
-</div>
-
+            {# Router icon uses network topology with offset boxes #}
+            {% set fallback_icons = {
+                'rds-router': 'bi-diagram-3',
+                'rds-terminal': 'bi-terminal',
+                'rds-link': 'bi-share',
+                'rds-package': 'bi-box-seam',
+                'rds-adapter': 'bi-usb-plug'
+            } %}
+            
+            {% set fallback_icon_class = fallback_icons.get(spec.device_class, 'bi-cpu') %}
+            
+            <div class="col-auto">
+                <!-- Rounded square container -->
+                <div class="d-flex align-items-center justify-content-center rounded-5 overflow-hidden p-2"
+                     style="width:160px; height:160px;">
+            
+                    <img
+                        src="https://raw.githubusercontent.com/franconepippone/mc-industrial-web-framework/master/{{ spec.repopath }}/{{ spec.icon_filename }}"
+                        alt="{{ spec.device_class }}"
+                        class="img-fluid"
+                        style="width:90%; height:90%; object-fit:contain;"
+                        data-fallback-icon="{{ fallback_icon_class }}"
+                        onerror="(function(img){
+                            img.onerror=null;
+                            img.style.display='none';
+                            const fallback=document.createElement('div');
+                            fallback.className='w-100 h-100 d-flex align-items-center justify-content-center rounded-5';
+                            fallback.style.background='#3399ff'; /* solid blue background */
+                            const icon=document.createElement('i');
+                            icon.className='bi '+img.dataset.fallbackIcon+' text-white';
+                            icon.style.fontSize='3.5rem'; /* slightly smaller, prominent icon */
+                            fallback.appendChild(icon);
+                            img.parentNode.appendChild(fallback);
+                        })(this);"
+                    >
+            
+                </div>
+            </div>
+            
             <div class="col">
                 <div class="d-flex justify-content-between align-items-start gap-2 flex-wrap">
                     <div>
@@ -62,21 +62,110 @@
                     {{ spec.brief_doc or 'No brief description available yet.' }}
                 </p>
 
-                <div class="d-flex flex-wrap gap-2">
-                    {% if spec.protocol is defined and spec.protocol %}<span class="badge rounded-pill text-bg-light border"><i class="bi bi-diagram-3 me-1"></i>{{ spec.protocol }}</span>{% endif %}
-                    {% if spec.package_tech is defined and spec.package_tech %}<span class="badge rounded-pill text-bg-light border"><i class="bi bi-box-seam me-1"></i>{{ spec.package_tech }}</span>{% endif %}
-                    {% if spec.throughput is defined and spec.throughput is not none %}<span class="badge rounded-pill text-bg-light border"><i class="bi bi-speedometer2 me-1"></i>{{ spec.throughput }} pkg/min</span>{% endif %}
-                    {% if spec.physical_ports is defined and spec.physical_ports %}<span class="badge rounded-pill text-bg-light border"><i class="bi bi-box-arrow-in-right me-1"></i>{{ spec.physical_ports.input }} in / {{ spec.physical_ports.output }} out</span>{% endif %}
-                    {% if spec.footprint is defined and spec.footprint %}<span class="badge rounded-pill text-bg-light border"><i class="bi bi-bounding-box me-1"></i>{{ spec.footprint.length }}×{{ spec.footprint.width }}×{{ spec.footprint.height }}</span>{% endif %}
-                    {% if spec.package_queue_size is defined and spec.package_queue_size is not none %}<span class="badge rounded-pill text-bg-light border"><i class="bi bi-collection me-1"></i>Queue {{ spec.package_queue_size }}</span>{% endif %}
-                    {% if spec.supports_hierarchical_routing %}<span class="badge rounded-pill bg-primary text-white d-inline-flex align-items-center"><i class="bi bi-diagram-2 me-1"></i>Hierarchical routing</span>{% endif %}
-                    {% if spec.protocols is defined and spec.protocols %}<span class="badge rounded-pill text-bg-light border"><i class="bi bi-bezier2 me-1"></i>{{ spec.protocols | join(', ') }}</span>{% endif %}
-                    {% if spec.payload_capacity is defined and spec.payload_capacity is not none %}<span class="badge rounded-pill text-bg-light border"><i class="bi bi-inbox me-1"></i>{{ spec.payload_capacity }} slots</span>{% endif %}
-                    <span class="badge rounded-pill text-bg-light border"><i class="bi bi-tree me-1"></i>Survival: {{ spec.survival_friendliness or 'unknown' }}</span>
-                    <span class="badge rounded-pill {% if spec.works_in_nether %}text-bg-success{% else %}text-bg-secondary{% endif %}"><i class="bi bi-fire me-1"></i>{{ 'Nether compatible' if spec.works_in_nether}}</span>
-                    <span class="badge rounded-pill text-bg-light border"><i class="bi bi-compass me-1"></i>{{ 'Directional' if spec.directional else 'Non-directional' }}</span>
-                    <span class="badge rounded-pill text-bg-light border"><i class="bi bi-geo-alt me-1"></i>{{ 'Locational' if spec.locational else 'Non-locational' }}</span>
-                </div>
+                <style>
+                    /* Keep cursor normal for tooltip badges */
+                    .badge[data-bs-toggle="tooltip"] {
+                        cursor: default;
+                    }
+                    </style>
+                    
+                    <div class="d-flex flex-wrap gap-2">
+                        {% if spec.protocol is defined and spec.protocol %}
+                            <span class="badge rounded-pill text-bg-light border"
+                                  data-bs-toggle="tooltip"
+                                  title="The transportation protocol this device uses.">
+                                <i class="bi bi-diagram-3 me-1"></i>{{ spec.protocol }}
+                            </span>
+                        {% endif %}
+                        
+                        {% if spec.package_tech is defined and spec.package_tech %}
+                            <span class="badge rounded-pill text-bg-light border"
+                                  data-bs-toggle="tooltip"
+                                  title="The packaging technology used by this device.">
+                                <i class="bi bi-box-seam me-1"></i>{{ spec.package_tech }}
+                            </span>
+                        {% endif %}
+                        
+                        {% if spec.throughput is defined and spec.throughput is not none %}
+                            <span class="badge rounded-pill text-bg-light border"
+                                  data-bs-toggle="tooltip"
+                                  title="The processing throughput of the device in packages per minute.">
+                                <i class="bi bi-speedometer2 me-1"></i>{{ spec.throughput }} pkg/min
+                            </span>
+                        {% endif %}
+                        
+                        {% if spec.physical_ports is defined and spec.physical_ports %}
+                            <span class="badge rounded-pill text-bg-light border"
+                                  data-bs-toggle="tooltip"
+                                  title="Number of physical input and output ports.">
+                                <i class="bi bi-box-arrow-in-right me-1"></i>{{ spec.physical_ports.input }} in / {{ spec.physical_ports.output }} out
+                            </span>
+                        {% endif %}
+                        
+                        {% if spec.footprint is defined and spec.footprint %}
+                            <span class="badge rounded-pill text-bg-light border"
+                                  data-bs-toggle="tooltip"
+                                  title="Physical dimensions: length x width x height.">
+                                <i class="bi bi-bounding-box me-1"></i>{{ spec.footprint.length }}×{{ spec.footprint.width }}×{{ spec.footprint.height }}
+                            </span>
+                        {% endif %}
+                        
+                        {% if spec.package_queue_size is defined and spec.package_queue_size is not none %}
+                            <span class="badge rounded-pill text-bg-light border"
+                                  data-bs-toggle="tooltip"
+                                  title="The number of packages that can be queued.">
+                                <i class="bi bi-collection me-1"></i>Queue {{ spec.package_queue_size }}
+                            </span>
+                        {% endif %}
+                        
+                        {% if spec.supports_hierarchical_routing %}
+                            <span class="badge rounded-pill bg-primary text-white d-inline-flex align-items-center"
+                                  data-bs-toggle="tooltip"
+                                  title="Indicates if hierarchical routing is supported, as described in the documentation.">
+                                <i class="bi bi-diagram-2 me-1"></i>Hierarchical routing
+                            </span>
+                        {% endif %}
+                        
+                        {% if spec.protocols is defined and spec.protocols %}
+                            <span class="badge rounded-pill text-bg-light border"
+                                  data-bs-toggle="tooltip"
+                                  title="All transportation protocols supported by this device.">
+                                <i class="bi bi-bezier2 me-1"></i>{{ spec.protocols | join(', ') }}
+                            </span>
+                        {% endif %}
+                        
+                        {% if spec.payload_capacity is defined and spec.payload_capacity is not none %}
+                            <span class="badge rounded-pill text-bg-light border"
+                                  data-bs-toggle="tooltip"
+                                  title="Number of payload slots available (including slots reserved for address stamps).">
+                                <i class="bi bi-inbox me-1"></i>{{ spec.payload_capacity }} slots
+                            </span>
+                        {% endif %}
+                        
+                        <span class="badge rounded-pill text-bg-light border"
+                              data-bs-toggle="tooltip"
+                              title="How suitable this device is for survival mode.">
+                            <i class="bi bi-tree me-1"></i>Survival: {{ spec.survival_friendliness or 'unknown' }}
+                        </span>
+                        
+                        <span class="badge rounded-pill {% if spec.works_in_nether %}text-bg-success{% else %}text-bg-secondary{% endif %}"
+                              data-bs-toggle="tooltip"
+                              title="This device works in the Nether.">
+                            <i class="bi bi-fire me-1"></i>{{ 'Nether compatible' if spec.works_in_nether }}
+                        </span>
+                        
+                        <span class="badge rounded-pill text-bg-light border"
+                              data-bs-toggle="tooltip"
+                              title="This device can be built in any orientation.">
+                            <i class="bi bi-compass me-1"></i>{{ 'Directional' if spec.directional else 'Non-directional' }}
+                        </span>
+                        
+                        <span class="badge rounded-pill text-bg-light border"
+                              data-bs-toggle="tooltip"
+                              title="This devicecan be built at any location.">
+                            <i class="bi bi-geo-alt me-1"></i>{{ 'Locational' if spec.locational else 'Non-locational' }}
+                        </span>
+                    </div>
 
                 {% if spec.versions %}
                 <div class="mt-3">

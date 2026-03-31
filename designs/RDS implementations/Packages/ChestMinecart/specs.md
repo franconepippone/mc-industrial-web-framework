@@ -1,4 +1,4 @@
-# Chest Minecart Package Implementation
+# Chest Minecart Package
 
 <div align="center">
   <img src="image.png" width="400" alt="Directory tree">
