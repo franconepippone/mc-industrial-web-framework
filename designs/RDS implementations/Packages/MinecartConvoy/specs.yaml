@@ -1,0 +1,24 @@
+---
+specsheet_filename: "specs.md"
+name: "Minecart Convoy"
+brief_doc: "Package technology that uses a series of minecarts traveling together to carry resources. Highly survival friendly and capable of transporting large amounts of payload."
+icon_filename: "image.png"
+device_class: rds-package
+
+# map multiple versions of this design to branches or commits of the repo. You usually want to have the latest version
+# pointing to the master branch, and fix older versions to specific commits.
+# NOTE: This map must be updated manually when a new version is published.
+versions:
+  "1.0": master
+
+minecraft:
+  edition: "Any" # or "Bedrock" or "Any" (for both editions)
+  lower: "1.0" # works from this version onwards
+
+directional: false
+locational: false
+works_in_nether: true
+survival_friendliness: high # or "moderate" or "low"
+
+protocols: ["standard-rds"] # list of RDS protocols supported by this package technology
+payload_capacity: 248 # how many inventory slots of payload can this package technology carry
