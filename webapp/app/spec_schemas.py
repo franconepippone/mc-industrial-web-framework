@@ -16,7 +16,7 @@ class SpecDeviceClass(str, Enum):
 class MinecraftSpec(BaseModel):
     edition: Literal["Java", "Bedrock", "Any"]
     lower: str
-    upper: str
+    upper: str = "the current version"
 
     @field_validator("lower", "upper")
     def validate_version_format(cls, v: str):

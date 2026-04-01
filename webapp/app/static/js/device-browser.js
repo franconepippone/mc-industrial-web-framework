@@ -8,6 +8,11 @@ const versionTo = document.getElementById('version-to');
 const deviceClassSelect = document.getElementById('device-class-select');
 const filterPanels = document.querySelectorAll('.device-filter-panel');
 const resultsContent = document.getElementById('results-content');
+const packageProtocolButton = document.getElementById('package-protocol-dropdown-btn');
+const packageProtocolsInput = document.getElementById('package-protocols');
+const packageProtocolCheckboxes = document.querySelectorAll('.package-protocol-checkbox');
+const packageSelectAllBtn = document.getElementById('package-protocol-select-all');
+const packageSelectNoneBtn = document.getElementById('package-protocol-select-none');
 let autoRefreshHandle = null;
 
 function setOptions(select, options) {
@@ -39,6 +44,24 @@ function syncDevicePanels() {
     filterPanels.forEach((panel) => {
         panel.classList.toggle('d-none', panel.dataset.deviceClass !== selectedClass);
     });
+}
+
+function updatePackageProtocolUI() {
+    if (!packageProtocolsInput || !packageProtocolButton) return;
+
+    const selected = Array.from(packageProtocolCheckboxes)
+        .filter((checkbox) => checkbox.checked)
+        .map((checkbox) => checkbox.value);
+
+    packageProtocolsInput.value = selected.join(',');
+    packageProtocolButton.innerText = selected.length > 0 ? `Protocols: ${selected.join(', ')}` : 'Protocols: Any';
+}
+
+function setPackageProtocolSelection(selectAll) {
+    packageProtocolCheckboxes.forEach((checkbox) => {
+        checkbox.checked = selectAll;
+    });
+    updatePackageProtocolUI();
 }
 
 function parseOptionalNumber(id) {
@@ -78,6 +101,22 @@ function collectFilters() {
             hierarchical_routing: document.getElementById('hierarchical-routing')?.checked ? true : null,
             non_directional: document.getElementById('directional')?.checked ? true : null,
             non_locational: document.getElementById('locational')?.checked ? true : null,
+        });
+    }
+
+    if (selectedClass === 'rds-package') {
+        const protocols = (document.getElementById('package-protocols')?.value || '')
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean);
+
+        Object.assign(filters, {
+            protocols: protocols.length > 0 ? protocols : null,
+            min_payload_capacity: parseOptionalNumber('package-min-capacity'),
+            survival_friendliness: document.getElementById('package-survival')?.value || null,
+            works_in_nether: document.getElementById('package-nether')?.checked ? true : null,
+            non_directional: document.getElementById('package-non-directional')?.checked ? true : null,
+            non_locational: document.getElementById('package-non-locational')?.checked ? true : null,
         });
     }
 
@@ -142,9 +181,17 @@ deviceClassSelect.addEventListener('change', () => {
 document.addEventListener('DOMContentLoaded', () => {
     syncVersions();
     syncDevicePanels();
+    updatePackageProtocolUI();
     startAutoRefresh();
 
     document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((element) => {
         new bootstrap.Tooltip(element);
     });
+
+    packageProtocolCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', updatePackageProtocolUI);
+    });
+
+    packageSelectAllBtn?.addEventListener('click', () => setPackageProtocolSelection(true));
+    packageSelectNoneBtn?.addEventListener('click', () => setPackageProtocolSelection(false));
 });

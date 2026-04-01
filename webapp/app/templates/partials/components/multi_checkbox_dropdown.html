@@ -1,0 +1,20 @@
+<div class="dropdown multi-checkbox-dropdown" data-target-input="#package-protocols" data-label-target="#package-protocol-dropdown-btn">
+    <button class="btn btn-outline-secondary btn-sm dropdown-toggle w-100" type="button" id="package-protocol-dropdown-btn" data-bs-toggle="dropdown" aria-expanded="false">
+        Protocols: Any
+    </button>
+    <div class="dropdown-menu p-3" aria-labelledby="package-protocol-dropdown-btn" style="min-width: 220px;">
+        <div class="d-flex gap-2 mb-2">
+            <button type="button" id="package-protocol-select-all" class="btn btn-sm btn-outline-primary">All</button>
+            <button type="button" id="package-protocol-select-none" class="btn btn-sm btn-outline-secondary">None</button>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input package-protocol-checkbox" type="checkbox" value="standard-rds" id="package-protocol-standard-rds">
+            <label class="form-check-label" for="package-protocol-standard-rds">Standard RDS</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input package-protocol-checkbox" type="checkbox" value="other" id="package-protocol-other">
+            <label class="form-check-label" for="package-protocol-other">Other</label>
+        </div>
+        <input type="hidden" id="package-protocols" name="protocols" value="">
+    </div>
+</div>

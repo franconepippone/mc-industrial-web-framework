@@ -3,42 +3,31 @@
     <div class="row g-3">
         <div class="col-lg-5">
             <div class="mb-3">
-                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Payload & Protocols <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter by package carrier type and supported protocol family."></i></h6>
-                <div class="row g-2">
-                    <div class="col-6">
-                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Payload Type</label>
-                        <select class="form-select form-select-sm">
-                            <option value="">Any</option>
-                            <option value="chest-minecart">Chest Minecart</option>
-                            <option value="shulker-box">Shulker Box</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Supported Protocol</label>
-                        <select class="form-select form-select-sm">
-                            <option value="">Any</option>
-                            <option value="standard-rds">Standard RDS</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                </div>
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Supported Protocols<i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Choose the protocols this technology supports"></i></h6>
+                {% include "partials/components/multi_checkbox_dropdown.html" %}
             </div>
 
             <div class="mb-3">
-                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Capacity & Size <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Set rough capacity and footprint preferences for package technologies."></i></h6>
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Minecraft Compatibility <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter by edition and supported version range for the selected package design."></i></h6>
                 <div class="row g-2">
-                    <div class="col-6">
-                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Min Capacity</label>
-                        <input type="number" class="form-control form-control-sm" placeholder="slots">
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Footprint Priority</label>
-                        <select class="form-select form-select-sm">
+                    <div class="col-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Edition</label>
+                        <select id="package-edition" class="form-select form-select-sm">
                             <option value="">Any</option>
-                            <option value="compact">Compact</option>
-                            <option value="balanced">Balanced</option>
-                            <option value="capacity">Capacity first</option>
+                            <option value="Java">Java</option>
+                            <option value="Bedrock">Bedrock</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Version From</label>
+                        <select id="package-version-from" class="form-select form-select-sm">
+                            <option value="">Any</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Version To</label>
+                        <select id="package-version-to" class="form-select form-select-sm">
+                            <option value="">Any</option>
                         </select>
                     </div>
                 </div>
@@ -47,28 +36,38 @@
 
         <div class="col-lg-6">
             <div class="mb-3">
+                <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Payload Capacity <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Minimum capacity (slots) of the Package inventory (including slots reserved for Address Stamp/s)"></i></h6>
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Min Capacity</label>
+                        <input id="package-min-capacity" type="number" class="form-control form-control-sm" placeholder="slots">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
                 <h6 class="text-uppercase fw-bold text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Capabilities <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Optional package design traits and usability filters."></i></h6>
                 <div class="row g-2">
                     <div class="col-6">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="package-nether">
-                            <label class="form-check-label" for="package-nether" style="font-size: 0.95rem;">Nether Safe</label>
+                            <label class="form-check-label" for="package-nether" style="font-size: 0.95rem;">Works in Nether</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="package-reusable">
-                            <label class="form-check-label" for="package-reusable" style="font-size: 0.95rem;">Reusable</label>
+                            <input class="form-check-input" type="checkbox" id="package-non-directional">
+                            <label class="form-check-label" for="package-non-directional" style="font-size: 0.95rem;">Non-Directional</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="package-non-locational">
+                            <label class="form-check-label" for="package-non-locational" style="font-size: 0.95rem;">Non-Locational</label>
                         </div>
                     </div>
+                    
                     <div class="col-6">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="package-bulk">
-                            <label class="form-check-label" for="package-bulk" style="font-size: 0.95rem;">Bulk Friendly</label>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="border rounded-3 bg-light p-2">
-                            <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Survival Friendliness <i class="bi bi-info-circle text-muted ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="How practical the package technology is for survival use."></i></label>
-                            <select class="form-select form-select-sm">
+                        
+                        <div class="form-check mt-2">
+                            <label class="form-label fw-5 mb-1" style="font-size: 0.9rem;">Survival Friendliness</label>
+                            <select id="package-survival" class="form-select form-select-sm">
                                 <option value="">Any</option>
                                 <option value="high">High</option>
                                 <option value="moderate">Moderate</option>

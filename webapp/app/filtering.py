@@ -1,30 +1,180 @@
-from typing import Optional
-from abc import ABC, abstractmethod
+from pydantic import BaseModel
+from typing import Any
+from spec_schemas import BaseDeviceSpec
 
-from spec_schemas import BaseDeviceSpec, SpecDeviceClass, RDSRouterSpec, RDSPackageSpec
 
-class BaseSpecFilter(ABC):
-    device_class: SpecDeviceClass
-    versions: 
 
-    def matches(self, spec: BaseDeviceSpec) -> bool:
-        pass
+class FilterRequest(BaseModel):
+    device_class: str = "rds-router"
+    edition: str | None = None
+    version_from: str | None = None
+    version_to: str | None = None
+    protocol: str | None = None
+    package_tech: str | None = None
+    min_throughput: int | None = None
+    min_physical_input: int | None = None
+    min_physical_output: int | None = None
+    max_length: int | None = None
+    max_width: int | None = None
+    max_height: int | None = None
+    survival_friendliness: str | None = None
+    works_in_nether: bool | None = None
+    queue_included: bool | None = None
+    chunkloading_included: bool | None = None
+    hierarchical_routing: bool | None = None
+    non_directional: bool | None = None
+    non_locational: bool | None = None
+    protocols: list[str] | None = None
+    min_payload_capacity: int | None = None
 
-class RDSRouterFilter(BaseSpecFilter):
-    device_class = SpecDeviceClass.RDS_ROUTER
-    min_throughput: Optional[int] = None
-    max_throughput: Optional[int] = None
-    survival_friendliness: Optional[str] = None
 
-    def matches(self, spec: RDSRouterSpec) -> bool:
-        if spec.device_class != self.device_class:
-            return False
+def compare_versions(left: str, right: str) -> int:
+    left_parts = [int(part) for part in str(left).split(".")]
+    right_parts = [int(part) for part in str(right).split(".")]
+    max_length = max(len(left_parts), len(right_parts))
 
-        if self.min_throughput is not None and spec.throughput < self.min_throughput:
-            return False
-        if self.max_throughput is not None and spec.throughput > self.max_throughput:
-            return False
-        if self.survival_friendliness and spec.survival_friendliness != self.survival_friendliness:
-            return False
+    for index in range(max_length):
+        left_value = left_parts[index] if index < len(left_parts) else 0
+        right_value = right_parts[index] if index < len(right_parts) else 0
+        if left_value > right_value:
+            return 1
+        if left_value < right_value:
+            return -1
 
+    return 0
+
+
+def meets_minimum(value: Any, minimum: int | None) -> bool:
+    if minimum is None:
         return True
+    if value is None:
+        return False
+    if isinstance(value, int):
+        return value >= minimum
+
+    value_str = str(value).strip()
+    if value_str.isdigit():
+        return int(value_str) >= minimum
+
+    return True
+
+
+def within_maximum(value: Any, maximum: int | None) -> bool:
+    if maximum is None:
+        return True
+    if value is None:
+        return False
+    if isinstance(value, int):
+        return value <= maximum
+
+    value_str = str(value).strip()
+    if value_str.isdigit():
+        return int(value_str) <= maximum
+
+    return True
+
+
+def format_device_class(device_class: str) -> str:
+    return device_class.replace("rds-", "RDS ").replace("-", " ").title()
+
+
+def build_results_summary(filters: FilterRequest, count: int) -> str:
+    summary_parts = [format_device_class(filters.device_class)]
+
+    if filters.edition:
+        summary_parts.append(f"Edition: {filters.edition}")
+    if filters.version_from:
+        summary_parts.append(f"From {filters.version_from}")
+    if filters.version_to:
+        summary_parts.append(f"To {filters.version_to}")
+    if filters.protocol:
+        summary_parts.append(f"Protocol: {filters.protocol}")
+    if filters.protocols:
+        summary_parts.append(f"Protocols: {', '.join(filters.protocols)}")
+    if filters.package_tech:
+        summary_parts.append(f"Tech: {filters.package_tech}")
+    if filters.min_throughput is not None:
+        summary_parts.append(f"Min throughput: {filters.min_throughput}")
+    if filters.min_payload_capacity is not None:
+        summary_parts.append(f"Min payload: {filters.min_payload_capacity}")
+
+    prefix = f"Showing {count} result" + ("" if count == 1 else "s") if count > 0 else "No results match the current selection"
+    return f"{prefix} · {' · '.join(summary_parts)}"
+
+
+def filter_design_specs(designs: list[BaseDeviceSpec], filters: FilterRequest) -> list[dict[str, Any]]:
+    results: list[dict[str, Any]] = []
+
+    for spec in designs:
+        spec_device_class = getattr(spec.device_class, "value", spec.device_class)
+        if filters.device_class and spec_device_class != filters.device_class:
+            continue
+
+        if filters.edition and spec.minecraft.edition not in (filters.edition, "Any"):
+            continue
+
+        if filters.version_from and compare_versions(spec.minecraft.upper, filters.version_from) < 0:
+            continue
+
+        if filters.version_to and compare_versions(spec.minecraft.lower, filters.version_to) > 0:
+            continue
+
+        if filters.survival_friendliness and spec.survival_friendliness != filters.survival_friendliness:
+            continue
+
+        if filters.works_in_nether and not spec.works_in_nether:
+            continue
+
+        if filters.non_directional and spec.directional:
+            continue
+
+        if filters.non_locational and spec.locational:
+            continue
+
+        if filters.device_class == "rds-router":
+            if filters.protocol and getattr(spec, "protocol", None) != filters.protocol:
+                continue
+
+            if filters.package_tech and getattr(spec, "package_tech", "").lower() != filters.package_tech.lower():
+                continue
+
+            if filters.min_throughput is not None and getattr(spec, "throughput", 0) < filters.min_throughput:
+                continue
+
+            physical_ports = getattr(spec, "physical_ports", {}) or {}
+            if not meets_minimum(physical_ports.get("input"), filters.min_physical_input):
+                continue
+            if not meets_minimum(physical_ports.get("output"), filters.min_physical_output):
+                continue
+
+            footprint = getattr(spec, "footprint", None)
+            if footprint is not None:
+                if not within_maximum(footprint.length, filters.max_length):
+                    continue
+                if not within_maximum(footprint.width, filters.max_width):
+                    continue
+                if not within_maximum(footprint.height, filters.max_height):
+                    continue
+
+            if filters.queue_included and not getattr(spec, "package_queue_included", False):
+                continue
+
+            if filters.chunkloading_included and not getattr(spec, "chunkloading_included", False):
+                continue
+
+            if filters.hierarchical_routing and not getattr(spec, "supports_hierarchical_routing", False):
+                continue
+
+        if filters.device_class == "rds-package":
+            if filters.protocols:
+                spec_protocols = getattr(spec, "protocols", []) or []
+                if not any(protocol in spec_protocols for protocol in filters.protocols):
+                    continue
+
+            if filters.min_payload_capacity is not None and getattr(spec, "payload_capacity", 0) < filters.min_payload_capacity:
+                continue
+
+        results.append(spec.model_dump(mode="json"))
+
+    return sorted(results, key=lambda item: item.get("name", "").lower())
+
