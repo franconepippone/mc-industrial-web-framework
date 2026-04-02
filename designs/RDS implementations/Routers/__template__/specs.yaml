@@ -26,6 +26,7 @@ survival_friendliness: high # or "moderate" or "low"
 package_tech: ChestMinecart 
 protocol: standard-rds
 supports_hierarchical_routing: false # see hierarchical_routing.md
+routable_addresses: 50 # amount of unique routable addresses per port. 
 
 # ---- In the fields below, letters such as N, M can be defined in the physical/logical
 # ports sections, and used in the expressions below. This allows support for infinitely tilable designs.

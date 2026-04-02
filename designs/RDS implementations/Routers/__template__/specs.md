@@ -53,6 +53,7 @@ Technology there first, then reference it here.
 | Package Technology    | <e.g. [ChestMinecart](/implementations/Packages/ChestMinecart/specs.md) / Other>
 | Protocol              | <e.g [Standard RDS Protocol](/docs/rds_protocols.md#the-standard-rds-protocol) / Other>  
 | Physical Ports (I/O)             | #in_p -> N (#in_p is the number of input ports, e.g. 1 -> 4) 
+| Routable Addresses (per port)    | <e.g. 50>
 | Footprint (Area)      | <e.g. 20×(20 + 2N)> 
 | Height                | <e.g. 32>
 | Works in Nether       | <Yes / No>

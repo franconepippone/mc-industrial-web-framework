@@ -1,7 +1,7 @@
 ---
 specsheet_filename: "specs.md"
 name: "Minecart Convoy"
-brief_doc: "Package technology that uses a series of minecarts traveling together to carry resources. Highly survival friendly and capable of transporting large amounts of payload."
+brief_doc: "Package technology that uses a series of minecarts traveling together to carry resources or entities. Highly survival friendly and capable of transporting large amounts of payload."
 icon_filename: "image.png"
 device_class: rds-package
 

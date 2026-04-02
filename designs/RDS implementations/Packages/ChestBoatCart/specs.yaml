@@ -1,7 +1,7 @@
 ---
 specsheet_filename: "specs.md"
 name: "ChestBoat on Minecart"
-brief_doc: "Package technology that uses a chest-boat inside a minecart to carry both items and players. Has great potential in the construction of automatic RDS-based player transportation systems."
+brief_doc: "Package technology that uses a chest-boat inside a minecart to carry both items and players/entities. Has great potential in the construction of automatic RDS-based player transportation systems."
 icon_filename: "image.png"
 device_class: rds-package
 

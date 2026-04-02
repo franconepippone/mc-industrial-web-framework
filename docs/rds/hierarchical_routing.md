@@ -2,7 +2,7 @@
 
 ## Motivations
 
-One very evident constraint of the baseline RDS routing architecture (described in [*overview.md*](/docs/overview.md)) is that, in large networks with many Routers, adding or removing a Terminal requires updating the routing tables of **all** Routers in the network. This is manageable for small or medium-sized networks, where only a handful of Routers exist. However, the approach quickly reveals two major drawbacks:
+One very evident constraint of the baseline RDS routing architecture (described in [*rds_overview.md*](/docs/rds/rds_overview.md)) is that, in large networks with many Routers, adding or removing a Terminal requires updating the routing tables of **all** Routers in the network. This is manageable for small or medium-sized networks, where only a handful of Routers exist. However, the approach quickly reveals two major drawbacks:
 
 - **Maintenance cost**: Updating the routing table of every Router in empire-sized networks — potentially with 15+ Routers — is simply not realistic. In networks of that scale, new Terminals are likely being added or modified frequently, making constant global updates impractical.
 - **Network administration**: When multiple players are involved, the situation becomes even more complex. Each player may own their own Routers and Terminal addresses, effectively forming independent “local” network domains. In order to allow resource transfers across these domains, every Router in the global network must know the location of every Terminal in every local domain. This means that if a single player makes a small change within their own network, all Routers in the global infrastructure must be updated to reflect it.  

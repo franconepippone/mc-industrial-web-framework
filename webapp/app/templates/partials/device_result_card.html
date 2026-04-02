@@ -71,12 +71,17 @@
                     
                     <div class="d-flex flex-wrap gap-2">
                         {% if spec.protocol is defined and spec.protocol %}
-                            <span class="badge rounded-pill text-bg-light border"
-                                  data-bs-toggle="tooltip"
-                                  title="The transportation protocol this device uses.">
+                            <span class="badge rounded-pill text-bg-light border link-primary"
+                                role="button"
+                                style="cursor: pointer; text-decoration: underline;"
+                                data-bs-toggle="tooltip"
+                                title="The transportation protocol this device uses."
+                                onclick="onProtocolClick('https://github.com/franconepippone/mc-industrial-web-framework/blob/master/docs/rds_protocols.md#the-standard-rds-protocol')">
                                 <i class="bi bi-diagram-3 me-1"></i>{{ spec.protocol }}
                             </span>
                         {% endif %}
+
+
                         
                         {% if spec.package_tech is defined and spec.package_tech %}
                             <span class="badge rounded-pill text-bg-light border"

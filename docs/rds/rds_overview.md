@@ -1,12 +1,10 @@
-# The Minecraft Industrial Web Framework  
+# The Resource Distribution System (RDS)
 
-## Overview  
+In the MC Industrial Web Framework, **factories** need to be able to exchange resources automatically, as well as deliver payload to remote locations of the world where resources might be needed. This can be done "easily" if there are only a few factories built close to each other, but starts becoming a harder problem as the number of factories that need to be connected grows and their physical separation increases.
 
-The MC Industrial Web Framework is a set of architectural principles, protocols, and ideas aimed at providing a structured and organized way to create an efficient and fully automated network of factories in vanilla Minecraft. It defines standardized methods for how factories located across the world can share resources on demand, fully automatically, by implementing common architectural patterns such as service–client and point-to-point resource transfer.  
+In the MCIWF, this is handled by the **Resource Distribution System (RDS)**, a layered system designed for automated and efficient point-to-point resource and entity transportation, inspired by the structure and behavior of real-world Internet networks. The goal of the RDS is to automate the delivery of a payload from a generic point A to point B in the world, based on an **Address Stamp** attached directly to the payload itself, which uniquely identifies a reachable destination in the network.
 
-The backbone of the framework is the **Resource Distribution System (RDS)**, a layered system designed for automated and efficient point-to-point resource sharing, inspired by the structure and behavior of real-world Internet networks. The goal of the RDS is to automate the delivery of a payload from a generic point A to point B in the world, based on an **Address Stamp** attached directly to the payload itself, which uniquely identifies a destination terminal in the network.
-
-
+> The term *"factory"* referes to any minecraft construction that allows the automated production of one or more resources (items, blocks, xp or entities). In most cases, *factories* are also more commonly reffered to as *farms* (e.g. chicken farm, sugar cane farm, iron farm, etc.)
 
 
 ## Core Entities of the Resource Distribution System (RDS)  
@@ -20,8 +18,8 @@ In the [Standard RDS Protocol](rds_protocols.md), the first slot non-empty slot 
 > NOTE: In circumstances where there is request-response pattern at play, it makes sense to talk about a **Destination Address Stamp** (**DAS**) and a **Return Address Stamp** (**RAS**); respectively, the Address Stamp of the *Responder* and that of the *Requester*.
 
 Here are some examples of possible Package technology:
-- [Shulker-Box](/implementations/Packages/ShulkerBox/specs.md) : highly versatile, as it can be stored and moved around like any other item.
-- [Minecart with Chest](/implementations/Packages/ChestMinecart/specs.md) : Not as versatile as the above, but very cheap and simple to get working when Shulker-Boxes are not an option.
+- [Shulker-Box](/designs/RDS%20implementations/Packages/ShulkerBox/specs.md) : highly versatile, as it can be stored and moved around like any other item.
+- [Minecart with Chest](/designs/RDS%20implementations//Packages/ChestMinecart/specs.md) : Not as versatile as the above, but very cheap and simple to get working when Shulker-Boxes are not an option.
 
 >More details can be found in the *[Package Specifications](package_specs.md)* file.
 
@@ -98,11 +96,11 @@ Once in the Output Port, it's now the job of the Link to perform the next Hop. D
 
 Finally, when the Package arrives at `"smelter-2"`, the Link hands it to the destination Terminal, where the contents can be accessed by players or machines.  
 
+
 <div align="center">
-  <img src="images/network_example1.gif" width="600" alt="Directory tree">
+  <img src="../media/network_example1.gif" width="600" alt="Directory tree">
   <p><em>Visual representation of Packages traveling through a RDS network</em></p>
 </div>
-
 
 ## Implementing full industrial automation using the RDS
 

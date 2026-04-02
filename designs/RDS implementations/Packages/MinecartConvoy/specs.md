@@ -11,7 +11,7 @@ In this Package technology, the Package consists of multiple carts (mainly, Ches
 
 This Package technology also allows for rideable carts to be part of the convoy, meaning that this Package also allows transportation of Players/Entities.
 
-Considering that the Package inventory can be simply thought of as the cumulative inventory of the whole convoy, this technology supports the [**Standard RDS Protocol**](/docs/rds_protocols.md#the-standard-rds-protocol).
+Considering that the Package inventory can be simply thought of as the cumulative inventory of the whole convoy, this technology supports the [**Standard RDS Protocol**](/docs/rds/rds_protocols.md#the-standard-rds-protocol).
 
 ## Notes
 Although theoretically unlimited in size, a large number of wagons increase the physical length of the Package, and this can significantly increase the complexity of networks using this technology. For these reasons, the maximum capacity of this Package has been conventionally fixed to 248 slots, that is 10 carts in total (1 Hopper Minecart + 9 Chest Minecarts), but this is not a hard limit, just an advice.

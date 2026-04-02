@@ -9,7 +9,7 @@
 
 This contraption consists of a chest boat riding a minecart. It works almost the same as a regular chest minecart, but with one key difference: entities and players can ride inside it. This means any riding entity counts as extra payload, in addition to the chest on the boat. Networks that support this setup can carry resources like a normal Resource Distribution System (RDS) and transport mobs/players at the same time, doubling as both standard RDS and player automatic transportation network.
 
-Effectively acting like a chest minecart, this technology fully support the [**Standard RDS Protocol**](/docs/rds_protocols.md#the-standard-rds-protocol), and can therefore be used in RDS-compliant networks.
+Effectively acting like a chest minecart, this technology fully support the [**Standard RDS Protocol**](/docs/rds/rds_protocols.md#the-standard-rds-protocol), and can therefore be used in RDS-compliant networks.
 
 ## Notes
 

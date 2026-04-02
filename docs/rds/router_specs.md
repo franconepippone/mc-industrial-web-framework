@@ -4,7 +4,7 @@ This document defines exactly what an RDS Router is and how it operates in abstr
 
 ## What's a Router
 
-If you don't know what a Router is, you can find a introductory explanation [*here*](/docs/overview.md#-router).
+If you don't know what a Router is, you can find a introductory explanation [*here*](/docs/rds/rds_overview.md#-router).
 
 ## Abstract Definition
 
