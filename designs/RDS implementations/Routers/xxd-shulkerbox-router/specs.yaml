@@ -3,7 +3,7 @@ specsheet_filename: "specs.md"
 device_class: rds-router
 name: "xxd Shulker Box Router"
 brief_doc: "A compact and ultrafast design for Shulker Box Packages. Part of the xxd-rds-suite"
-icon_filename: imgs/port-back-core.png
+icon_filename: imgs/render1.png
 
 # map multiple versions of this design to branches or commits of the repo. You usually want to have the latest version
 # pointing to the master branch, and fix older versions to specific commits.

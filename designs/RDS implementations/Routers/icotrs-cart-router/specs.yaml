@@ -3,7 +3,7 @@ specsheet_filename: "specs.md"
 device_class: rds-router
 name: "Easy Chest Cart Router"
 brief_doc: "A simple survival friendly router design based on chest minecarts. It's designed to be cheap, compact and ideal for early game networks."
-icon_filename: imgs/port-back-core.png
+icon_filename: imgs/7port-back-core.png
 
 # map multiple versions of this design to branches or commits of the repo. You usually want to have the latest version
 # pointing to the master branch, and fix older versions to specific commits.
