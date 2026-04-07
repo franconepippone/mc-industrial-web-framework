@@ -1,12 +1,15 @@
 
 <!-- Insert here the name of your Router -->
-# IcoTRS Cart Router
-![](imgs/image.png)
+# Easy Cart Router
+<div align="center">
+  <img src="imgs/7port-back-core.png" width="600" alt="Directory tree">
+  <p><em>Back view of a 8-port Router CORE</em></p>
+</div>
 
 ## Description
 
-This router is a cheap and simple design for early-game or simple networks, based on chest minecarts and rails. The design has a tilable Output Port design,
-meaning that the design can adapt to any amount of Output Ports. A router with 1 input, and 5 output ports (4 route-mapped ones, 1 default) perfectly fits within a minecraft Chunk (16x16 area).
+This router is a cheap and compact design for early-game or simple networks, based on chest minecarts and rails. The design has a tilable Output Port design,
+meaning that the design can adapt to any amount of Output Ports. A router with 1 input, and 14 output ports (13 route-mapped ones, 1 default) perfectly fits within a minecraft Chunk (16x16 area).
 
 ---
 
@@ -43,17 +46,16 @@ Technology there first, then reference it here.
 |  Specification   | Value |
 |----------------------|-------|
 | Design Version    | 1.0
-| Minecraft Version     | Java 1.21.11 
-| Component Class       | [RDS Router](/docs/router_specs.md) 
-| Package Technology    | [ChestMinecart](/implementations/Packages/ChestMinecart/specs.md)
-| Protocol              | [Standard RDS Protocol](/docs/rds_protocols.md#the-standard-rds-protocol)
-| Physical Ports (I/O)  | 1 -> N
-| Footprint (Area)      | 9×(6 + 2N)
-| Height                | 13
+| Minecraft Version     | Java 26.1
+| Component Class       | [RDS Router](/docs/rds/router_specs.md) 
+| Package Technology    | [ChestMinecart](/designs/RDS%20implementations/Packages/ChestMinecart/specs.md)
+| Protocol              | [Standard RDS Protocol](/docs/rds/rds_protocols.md#the-standard-rds-protocol)
+| Physical Ports (I/O)  | 1 / N
+| Footprint (Area)      | 12×(2 + N) 
+| Height                | 10
 | Works in Nether       | Yes
-| Chunkloading Included | No 
+| Chunkloading Included | Yes 
 | Package Queue Included        | Yes
-| Empty Package Safe    | No 
 | Throughput            | ~9 Pkg/min (~6.6s/Pkg) **just an estimate*
 | Survival-friendliness  | High
 
@@ -63,27 +65,24 @@ Technology there first, then reference it here.
 
 #### Timing Circuit configuration
 
-This design relies on precise preconfigured timing to work properly, which is provided by pulse extender circuit on the top-right. Its job is to provide a signal from the moment it gets triggered until the Package/chest-minecart has left the router. The next minecart is let in from the queue only when the circuit fully discharges, meaning that the throughput of the Router is uniquely dependant on this parameter (\*).   
-Depeding on the number of output ports, a different discharge time of the pulse extender is required for optimal operation. The rule is to add/remove 4 ticks (0.2s) of discharge time for each added/removed port from the standard 5 ports design. This can be achieved in various ways, by slightly modifying the pulse extender circuit.
-
-...more...
-
-
-
----
-
 Although the design can support up to N ports, the Router must have a bare minimum of two ports:
 - One default port (the direction minecarts are forwarded if no match is found in the routing table)
 - One routable port (has a routing map associated)
 
-This means that this Router will always occupy at least a 9x10 area if used in its minimal 2-ports form. Having less than these ports makes it effectively no longer a useful Router.
+This means that this Router will always occupy at least a 12x3 area if used in its minimal 2-ports form. Having less than these ports makes it effectively no longer a useful Router.
+
+Also note that if the design were to exceed 14 ports, it would no longer fit inside a chunk. If you are building a router spanning multiple chunks, make sure to place a chunkloader wired in parallel to the default one for every chunk the router occupies.
 
 ---
 
 As mentioned in the spec table, the router has a built-in minecart queue 
-(taken from [CobblestoneAndDirt](https://www.youtube.com/watch?v=JQtGXKXlWMQ)), which works by stacking minecarts on top of each other and releasing them one by one, allowing Packages arriving close to each other to be processed sequentially one at a time. The default queue size is 7, but it can be made bigger or lower by raising/shortening the hole in which minecarts fall in and stack up.  
-The whole rail system bringing minecarts up the hole can also be easily adapted based on specific needs.
+(taken from [CobblestoneAndDirt](https://www.youtube.com/watch?v=JQtGXKXlWMQ)), which works by stacking minecarts on top of each other and releasing them one by one, allowing Packages arriving close to each other to remain unstacked and be processed sequentially one at a time. The default queue size is 7, but it can be made bigger or lower by raising/lowering the ramp from which minecarts fall in.
+The rail segment bringing minecarts up the hole can also be easily adapted based on specific needs.
 
 ---
 
-Output Ports are return-safe, meaning that if something were to happen at the Link level causing minecarts to go back towards the Router in the output rail, minecarts will be sent back out.
+The queue is controlled by a timer. Each time a minecart goes through, the queue locks and waits for a fixed preconfigured amount of time, before releasing the next minecart. This amount of time can be easily controlled by adding or removing items in the hopper-based timer. Generally, the amount of wait time grows linearily with the increase of output ports, meaning that 
+
+---
+
+Output Ports are return-safe, meaning that if something were to happen at the Link level causing minecarts to go back towards the Router from an output rail, they will be sent back out.

@@ -1,6 +1,6 @@
 
 <!-- Insert here the name of your Router -->
-# xxd-fast-router
+# xxd-ShulkerBox-router
 
 <div style="text-align: center;">
   <a href="https://www.youtube.com/watch?v=Px5RYdZ8c6k">
@@ -9,6 +9,14 @@
 </div>
 
 Just an example video, this should probably go in [here](/docs/user-contributed/xxd_network_suite/documentation.md)
+
+
+<div align="center">
+  <img src="imgs/render1.png" width="600" alt="Directory tree">
+  <p><em></em></p>
+</div>
+
+
 
 ## Description
 
@@ -46,14 +54,14 @@ Technology there first (including its specs), then reference it here.
 |----------------------|-------|
 | Version    | 1.0
 | Minecraft Edition     | Java 1.21.1
-| Component Class       | [RDS Router](/docs/router_specs.md) 
-| Package Technology    | [Shulker-Box](/implementations/Packages/ShulkerBox/specs.md) |  
-| Ports (N)             | 5
+| Component Class       | [RDS Router](/docs/rds/router_specs.md) 
+| Package Technology    | [Shulker-Box](/designs/RDS%20implementations/Packages/ShulkerBox/specs.md) |  
+| Physical Ports (I/O)  | 5 / 5
 | Footprint (Area)      | 16x16
-| Height                | 32?
+| Height                | 14
 | Works in Nether       | Yes
 | Chunkloading Included | Yes 
-| Throughput            | 15 Pkg/min 
+| Throughput            | 10 Pkg/min 
 | Survival-friendliness  | Low 
 
 

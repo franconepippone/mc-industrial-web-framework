@@ -13,7 +13,7 @@ Effectively acting like a chest minecart, this technology fully support the [**S
 
 ## Notes
 
-Using this technology, it's possible to set up an entire RDS network  that is dedicated solely to player transportation (more like a Player-Transportation-System, **PTS**). Note that in such a network, chunkloaders would not be necessary, as players can successfully keep all sourrounding chunks loaded by moving along with the Package during the journey. This is already being done in the [*NETro by JazzyRed*](https://www.youtube.com/watch?v=nSqEuU0z6X0), which works in a very similar way to a RDS network.
+Using this technology, it's possible to set up an entire RDS network that is dedicated solely to player transportation (more like a Player-Transportation-System, **PTS**). Note that in such a network, chunkloaders would not be necessary, as players can successfully keep all sourrounding chunks loaded by moving along with the Package during the journey. This is already being done in the [*NETro by JazzyRed*](https://www.youtube.com/watch?v=nSqEuU0z6X0), which works in a very similar way to a RDS network.
 
 Note that, although *very similar* to a Chest-Minecart, this technology **does** behave in slightly different ways in some circumstances, so it may not be compatible with ChestMinecarts-based designs straightaway. Some known differences are:
 
