@@ -2,7 +2,7 @@
 
 In the MC Industrial Web Framework, **factories** need to be able to exchange resources automatically, as well as deliver payload to remote locations of the world where resources might be needed. This can be done "easily" if there are only a few factories built close to each other, but starts becoming a harder problem as the number of factories that need to be connected grows and their physical separation increases.
 
-In the MCIWF, this is handled by the **Resource Distribution System (RDS)**, a layered system designed for automated and efficient point-to-point resource and entity transportation, inspired by the structure and behavior of real-world Internet networks. The goal of the RDS is to automate the delivery of a payload from a generic point A to point B in the world, based on an **Address Stamp** attached directly to the payload itself, which uniquely identifies a reachable destination in the network.
+In the **MIWF**, this is handled by the **Resource Distribution System (RDS)**, a layered system designed for automated and efficient point-to-point resource and entity transportation, inspired by the structure and behavior of real-world Internet networks. The goal of the RDS is to automate the delivery of a payload from a generic point A to point B in the world, based on an **Address Stamp** attached directly to the payload itself, which uniquely identifies a reachable destination in the network.
 
 > The term *"factory"* referes to any minecraft construction that allows the automated production of one or more resources (items, blocks, xp or entities). In most cases, *factories* are also more commonly reffered to as *farms* (e.g. chicken farm, sugar cane farm, iron farm, etc.)
 
