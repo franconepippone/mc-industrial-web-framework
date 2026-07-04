@@ -32,11 +32,11 @@ A **Terminal** is an endpoint of the Resource Distribution System (RDS). It is a
 
 ### 🔀 Router  
 
-A **Router** is a core element of the RDS. It is directly inspired by Internet routers and follows the same operational principles.  
+A **Router** is the core element of the RDS. It is directly inspired by Internet routers and follows the same operational principles.  
 
-A Router is a node in the network where multiple edges meet and where traveling Packages are redirected based on their attached Address Stamp. By default, a RDS Router has exactly **one Input Port**, where all incoming Packages enter.
+A Router is a node in the network where traveling Packages are redirected based on their attached Address Stamp. By default, a RDS Router has exactly **one Input Port**, where all incoming Packages enter.
 
-A Router can have any number of **Output Ports**. Each output port is simply an "exit gate", where Packages can leave the router in a specific direction. Every Output Port is bound to exactly one outgoing direction, and the Router's routing logic selects which port to use based on the Package's attached Address Stamp. Depending on the chosen Package technology, Output Ports may also function as temporary buffers where Packages wait before being collected and forwarded by the respective **Link**.
+A Router can have any number of **Output Ports**. Each output port is simply an "exit gate", where Packages can leave the router in a specific direction, towards a Terminal or another Router. Every Output Port is bound to exactly one outgoing direction, and the Router's routing logic selects which port to use based on the Package's attached Address Stamp. Depending on the chosen Package technology, Output Ports may also function as temporary buffers where Packages queue up and wait before being collected and forwarded by the respective **Link**.
 
 To perform routing decisions, a Router stores a **Routing Table** that maps each known destination address to a specific Output Port. When a Package arrives:  
 
@@ -49,14 +49,14 @@ If no mapping is found, the behavior may vary (for example: forwarding to a fall
 
 It is important to clarify that **Routers do not perform physical transportation**. They only move Packages from the Input Port to one of the Output Ports, based on their attached Address Stamp. The physical movement of packages is handled entirely by **Links**.  
 
-Although conceptually different, a Router and a Terminal might physically coexist in the same structure. A single build may act as both a Router and a Terminal simultaneously.  
+Although conceptually different, a Router and a Terminal might physically coexist in the same structure (a Router port can act as a local entry/exit-point for Packages). A single build may therefore act as both a Router and a Terminal simultaneously.  
 
 >More details can be found in the *[Router Specifications](router_specs.md)* file.
 
 
 ### 🚚 Link
 
-A **Link** is the entity that "links" Routers and Terminals between each other. It consists of any Minecraft technology capable of moving Packages from one point to another, and is therefore highly coupled to the adopted Package implementation.
+A **Link** is the entity that connects Routers and Terminals between each other, performing the physical transportation of Packages. It consists of any Minecraft technology capable of moving Packages from one point to another in the World, and is therefore highly coupled to the adopted Package technology.
 
 Within the RDS, a Link is responsible for physically moving Packages between:  
 
@@ -66,12 +66,12 @@ Within the RDS, a Link is responsible for physically moving Packages between:
 
 Each of these movements is called a **Hop**. A complete route from source Terminal to destination Terminal consists of multiple Hops, each performed by different Links.
 
-Several Minecraft technologies can fulfill this role, each with advantages and disadvantages. The choice depends on the specific design requirements. Some basic examples include:  
+Several Minecraft technologies can fulfill this role, each with advantages and disadvantages. The perfect choice depends on the specific network requirements (maximum latency, lag-friendliness, survival-friendliness, etc.). Some basic examples include:  
 
 - Flowing water conveyor systems  
-- Minecart with Chest on rails  
+- Minecart with Chest moving on rails
 
-Since Routers and Terminals are link-agnostic, different link technologies can be combined across different Hops of the same route, depending on constrains or conveniences dictated by enviromental or external factors. 
+Since Routers and Terminals are link-agnostic (they don't *see* the Link layer), different link technologies can be used for different Hops of the same global route, depending on constraints or conveniences dictated by enviromental or external factors. 
 
 >More details can be found in the *[Link Specifications](link_specs.md)* file.
 
@@ -90,9 +90,10 @@ At the Router:
 
 - The Package enters from the Input Port.  
 - It may be queued in a buffer if other Packages are already being processed. 
-- The Router processes the DAS and forwards the Package to the correct Output Port.  
+- The Router processes the DAS and moves the Package to the correct Output Port.  
 
-Once in the Output Port, it's now the job of the Link to perform the next Hop. Depending on the network structure, the Package may reach another Router (where the same process repeats) or directly reach the destination Terminal.  
+Once in the Output Port, it's now the job of the Link to perform the next Hop. The Link system covering that hop takes the package from the Output Port and moves it to the next node in the network.   
+Depending on the network structure, the Package may reach another Router (where the same process repeats) or directly reach the destination Terminal.  
 
 Finally, when the Package arrives at `"smelter-2"`, the Link hands it to the destination Terminal, where the contents can be accessed by players or machines.  
 
