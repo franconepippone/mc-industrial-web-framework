@@ -159,6 +159,7 @@ Once the Package enters the Oasis City Border Router, internal routing within th
 
 - **Diminished Payload**: The more addressing layers are stored in the Package, the fewer slots remain available for payload. For two-Tiers networks, this is usually negligible, but it should be considered for deeper hierarchies.
 - **Naming conflicts across Tiers**: For hierarchical routing to function correctly, higher-Tiers addresses must not collide with lower-Tiers addresses. In practice, this means no Terminal should use a name that matches a district-level address. This is easily avoided by prefixing higher-Tier addresses with a reserved sequence such as `"district:<name>"`, leaving full flexibility for Terminal naming.
+- **Non-reusable Address Stamps**: A Higher-to-Lower Tier hop requires discarding the Higher-Tier Address Stamp. The item is lost, making Address Stamps no longer self-renewable. The problem is mostly not an issue if the item used for the Address Stamp is easily farmable; alternatively, other non-destructive ways of invalidating the Higher-Tier Address Stamp exist (i.e. swapping the Tier-1 and Tier-0 Address Stamps inside the Package, making the Tier-0 the first item non-empty slot).   
 
 
 ### District "Firewall"
