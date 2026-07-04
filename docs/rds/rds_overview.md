@@ -105,9 +105,9 @@ Finally, when the Package arrives at `"smelter-2"`, the Link hands it to the des
 
 ## Implementing full industrial automation using the RDS
 
-We have seen how the RDS can dynamically move a Package full of resources from a generic point A to a point B in a Minecraft world. In theory, this system could already be used directly by players to assist with resource transportation. In practice, however, often there are faster manual methods for moving large quantities of items, such as Elytra flight with rockets.  
+We have seen how the RDS can dynamically move a Package full of resources from a generic point A to a point B in a Minecraft world. In theory, this system could already be used directly by players to assist with resource transportation. In practice, however, often there are faster manual methods for moving large quantities of items, such as Elytra flight with rockets, which may be more convenient that costructing a world-wide network.  
 
-However, since the RDS is fully automatic, it can be used to interconnect any number of factories into a unified, fully automatic industrial network. Factories can exchange resources dynamically, even across very large distances. More importantly, the RDS provides a standardized, interconnected, web-like transportation infrastructure capable of satisfying all dependency relationships between factories.
+The real strength of an RDS network lies in its full automation. It can link any number of factories into a single, unified industrial system where resources flow autonomously across vast distances. Every factory can supply and consume materials as needed, and the RDS infrastructure can automatically satisfy all dependency relationships between them.
 
 For example, if Factory A and Factory B both depend on the output of Factory C, the RDS already enables items to flow from C to A and from C to B without requiring two separate, specialized transport lines. Similarly, if Factory C depends on the products of Factory E and Factory F, the same infrastructure naturally supports resource delivery from E and F back to C.  
 
@@ -118,36 +118,36 @@ It becomes clear how such an approach can support large-scale industrial automat
 
 The Service–Client pattern applies whenever one entity provides a service and multiple clients may request it. In general terms, a client sends a request to a service provider, and the provider responds with the requested material or action.
 
-Within the RDS context, for example, this pattern can be especially useful for factories that require periodic resource refills. Consider a Cake Factory. To continuously produce cakes, it must maintain internal storage for eggs, wheat, sugar, and milk. In an automated setup, whenever one of these resources drops below a certain threshold, the Cake Factory should be able to request a refill from the corresponding production farms (Egg Farm, Wheat Farm, and so on).
+Within the RDS context, for example, this pattern can be especially useful for factories that require on-demand resource refills. Consider a Cake Factory. To continuously produce cakes, it must maintain internal storage for eggs, wheat, sugar, and milk. In an automated setup, whenever one of these resources drops below a certain threshold, the Cake Factory should be able to request a refill from the corresponding production farms (Egg Farm, Wheat Farm, and so on).
 
 Using the RDS, this interaction can be implemented by exchanging two Packages:
 
 - A **Request Package**, containing only information.
 - A **Response Package**, containing the requested resources.
 
-For a basic material request, the Request Package must include two essential pieces of information:
+the Request Package must include two essential pieces of information:
 
-- **Source Address** – the address from which the request originates; in other words, where the response must be sent (typically the client’s own address).
-- **Request Type** – the kind of action being requested.
+- **Source Address** – the address from which the request originates; in other words, where the response must be sent (typically the client's own address),
+- **Request Type** – the kind of action being requested (if the service provider supports different types of requests).
 
-These can be encoded as renamed items placed in the second and third slots of the Shulker Box (with the first slot reserved for the Destination Tag). The remaining slots are typically left empty for a Request Package.
+These can be encoded as renamed items placed in the second and third slots of the Shulker Box (with the first slot reserved for the Address Stamp). The remaining slots are typically left empty for a Request Package, or can be filled with currency if the provider is part of an automatic shopping system.
 
-On the service provider’s side, additional redstone logic is required to automatically parse the request, execute the appropriate action, construct a Response Package, and send it back to the specified Source Address. The exact technical implementation may vary, and could eventually be standardized, but strict standardization is not required as long as the provider respects the described protocol above.
+On the service provider's side, additional redstone logic is required to automatically parse the request, execute the appropriate action, construct a Response Package, and send it back to the specified Source Address. The exact technical implementation may vary, and could eventually be standardized, but strict standardization is not required as long as the provider respects the described protocol above.
 
 Returning to the Cake Factory example:  
-The Source Address could be stored as a ready-to-use Destination Tag named `"cake-fact"`, while the Request Type might be encoded as `"EGG-REFILL-qt10"` somehow indicating a refill request of 10 stacks of eggs. The Egg Farm, upon receiving this Request Package, prepares a Response Package containing the requested eggs and uses the provided `"cake-fact"` Destination Tag as the address used for the Response Package.
+The Source Address could be stored as a ready-to-use Address Stamp named `"cake-fact"`, while the Request Type might be encoded as an item renamed `"EGG-REFILL-qt10stacks"` somehow indicating a refill request of 10 stacks of eggs. For finer control over quantity-related or generic numerical parameters of a request, the number of items in a stack could be used to encode additional information (for example, 3 stacked `"EGG-REFILL-qt2stacks"` items accumulate to a total of 3 stacks of eggs). The Egg Farm, upon receiving this Request Package, prepares a Response Package containing the requested eggs and uses the provided `"cake-fact"` Address Stamp as the address used for the Response Package.
 
 
 ### ...Some more ideas:
 
 #### Centralized Storage
 
-Instead of having resources move directly between factories, a large centralized storage facility could be built — essentially a massive item sorter and warehouse. All produced resources would automatically be sent there through the RDS.  
+Instead of having resources move directly between factories, a large centralized storage facility could be built — essentially a massive item sorter acting as a  warehouse. All produced resources would automatically be sent there through the RDS.  
 
-In this model, factories would not contact individual production sites for refills. Instead, they would simply send requests to the central storage system, which would act as a universal provider. This approach could simplify dependency and centralizes inventory management.
+In this model, factories would not contact individual production sites for refills. Instead, they would simply send requests to the central storage system, which would act as a universal provider. This approach could simplify dependency requirements and centralizes inventory management, potentially also reducing latency (shorter physical distance) between a request and a response.
 
 #### Usage of the Nether
 
-The entire RDS infrastructure could be constructed in the Nether. Because the Nether-to-Overworld distance ratio is 1:8, long-distance transportation becomes significantly faster in Overworld terms.  
+The entire RDS infrastructure can be constructed in the Nether. Because the Nether-to-Overworld distance ratio is 1:8, long-distance transportation becomes significantly faster in Overworld terms.  
 
-However, it has to be noted that some Link tecnhologies might be unvaiablable in the nether, such as water conveyor systems. This also holds true for Routers that use flowing water or any other nether-incompatible technology.
+However, it has to be noted that some Link tecnhologies might be unvaiablable in the nether, mainly water conveyor systems. This also holds true for Routers that use flowing water or any other nether-incompatible technology.
