@@ -42,6 +42,6 @@ Routing logic and destination decisions are handled by Routers. Transports simpl
 
 ### High-Importance Hops and Transport Security
 
-Some Hops in an RDS network carry greater importance than others. For example, connections between layer-1 Routers form backbone routes on which valuable resources might travel, meaning that they require stronger guarantees of reliability and security. In these situations, Transport design should consider the risk of item loss, interference, or malicious tampering by players. While automated systems are the foundation of the RDS, high-value routes might benefit from additional safeguards such as restricted access areas, protected conveyor paths, or player guard mechanisms that monitor and prevent unauthorized interaction.
+Some Hops in an RDS network carry greater importance than others. For example, connections between layer-1 Routers form backbone routes on which valuable resources might travel, meaning that they require stronger guarantees of reliability and security. In these situations, Transport design should consider the risk of item loss, interference, or malicious tampering by players. While automated systems are the foundation of the RDS, high-importance routes might benefit from active player surveillance to prevent unauthorized interaction.
 
-It is also worth acknowledging that human-based transports — where players physically move Packages or supervise their movement — may be used for critical backbones or high-security links.
+It is also worth acknowledging that human-based transports — where players physically move Packages or supervise their movement — may be a viable solution for critical backbones or high-security links in servers where an economy/job system exists.
