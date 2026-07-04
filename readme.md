@@ -1,6 +1,6 @@
 # Minecraft Industrial Web Framework
 
-The MC Industrial Web Framework (MCIWF) is a set of architectural principles, designs, and ideas aimed at providing a structured and organized way to create an efficient and fully automated network of factories in 
+The MC Industrial Web Framework (MCIWF) is a set of architectural principles, designs, standards and ideas aimed at providing a structured and organized way to create an efficient and fully automated network of factories in 
 **Vanilla Minecraft**.
 
 It defines standardized methods for how factories located across the world can share resources on demand, fully automatically, by implementing common architectural patterns such as service–client and point-to-point resource transfer.  
